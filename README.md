@@ -2,7 +2,7 @@
 
 **A Social Media Platform for Plant Lovers**
 
-![See demo here](https://theartificialflower.pythonanywhere.com/)
+[See demo here](https://theartificialflower.pythonanywhere.com/)
 **NOTE: REGISTER SYSTEM WAS NOT INCLUDED BECAUSE OF THE UNFINISHED OTP. USE "testuser@email.com" AND "testuser" AS A PASSWORD TO LOGIN AND ACCESS THE FULL PAGE. AND THE PAGE IS NOT RESPONSIVE YET SO DESKTOP VIEW IS RECCOMMENDED. IM NOT A FRONTEND DEV AFTERALL**
 
 ## 🌿 About
