@@ -10,8 +10,7 @@
     <link rel="stylesheet" href="{% static 'styles.css' %}">
     {% block headers %} {% endblock %}
 </head>
-<script src="{% static 'index.js' %}" defer>
-</script>
+
 <body>
     <div class="container">
       {% include 'navbar.html' %}
@@ -33,7 +32,6 @@
         </div>
       </div>
     </div>
-
-
-
+<script src="{% static 'index.js' %}">
+</script>
 </body>

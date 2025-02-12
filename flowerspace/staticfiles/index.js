@@ -13,20 +13,28 @@ document.querySelectorAll('.message-thread').forEach(item => {
     });
 });
 
+// Keep only one version of toggleNotifications
 function toggleNotifications() {
     const notificationContainer = document.querySelector('.right-content');
-    if (notificationContainer.style.opacity === '0' || notificationContainer.style.opacity === '') {
-        notificationContainer.style.display = 'block';
-        setTimeout(() => {
-            notificationContainer.style.opacity = '1';
-            notificationContainer.style.visibility = 'visible';
-        }, 10);
+    if (window.innerWidth <= 768) {
+        const navbar = document.querySelector('.navbar');
+        navbar.classList.add('collapsed');
+        document.querySelector('.navbar-overlay').style.display = 'none';
+        notificationContainer.classList.toggle('active');
     } else {
-        notificationContainer.style.opacity = '0';
-        notificationContainer.style.visibility = 'hidden';
-        setTimeout(() => {
-            notificationContainer.style.display = 'none';
-        }, 300);
+        if (notificationContainer.style.opacity === '0' || notificationContainer.style.opacity === '') {
+            notificationContainer.style.display = 'block';
+            setTimeout(() => {
+                notificationContainer.style.opacity = '1';
+                notificationContainer.style.visibility = 'visible';
+            }, 10);
+        } else {
+            notificationContainer.style.opacity = '0';
+            notificationContainer.style.visibility = 'hidden';
+            setTimeout(() => {
+                notificationContainer.style.display = 'none';
+            }, 300);
+        }
     }
 }
 
@@ -37,8 +45,10 @@ function toggleSave(saveIcon) {
 }
 
 document.getElementById('postImage').addEventListener('change', function(e) {
-    document.getElementById('fileName').textContent = this.files[0] ? .name || '';
+    document.getElementById('fileName').textContent = this.files[0]?.name || '';
 });
+
+
 
 document.getElementById('articleSearch').addEventListener('input', function(e) {
     const searchTerm = e.target.value.toLowerCase();

@@ -13,9 +13,9 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = os.getenv('DJANGO_SECRET_KEY', 'fallback-secret')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = True
 
-ALLOWED_HOSTS = ['TheArtificialFlower.pythonanywhere.com', '127.0.0.1']
+ALLOWED_HOSTS = ['*']
 
 # Application definition
 DATA_UPLOAD_MAX_MEMORY_SIZE = 10485760
