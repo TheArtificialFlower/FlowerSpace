@@ -1,0 +1,17 @@
+<h2 class="form-title">Verify Your Petals <span class="otp-tooltip">?</span></h2>
+<form class="auth-form" id="otpForm" method="post" action="">
+    {% csrf_token %}
+    <div class="input-group">
+        <label>6-Digit Code</label>
+        <div class="otp-inputs">
+            <input type="text" class="otp-input" maxlength="1" pattern="\d">
+            <input type="text" class="otp-input" maxlength="1" pattern="\d">
+            <input type="text" class="otp-input" maxlength="1" pattern="\d">
+            <input type="text" class="otp-input" maxlength="1" pattern="\d">
+            <input type="text" class="otp-input" maxlength="1" pattern="\d">
+            <input type="text" class="otp-input" maxlength="1" pattern="\d">
+        </div>
+        <input type="hidden" name="otp_code" id="otpHiddenInput">
+    </div>
+    <button type="submit" class="form-button">Verify & Bloom</button>
+</form>

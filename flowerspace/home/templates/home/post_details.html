@@ -1,0 +1,95 @@
+{% extends 'base.html' %}
+{% load static %}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Home</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    {% block headers %}
+    <link rel="stylesheet" href="{% static 'home/details.css' %}">
+    <link rel="stylesheet" href="{% static 'home/homepage.css' %}">
+    {% endblock %}
+</head>
+
+<body>
+{% block content %}
+{% csrf_token %}
+<div class="post-container">
+    <div class="post-header">
+        <div class="profile-icon">
+            <img src="{{ post.user.profile.image.url }}" alt="{{ post.user.username }}" class="profile-img"/>
+        </div>
+        <a href="{{ post.user.profile.get_absolute_url }}">
+            <span style="cursor: pointer;" class="post-user">{{ post.user.username }}</span>
+        </a>
+        <span class="post-time">{{ post.created|date:"Y M D" }}</span>
+    </div>
+    <img src="{{ post.image.url }}" class="post-image" alt="Post content">
+    <div class="post-actions">
+
+        <i class="post-action {% if post.id in liked_posts %}fas{% else %}far{% endif %} fa-heart"
+           data-post-id="{{ post.id }}" onclick="toggleLike(event, {{ post.id }})"></i>
+
+        {% if post.allow_comments %}
+        <a href="{% url 'home:post_details' post.id %}"><i class="far fa-comment post-action"></i></a>
+        {% endif %}
+        <i class="far fa-bookmark post-action {% if post.id in bookmarked_posts %}fas{% else %}far{% endif %}"
+           data-post-id="{{ post.id }}"
+           onclick="toggleBookmark(event, {{ post.id }})"
+           style="margin-left: auto;"></i>
+
+    </div>
+    <div class="post-likes"><p>{{ post.p_likes.count }} likes</div>
+    <div class="post-caption">
+        <strong>{{ post.user.username }}</strong> {{ post.desc }}
+    </div>
+    <div class="post-comments" style="margin-bottom: 10px;">
+        {% for hashtag in post.hashtags.all %}
+        <a style="cursor: pointer;">{{ hashtag.name }}</a>
+        {% endfor %}
+    </div>
+
+{% if post.allow_comments %}
+    <!-- Comment List -->
+    <div class="comment-list">
+        <h3><i class="fas fa-comments"></i> Comments</h3>
+
+        <!-- Another Comment -->
+        {% for comment in post.comments.all %}
+        <div class="comment">
+            <div class="comment-header">
+                {% if comment.user.profile.image %}
+                <div class="profile-icon">
+                    <img src="{{ comment.user.profile.image.url }}" alt="{{ comment.user.username }}" class="profile-img"/>
+                </div>
+                {% else %}
+                <div class="profile-icon">
+                    <img src="https://img.freepik.com/free-photo/pink-flower_1203-2178.jpg?t=st=1738862053~exp=1738865653~hmac=b15918cc08e2002e4023c5b979cc9b377ded90ab1331ca480f6bde2bf24ce680&w=740" class="profile-img"/>
+                </div>
+                {% endif %}
+                <a href="{{ comment.user.profile.get_absolute_url }}"><span class="comment-user">{{ comment.user.username }}</span></a>
+                <span class="comment-time">{{ comment.created|timesince }}</span>
+            </div>
+            <div class="comment-text">
+                {{ comment.text }}
+            </div>
+        </div>
+
+        {% endfor %}
+
+        <!-- Comment Form -->
+
+
+    </div>
+    <form class="comment-form" method="POST" action="">
+            {% csrf_token %}
+            <div class="form-group">
+                {{ form.text }}
+                <button type="submit" class="comment-submit">Post</button>
+            </div>
+    </form>
+</div>
+{% endif %}
+{% endblock %}
+</body>

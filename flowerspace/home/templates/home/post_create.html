@@ -1,0 +1,115 @@
+{% extends 'base.html' %}
+{% load static %}
+
+
+{% block headers %} <link rel="stylesheet" href="{% static 'home/post_create.css' %}"> {% endblock %}
+
+
+
+
+<body>
+        {% block content %}
+
+            <script>
+            document.addEventListener("DOMContentLoaded", function () {
+                const fileInput = document.getElementById("postImage");
+                const imagePreview = document.getElementById("imagePreview");
+                const fileNameDisplay = document.querySelector(".file-name");
+                const uploadBox = document.getElementById("uploadBox");
+
+                // Debugging: Log if any element is missing
+                if (!fileInput) console.error("Error: #postImage not found!");
+                if (!imagePreview) console.error("Error: #imagePreview not found!");
+                if (!fileNameDisplay) console.error("Error: .file-name not found!");
+                if (!uploadBox) console.error("Error: #uploadBox not found!");
+
+                if (fileInput && imagePreview && fileNameDisplay && uploadBox) {
+                    fileInput.addEventListener("change", function (event) {
+                        const file = event.target.files[0];
+
+                        if (file) {
+                            const reader = new FileReader();
+                            reader.onload = function (e) {
+                                imagePreview.src = e.target.result;
+                                imagePreview.style.display = "block";
+                                uploadBox.classList.add("has-image"); // Ensure the class is added
+                            };
+                            reader.readAsDataURL(file);
+
+                            fileNameDisplay.textContent = file.name;
+                        } else {
+                            imagePreview.src = "#";
+                            imagePreview.style.display = "none";
+                            uploadBox.classList.remove("has-image");
+                            fileNameDisplay.textContent = "No file chosen";
+                        }
+                    });
+                }
+            });
+            </script>
+                <div class="create-post-container">
+                    <!-- Hidden Ultrakill reference (check the h2) -->
+                    <h2><i class="fas fa-seedling"></i> Create New Post <small class="hidden-text">JUDGEMENT</small></h2>
+
+                    <form class="post-form" id="createPostForm" method="post" action="" enctype="multipart/form-data">
+                        <!-- Image Upload -->
+                    <div class="form-section">
+                        {% csrf_token %}
+                         <label class="upload-box" id="uploadBox">
+                                {{ form.image.as_widget }}
+                                <div class="preview-container">
+                                    <img id="imagePreview" class="preview-image" src="#" alt="Preview"/>
+                                    <div class="upload-content">
+                                        <i class="fas fa-cloud-upload-alt fa-3x"></i>
+                                        <p>Drag photo or click to upload</p>
+                                        <span class="file-name">No file chosen</span>
+                                    </div>
+                                </div>
+                        </label>
+                        {% if form.image.errors %}
+                            <div class="error-message">{{ form.image.errors }}</div>
+                        {% endif %}
+                    </div>
+
+
+                        <!-- Description Field -->
+                        <div class="form-section">
+                            <label class="form-label">Description</label>
+                            {{ form.desc }}
+                            {% if form.desc.errors %}
+                                 <div class="error-message">{{ form.desc.errors }}</div>
+                            {% endif %}
+                        </div>
+
+                        <!-- Hashtag System -->
+                        <div class="form-section">
+                            <label class="form-label">Add Hashtags</label>
+                            <div class="hashtag-input">
+                                {{ form.hashtags }}
+                            </div>
+                            {% if form.hashtags.errors %}
+                                 <div class="error-message">{{ form.hashtags.errors }}</div>
+                            {% endif %}
+                        </div>
+
+
+
+                        <div class="form-section">
+                            <label class="checkbox-label">
+                                {{ form.allow_comments }}
+                                <span class="checkmark"></span>
+                                <span class="checkbox-text">Allow Comments</span>
+                            </label>
+                            <p class="hint-text">(Uncheck to disable comments on this post)</p>
+                        </div>
+
+                        <button type="submit" class="submit-post">
+                            <i class="fas fa-leaf"></i> Bloom Post
+                        </button>
+                    </form>
+                </div>
+        {% endblock %}
+
+
+</body>
+

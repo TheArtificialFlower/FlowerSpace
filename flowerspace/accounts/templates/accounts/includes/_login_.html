@@ -1,0 +1,20 @@
+      <h2 class="form-title">Welcome Back, Bloomer</h2>
+        <form class="auth-form" id="loginForm" action="" method="post">
+             {% csrf_token %}
+             {% for field in form %}
+                <div class="input-group">
+                    <label for="{{ field.id_for_label }}">{{ field.label }}</label>
+                    {{ field }}
+                    {% if field.name == 'password' %}
+                        <i class="fas fa-eye password-toggle" onclick="togglePassword('{{ field.auto_id }}', this)"></i>
+                    {% endif %}
+                    {% for error in field.errors %}
+                    <div class="error-message">{{ error }}</div>
+                    {% endfor %}
+                </div>
+                {% endfor %}
+            <button type="submit" class="form-button">Sign In</button>
+        </form>
+        <div class="form-switch">
+            New flower? <a href="{% url 'accounts:register' %}">Plant Account</a>
+        </div>

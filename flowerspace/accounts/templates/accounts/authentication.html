@@ -1,0 +1,29 @@
+{% load static %}
+{% include 'messages.html' %}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Blossom Auth</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="stylesheet" href="{% static 'accounts/auth.css' %}">
+</head>
+<body>
+    <!-- Register Form -->
+    <div class="auth-container">
+        {% if key == 'register' %}
+            {% include 'accounts/includes/_register_.html' %}
+        {% endif %}
+
+        {% if key == 'login' %}
+            {% include 'accounts/includes/_login_.html' %}
+        {% endif %}
+
+        {% if key == 'otp' %}
+            {% include 'accounts/includes/_otp_.html' %}
+        {% endif %}
+    </div>
+
+    <script src="{% static 'accounts/auth.js' %}"></script>
+</body>
+</html>

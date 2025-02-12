@@ -1,0 +1,264 @@
+ /* Profile Page Specific Styles */
+  .profile-page {
+    padding: 30px 5% !important;
+}
+
+
+a {
+    text-decoration: none;
+    color: white;
+}
+
+.profile-header {
+    display: flex;
+    gap: 40px;
+    padding-bottom: 30px;
+    border-bottom: 1px solid var(--accent-green);
+}
+
+.profile-pic {
+    position: relative;
+    width: 150px;
+    height: 150px;
+}
+
+.pfp {
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 3px solid var(--leaf-green);
+}
+
+.edit-pfp {
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    background: var(--dim-green);
+    border: 2px solid var(--leaf-green);
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+}
+
+.profile-info {
+    flex-grow: 1;
+}
+
+.profile-top {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    margin-bottom: 20px;
+}
+
+.username {
+    margin: 0;
+    font-size: 28px;
+}
+
+.profile-stats {
+    display: flex;
+    gap: 30px;
+    margin-bottom: 20px;
+}
+
+.profile-stats span {
+    cursor: pointer;
+    transition: color 0.2s;
+}
+
+.profile-stats span:hover {
+    color: var(--petal-pink);
+}
+
+.bio h3 {
+    margin: 0 0 10px 0;
+    color: var(--petal-pink);
+}
+
+.bio p {
+    margin: 5px 0;
+    line-height: 1.5;
+}
+
+/* Follow/Edit Buttons */
+.follow-btn, .edit-profile {
+    padding: 8px 25px;
+    border-radius: 8px;
+    border: 1px solid var(--leaf-green);
+    background: var(--accent-green);
+    color: var(--soft-white);
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.follow-btn:hover, .edit-profile:hover {
+    background: var(--leaf-green);
+    transform: scale(1.05);
+}
+
+.follow-btn.following {
+    background: var(--leaf-green);
+    border-color: var(--petal-pink);
+}
+
+.edit-profile {
+    display: none; /* Show only on own profile */
+    background: transparent;
+}
+
+
+
+
+
+
+
+
+
+
+   .profile-edit-container {
+        max-width: 600px;
+        margin: 0 auto;
+        padding: 30px;
+        background: var(--dim-green);
+        border-radius: 15px;
+        border: 2px solid var(--accent-green);
+    }
+
+    .profile-pic-upload {
+        text-align: center;
+        margin-bottom: 30px;
+    }
+
+    .profile-pic-label {
+        cursor: pointer;
+        position: relative;
+        display: inline-block;
+    }
+
+    .profile-pic-preview {
+        width: 150px;
+        height: 150px;
+        border-radius: 50%;
+        overflow: hidden;
+        position: relative;
+        border: 3px solid var(--leaf-green);
+    }
+
+    .profile-pic-preview img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+    }
+
+    .empty-pfp {
+        width: 100%;
+        height: 100%;
+        background: var(--accent-green);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 5em;
+        color: var(--leaf-green);
+    }
+
+    .change-pfp-overlay {
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: rgba(0,0,0,0.5);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        opacity: 0;
+        transition: opacity 0.3s ease;
+    }
+
+    .profile-pic-label:hover .change-pfp-overlay {
+        opacity: 1;
+    }
+
+    .change-pfp-overlay i {
+        font-size: 2em;
+        color: var(--petal-pink);
+    }
+
+    .form-group {
+        margin-bottom: 20px;
+    }
+
+    .form-group label {
+        display: block;
+        margin-bottom: 8px;
+        color: var(--petal-pink);
+    }
+
+    .form-group input,
+    .form-group textarea {
+        width: 100%;
+        padding: 12px;
+        background: var(--accent-green);
+        border: 1px solid var(--leaf-green);
+        border-radius: 8px;
+        color: var(--soft-white);
+        font-size: 16px;
+        transition: all 0.3s ease;
+    }
+
+    .form-group textarea {
+        resize: vertical;
+        min-height: 100px;
+    }
+
+    #id_profile_pic {
+        display: none;
+    }
+
+
+
+
+
+
+
+    /* Add these to your styles.css */
+.form-input {
+    width: 100%;
+    padding: 12px 15px;
+    background: var(--accent-green);
+    border: 2px solid var(--leaf-green);
+    border-radius: 8px;
+    color: var(--soft-white);
+    font-size: 16px;
+    transition: all 0.3s ease;
+}
+
+.form-input:focus {
+    border-color: var(--petal-pink);
+    box-shadow: 0 0 8px rgba(255, 179, 191, 0.3);
+    outline: none;
+}
+
+.form-file-input {
+    display: none;  /* Keep the actual file input hidden */
+}
+
+/* Error state styling */
+.form-input.error {
+    border-color: #ff5555;
+    animation: shake 0.4s;
+}
+
+@keyframes shake {
+    0%, 100% { transform: translateX(0); }
+    25% { transform: translateX(-5px); }
+    75% { transform: translateX(5px); }
+}
+
+

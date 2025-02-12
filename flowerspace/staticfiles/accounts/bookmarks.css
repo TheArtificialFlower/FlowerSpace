@@ -1,0 +1,105 @@
+.bookmarks-header {
+    text-align: center;
+    margin-bottom: 40px;
+    padding: 20px;
+    background: var(--dim-green);
+    border-radius: 12px;
+    border: 2px solid var(--accent-green);
+}
+
+.bookmarks-header h2 {
+    color: var(--petal-pink);
+    margin-bottom: 10px;
+}
+
+.bookmarks-count {
+    color: var(--leaf-green);
+    font-size: 0.9em;
+}
+
+.bookmarks-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 20px;
+    padding: 10px;
+}
+
+.bookmark-item {
+    position: relative;
+    border-radius: 8px;
+    overflow: hidden;
+    cursor: pointer;
+    transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    aspect-ratio: 1;
+}
+
+.bookmark-image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.3s ease;
+}
+
+.bookmark-overlay {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    padding: 15px;
+    background: linear-gradient(transparent, rgba(0,0,0,0.8));
+    color: white;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.bookmark-title {
+    font-size: 1.1em;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+
+/* Hover Effects */
+.bookmark-item:hover {
+    transform: translateY(-5px);
+}
+
+.bookmark-item:hover .bookmark-image {
+    transform: scale(1.05);
+}
+
+.bookmark-item:hover .bookmark-overlay {
+    opacity: 1;
+}
+
+/* Animation Stagger */
+.bookmark-item {
+    animation: bookmarkAppear 0.5s ease forwards;
+    opacity: 0;
+    transform: translateY(20px);
+}
+
+@keyframes bookmarkAppear {
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Delay individual items */
+.bookmark-item:nth-child(1) { animation-delay: 0.1s; }
+.bookmark-item:nth-child(2) { animation-delay: 0.2s; }
+.bookmark-item:nth-child(3) { animation-delay: 0.3s; }
+/* Continue pattern as needed */
+
+@media (max-width: 768px) {
+    .bookmarks-grid {
+        grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+        gap: 15px;
+    }
+
+    .bookmark-title {
+        font-size: 1em;
+    }
+}

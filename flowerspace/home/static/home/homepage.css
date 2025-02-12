@@ -1,0 +1,139 @@
+     /* Instagram-style post container */
+        .post-container {
+            background: #3a3a3a;
+            border-radius: 12px;
+            margin: 20px 0;
+            padding: 15px;
+        }
+
+        .post-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+
+        a {
+            color: white;
+            text-decoration: none;
+        }
+
+        .post-user {
+            font-weight: bold;
+            margin-left: 10px;
+        }
+
+        .post-image {
+            width: 100%;
+            border-radius: 8px;
+            margin-bottom: 15px;
+        }
+
+        .post-actions {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 10px;
+        }
+
+        .post-action {
+            cursor: pointer;
+            transition: color 0.2s ease;
+        }
+
+        .post-action:hover {
+            color: var(--petal-pink);
+        }
+
+        .post-likes {
+            font-weight: bold;
+            margin-bottom: 8px;
+        }
+
+        .post-caption {
+            margin-bottom: 8px;
+        }
+
+        .post-comments {
+            color: #888;
+        }
+
+
+
+           /* Save button animation */
+    .post-action.saved {
+        color: var(--petal-pink) !important;
+        animation: bounce 0.4s ease;
+    }
+
+    @keyframes bounce {
+        0%, 100% { transform: scale(1); }
+        50% { transform: scale(1.2); }
+    }
+
+
+
+
+    /* Comment Modal */
+    .modal-overlay {
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: rgba(0,0,0,0.7);
+        display: none;
+        justify-content: center;
+        align-items: center;
+        z-index: 9999;
+    }
+
+    .comment-modal {
+        background: var(--dim-green);
+        width: 500px;
+        max-width: 90%;
+        border-radius: 12px;
+        padding: 20px;
+        max-height: 80vh;
+        display: flex;
+        flex-direction: column;
+    }
+
+    .comments-list {
+        flex-grow: 1;
+        overflow-y: auto;
+        margin: 15px 0;
+        padding-right: 10px;
+    }
+
+    .comment-item {
+        background: var(--accent-green);
+        padding: 10px;
+        border-radius: 8px;
+        margin-bottom: 10px;
+    }
+
+    .comment-input {
+        background: var(--accent-green);
+        border: none;
+        padding: 12px;
+        border-radius: 20px;
+        color: var(--soft-white);
+        width: 85%;
+        margin-top: 15px;
+    }
+
+
+    .close-modal {
+        cursor: pointer;
+        padding: 5px;
+    }
+
+    .comment-submit {
+        background: var(--leaf-green);
+        border: none;
+        padding: 8px 20px;
+        border-radius: 20px;
+        color: var(--soft-white);
+        margin-top: 10px;
+        cursor: pointer;
+        align-self: flex-end;
+    }

@@ -1,0 +1,36 @@
+
+       <nav class="navbar">
+            <div class="logo">
+                <span class="logo-full">FlowerSpace</span>
+                <i class="fas fa-seedling logo-icon" onclick="toggleNavbar()"></i>
+            </div>
+
+            <div class="search-bar">
+                <form method="GET" action="" id="searchForm">
+                    <input type="text" name="search" id="search" placeholder="Search...">
+                </form>
+                <i class="fas fa-search"></i>
+            </div>
+
+            <ul class="nav-links">
+                <li><a href="{% url 'home:homepage' %}"><i class="fas fa-home"></i><span class="nav-text">Home</span></a></li>
+                <li><a href="{% url 'home:post_create' %}"><i class="fas fa-plus"></i><span class="nav-text">Create</span></a></li>
+                {% if not request.user.is_authenticated %}
+                <li><a href="{% url 'accounts:register' %}"><i class="fas fa-sign-in"></i><span class="nav-text">Login/Register</span></a></li>
+                {% else %}
+                <li><a href="{% url 'accounts:profile' request.user.username %}"><i class="fas fa-user-circle"></i><span class="nav-text">Profile</span></a></li>
+                <li><a href="{% url 'accounts:logout' %}"><i class="fas fa-sign-out"></i><span class="nav-text">Logout</span></a></li>
+                <li><a href="{% url 'accounts:bookmarks' %}"><i class="fas fa-bookmark"></i><span class="nav-text">Bookmarks</span></a></li>
+                <li onclick="toggleNotifications()"><a style="cursor: pointer;"><i class="fas fa-bell"></i><span class="nav-text">Notifications</span>
+                {% endif %}
+                <li><a href="{% url 'home:articles' %}"><i class="fas fa-file-text"></i><span class="nav-text">Articles</span></a></li>
+            </ul>
+
+            <button class="collapse-btn" onclick="toggleNavbar()">
+                <i class="fas fa-times-circle"></i>
+            </button>
+
+        </nav>
+        <div class="navbar-overlay"></div>
+
+

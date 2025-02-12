@@ -1,0 +1,42 @@
+{% extends 'base.html' %}
+{% load static %}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Home</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    {% block headers %}
+    <link rel="stylesheet" href="{% static 'home/articles.css' %}">
+    {% endblock %}
+</head>
+
+<body>
+{% block content %}
+<div class="articles-section">
+    <div class="articles-header">
+        <h2><i class="fas fa-book-open"></i> Botanical Articles</h2>
+        <div class="articles-controls">
+
+        </div>
+    </div>
+
+    <div class="articles-grid" id="articlesGrid">
+        <!-- Sample Articles -->
+        {% for article in articles %}
+        <div class="article-card">
+            <img src="{{ article.image.url }}" class="article-image" alt="Botanical Beauty">
+            <div class="article-content">
+                <a href="{% url 'home:article_details' article.id %}" class="article-title">{{ article.title }}</a>
+                <div class="article-meta">
+                    <span class="article-author">{{ article.author }}</span>
+                    <span class="article-date">{{ article.created|date:'Y M' }}</span>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+
+    </div>
+</div>
+    {% endblock %}
+</body>

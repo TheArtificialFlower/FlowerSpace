@@ -1,0 +1,40 @@
+{% for post in posts %}
+<div class="post-container">
+    <div class="post-header">
+        <div class="profile-icon">
+            <img src="{{ post.user.profile.image.url }}" alt="{{ post.user.username }}" class="profile-img"/>
+        </div>
+        <span style="cursor: pointer;" class="post-user">
+            <a href="{{ post.user.profile.get_absolute_url }}">{{ post.user.username }}</a></span>
+    </div>
+    <img src="{{ post.image.url }}" class="post-image" alt="Post content">
+    <div class="post-actions">
+
+        <i class="post-action {% if post.id in liked_posts %}fas{% else %}far{% endif %} fa-heart"
+           data-post-id="{{ post.id }}" onclick="toggleLike(event, {{ post.id }})"></i>
+
+        {% if post.allow_comments %}
+        <a href="{% url 'home:post_details' post.id %}"><i class="far fa-comment post-action"></i></a>
+        {% endif %}
+        <i class="far fa-bookmark post-action {% if post.id in bookmarked_posts %}fas{% else %}far{% endif %}"
+           data-post-id="{{ post.id }}"
+           onclick="toggleBookmark(event, {{ post.id }})"
+           style="margin-left: auto;"></i>
+        {% if post.user == request.user %}
+        <a href="{% url 'home:post_delete' post.id %}"><i class="fa fa-trash post-action"></i></a>
+        {% endif %}
+
+    </div>
+    <div class="post-likes"><p>{{ post.p_likes.count }} likes</div>
+    <div class="post-caption">
+        <strong>{{ post.user.username }}</strong> {{ post.desc }}
+    </div>
+    <div class="post-comments">
+        {% for hashtag in post.hashtags.all %}
+        <a href="?search={{hashtag.name|cut:'#'}}" onclick="UpdateSearch()" style="cursor: pointer;">{{ hashtag.name }}</a>
+        {% endfor %}
+    </div>
+</div>
+
+
+{% endfor %}

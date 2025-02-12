@@ -1,0 +1,309 @@
+ /* Original Color Scheme */
+:root {
+	--dim-green: #2b3a2c;
+	--accent-green: #4a6650;
+	--soft-white: #f0f0f0;
+	--leaf-green: #5a7d5e;
+	--petal-pink: #ffb3bf;
+}
+body {
+	margin: 0;
+	font-family: 'Arial Rounded MT Bold', sans-serif;
+	background: #1a1a1a;
+	color: #e0e0e0;
+}
+.container {
+	display: flex;
+	min-height: 100vh;
+}
+/* Original Navbar Style with Collapse Feature */
+.navbar {
+	width: 220px;
+	background: #2d2d2d;
+	padding: 20px;
+	height: 100vh;
+	transition: all 0.3s ease;
+	position: sticky;
+}
+.navbar.collapsed {
+	width: 80px;
+}
+.navbar.collapsed .nav-text,.navbar.collapsed .logo-full,.navbar.collapsed .search-bar {
+	display: none;
+}
+.navbar.collapsed .collapse-btn {
+	display: none;
+}
+.navbar.collapsed .logo-icon {
+	display: block !important;
+}
+.logo {
+	font-size: 24px;
+	font-weight: bold;
+	color: #4CAF50;
+	margin-bottom: 20px;
+	display: flex;
+	align-items: center;
+}
+.logo-icon {
+	display: none;
+	font-size: 32px;
+	color: #4CAF50;
+	margin: 10px 0;
+	cursor: pointer;
+}
+/* Original Nav Links Style */
+.nav-links {
+	list-style: none;
+	padding: 0;
+}
+.nav-links li {
+	margin: 15px 0;
+	padding: 10px;
+	border-radius: 8px;
+	transition: all 0.2s ease;
+}
+.nav-links li:hover {
+	background: var(--accent-green);
+}
+.nav-links a {
+	text-decoration: none;
+	color: #e0e0e0;
+	font-size: 18px;
+	display: flex;
+	align-items: center;
+}
+.nav-links i {
+	margin-right: 15px;
+	width: 25px;
+}
+.badge {
+	background-color: #4CAF50;
+	color: white;
+	padding: 2px 6px;
+	border-radius: 50%;
+	font-size: 12px;
+	margin-left: auto;
+}
+/* Search Bar Fix */
+.search-bar {
+	margin: 20px 0;
+	position: relative;
+}
+.search-bar input {
+	width: 100%;
+	padding: 10px 15px;
+	border-radius: 20px;
+	border: none;
+	background: #3a3a3a;
+	color: #e0e0e0;
+	padding-left: 40px;
+}
+.search-bar i {
+	position: absolute;
+	left: 15px;
+	top: 50%;
+	transform: translateY(-50%);
+	color: #4CAF50;
+}
+/* Main Content Area (Original Structure) */
+.main-content {
+	flex-grow: 1;
+	padding: 20px;
+	display: flex;
+	gap: 20px;
+	transition: all 0.3s ease;
+}
+.middle-content {
+	flex: 5;
+	background: #2d2d2d;
+	border-radius: 8px;
+	padding: 20px;
+	width: 100px;
+	z-index: 999;
+}
+.right-content {
+	flex: 1;
+	background: #2d2d2d;
+	border-radius: 8px;
+	padding: 20px;
+	min-width: 300px;
+	display: none;
+	transition: all 500ms linear;
+}
+/* Notification System in Original Message Style */
+.message-thread {
+	padding: 15px;
+	margin: 10px 0;
+	background: #3a3a3a;
+	border-radius: 8px;
+	cursor: pointer;
+	transition: all 0.2s ease;
+	position: relative;
+}
+.message-thread:hover {
+	background: #4a6650;
+	transform: translateX(5px);
+}
+/* Collapse Button */
+.collapse-btn {
+	position: absolute;
+	top: 20px;
+	left: 90%;
+	transform: translateX(-50%);
+	background: #4CAF50;
+	border: none;
+	color: white;
+	padding: 8px;
+	border-radius: 50%;
+	cursor: pointer;
+	transition: all 0.3s ease;
+}
+/* Add these new styles at the bottom of existing styles */
+/* Disable body scrolling */
+body {
+	overflow: hidden;
+}
+/* Make main content scrollable */
+.middle-content {
+	overflow-y: auto;
+	height: calc(100vh - 40px);
+	/* Adjust based on your padding */
+}
+.profile-icon {
+	width: 40px;
+	/* Adjust size to match the icon size */
+	height: 40px;
+	/* Adjust size */
+	border-radius: 50%;
+	/* Keep it circular */
+	overflow: hidden;
+	/* To crop the image into a circle */
+	display: inline-block;
+	margin-right: 10px;
+	/* Space between the profile image and username */
+}
+.profile-img {
+	width: 100%;
+	height: 100%;
+	object-fit: cover;
+	/* Ensures the image fits well inside the circle */
+}
+.post-header i {
+	display: none;
+	/* Hide the default icon */
+}
+.user a {
+	text-decoration: none;
+	color: white;
+}
+/* Responsive Navbar Styles */
+@media (max-width: 768px) {
+	.container {
+		flex-direction: column;
+	}
+	.navbar.collapsed::before {
+		display: block;
+	}
+	.navbar {
+		position: fixed;
+		top: 0;
+		left: 0;
+		width: 100%;
+		height: 60px;
+		z-index: 1000;
+		padding: 10px;
+		transition: all 0.3s ease;
+	}
+	.navbar:not(.collapsed) {
+		height: 100vh;
+		background: rgba(45, 45, 45, 0.98);
+		backdrop-filter: blur(5px);
+	}
+	.navbar.collapsed {
+		width: 100%;
+		height: 60px;
+	}
+	.navbar.collapsed .nav-links,.navbar.collapsed .logo-full,.navbar.collapsed .search-bar {
+		display: none;
+	}
+	.logo-icon {
+		display: none !important;
+		font-size: 28px;
+		position: absolute;
+		left: 15px;
+		top: 15px;
+	}
+	.nav-links {
+		margin-top: 60px;
+		padding: 20px;
+	}
+	.nav-links li {
+		margin: 10px 0;
+		padding: 15px;
+	}
+	.main-content {
+		margin-top: 60px;
+		padding: 15px;
+	}
+	/* Mobile Notifications */
+	.right-content {
+		position: fixed;
+		right: -100%;
+		top: 60px;
+		bottom: 0;
+		width: 80%;
+		min-width: unset;
+		transition: right 0.3s ease;
+		z-index: 999;
+	}
+	.right-content.active {
+		right: 0;
+	}
+	/* Click Outside Handling */
+	.navbar-overlay {
+		position: fixed;
+		top: 60px;
+		left: 0;
+		right: 0;
+		bottom: 0;
+		background: rgba(0,0,0,0.5);
+		z-index: 998;
+		display: none;
+	}
+	.navbar:not(.collapsed) + .navbar-overlay {
+		display: block;
+	}
+}
+/* JavaScript Interaction Classes */
+.navbar-mobile-menu {
+	display: none;
+	position: fixed;
+	top: 60px;
+	left: 0;
+	right: 0;
+	background: var(--dim-green);
+	padding: 20px;
+	z-index: 999;
+}
+.navbar-mobile-menu.active {
+	display: block;
+}
+/* Notification Badge Animation */
+.badge {
+	animation: pulse 1.5s infinite;
+}
+@keyframes pulse {
+	0% {
+		transform: scale(1);
+	}
+	50% {
+		transform: scale(1.1);
+	}
+	100% {
+		transform: scale(1);
+	}
+}
+.navbar.collapsed .collapse-btn {
+	display: none;
+}

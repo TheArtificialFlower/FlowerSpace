@@ -1,0 +1,44 @@
+{% extends 'base.html' %}
+{% load static %}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>A</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    {% block headers %}
+    <link rel="stylesheet" href="{% static 'home/article_details.css' %}">
+    {% endblock %}
+</head>
+
+<body>
+{% block content %}
+<div class="article-detail">
+    <!-- Article Image -->
+    <div class="article-hero">
+        <img src="{{ article.image.url }}" alt="Article Image" class="article-main-image">
+    </div>
+
+    <!-- Article Content -->
+    <div class="article-body">
+        <h1 class="article-title">{{ article.title }}</h1>
+
+        <div class="article-meta">
+                <span class="meta-item">
+                    <i class="fas fa-user-circle"></i>
+                    {{ article.author }}
+                </span>
+            <span class="meta-item">
+                    <i class="fas fa-calendar-alt"></i>
+                    {{ article.created|date:'M d, Y' }}
+                </span>
+        </div>
+
+        <div class="article-content">
+            <p>{{ article.desc|safe }}</p>
+        </div>
+    </div>
+
+</div>
+{% endblock %}
+</body>

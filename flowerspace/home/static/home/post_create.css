@@ -1,0 +1,308 @@
+ /* Post Creation Styles */
+  .create-post-container {
+    max-width: 700px;
+    margin: 0 auto;
+    padding: 30px;
+    background: var(--dim-green);
+    border-radius: 15px;
+    border: 2px solid var(--accent-green);
+}
+
+.form-section {
+    margin-bottom: 25px;
+}
+
+.form-label {
+    display: block;
+    margin-bottom: 10px;
+    color: var(--petal-pink);
+    font-weight: bold;
+}
+
+/* File Upload */
+.upload-box {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 250px;
+    border: 3px dashed var(--leaf-green);
+    border-radius: 15px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.upload-box:hover {
+    background: rgba(90, 125, 94, 0.1);
+    border-style: solid;
+}
+
+.file-name {
+    margin-top: 10px;
+    color: var(--leaf-green);
+    font-size: 0.9em;
+}
+
+/* Text Areas */
+.form-textarea {
+    width: 100%;
+    padding: 15px;
+    background: #3a3a3a;
+    border: 2px solid var(--accent-green);
+    border-radius: 10px;
+    color: var(--soft-white);
+    resize: vertical;
+
+}
+
+.hidden {
+    opacity: 0;
+}
+
+
+/* Hashtag System */
+.hashtag-input {
+    border: 2px solid var(--accent-green);
+    border-radius: 10px;
+    padding: 10px;
+    background: #3a3a3a;
+}
+
+.hashtag-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-bottom: 10px;
+}
+
+.hashtag {
+    background: var(--leaf-green);
+    color: var(--soft-white);
+    padding: 5px 12px;
+    border-radius: 20px;
+    font-size: 0.9em;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+
+.hashtag-field {
+    width:99%;
+    background: transparent;
+    border: none;
+    color: var(--soft-white);
+    padding: 5px;
+    caret-color: var(--petal-pink);
+}
+
+/* Updated Hashtag Section */
+.hashtag-input {
+    border: 2px solid var(--accent-green);
+    border-radius: 10px;
+    padding: 5px;
+    background: #3a3a3a;
+    transition: all 0.3s ease;
+
+}
+
+.hashtag-input:focus-within {
+    border-color: var(--petal-pink);
+    box-shadow: 0 0 8px rgba(255, 179, 191, 0.3);
+}
+
+.hashtag-input input {
+    border: none;
+    box-shadow: none;
+    outline: none;
+}
+
+
+
+
+
+
+
+
+.checkbox-container {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin: 15px 0;
+}
+
+.checkbox-label {
+    position: relative;
+    cursor: pointer;
+    padding-left: 35px;
+    color: var(--soft-white);
+}
+
+.checkbox-label input {
+    position: absolute;
+    opacity: 0;
+    cursor: pointer;
+    height: 0;
+    width: 0;
+}
+
+.checkmark {
+    position: absolute;
+    left: 0;
+    top: -1px;
+    height: 24px;
+    width: 24px;
+    background-color: var(--accent-green);
+    border: 2px solid var(--leaf-green);
+    border-radius: 6px;
+    transition: all 0.3s ease;
+}
+
+.checkbox-label:hover input ~ .checkmark {
+    background-color: var(--dim-green);
+}
+
+.checkbox-label input:checked ~ .checkmark {
+    background-color: var(--leaf-green);
+    border-color: var(--petal-pink);
+}
+
+.checkmark:after {
+    content: "";
+    position: absolute;
+    display: none;
+    left: 7px;
+    top: 3px;
+    width: 6px;
+    height: 12px;
+    border: solid var(--petal-pink);
+    border-width: 0 3px 3px 0;
+    transform: rotate(45deg);
+}
+
+.checkbox-label input:checked ~ .checkmark:after {
+    display: block;
+}
+.checkmark {
+    box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+}
+
+.checkbox-label input:checked ~ .checkmark {
+    box-shadow: 0 0 8px var(--petal-pink);
+}
+
+
+
+/* Submit Button */
+.submit-post {
+    background: linear-gradient(45deg, var(--leaf-green), #3d6941);
+    color: white;
+    padding: 12px 35px;
+    border: none;
+    border-radius: 25px;
+    cursor: pointer;
+    font-size: 1.1em;
+    transition: transform 0.3s ease;
+    display: block;
+    margin: 25px auto 0;
+}
+
+.submit-post:hover {
+    transform: scale(1.05) rotate(-2deg);
+}
+
+/* Easter Eggs */
+.hidden-text {
+    color: transparent;
+    font-size: 0;
+}
+
+.blood-echo {
+    position: absolute;
+    right:150px;
+    bottom: 20px;
+    opacity: 0.1;
+    cursor: help;
+}
+
+[data-tooltip]::after {
+    content: attr(data-tooltip);
+    background: #2b3a2c;
+    color: #ff5555;
+    padding: 5px;
+    border-radius: 4px;
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    white-space: nowrap;
+    opacity: 0;
+    transition: opacity 0.3s;
+}
+
+[data-tooltip]:hover::after {
+    opacity: 1;
+}
+
+.upload-box {
+    border: 2px dashed #ccc;
+    padding: 20px;
+    text-align: center;
+    cursor: pointer;
+    min-height: 250px;
+    position: relative;
+    overflow: hidden;
+}
+
+.preview-image {
+    display: none;
+    max-width: 100%;
+    max-height: 300px;
+    object-fit: contain;
+    margin: 0 auto;
+}
+
+.upload-content {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+.upload-box.has-image .upload-content {
+    display: none;
+}
+
+.upload-box.has-image .preview-image {
+    display: block;
+}
+
+.hidden {
+    display: none;
+}
+
+
+.upload-box input[type="file"] {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    opacity: 0;
+    cursor: pointer;
+}
+.preview-container {
+    width: 100%;
+    height: 100%;
+}
+
+.preview-image {
+    display: none;
+    width: 100%;
+    height: 100%;
+    object-fit: cover; /* Makes the image fill the box without distortion */
+    position: absolute;
+    top: 0;
+    left: 0;
+}
+
+.upload-box.has-image {
+    border: none; /* Removes the dashed border */
+    background: none; /* Removes any background */
+}

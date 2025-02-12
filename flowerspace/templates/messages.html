@@ -1,0 +1,118 @@
+{% load static %}
+
+<div class="message-container">
+    {% for message in messages %}
+    <div class="message {{ message.tags }}" data-message-id="{{ forloop.counter }}">
+        <div class="message-content">
+            <span class="message-icon">
+                {% if message.level == DEFAULT_MESSAGE_LEVELS.ERROR %}
+                ⚠️
+                {% elif message.level == DEFAULT_MESSAGE_LEVELS.SUCCESS %}
+                🌸
+                {% elif message.level == DEFAULT_MESSAGE_LEVELS.WARNING %}
+                🌿
+                {% else %}
+                ℹ️
+                {% endif %}
+            </span>
+            {{ message }}
+        </div>
+        <button class="message-close" onclick="dismissMessage(this)">×</button>
+    </div>
+    {% endfor %}
+</div>
+
+<style>
+    .message-container {
+        position: fixed;
+        top: 0;
+        left: 50%;
+        transform: translateX(-50%);
+        z-index: 1000;
+        width: 100%;
+        max-width: 600px;
+        padding: 10px;
+        pointer-events: none;
+    }
+
+    .message {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 15px 20px;
+        margin-bottom: 10px;
+        border-radius: 8px;
+        font-size: 0.95em;
+        animation: slideIn 0.3s ease-out;
+        pointer-events: all;
+        background: var(--dim-green);
+        border: 2px solid;
+        z-index: 9999;
+    }
+
+    .message.error {
+        border-color: #ff5555;
+        color: #ff8888;
+    }
+
+    .message.success {
+        border-color: #4CAF50;
+        color: #88ff88;
+    }
+
+    .message.info {
+        border-color: #2196F3;
+        color: #88ccff;
+    }
+
+    .message.warning {
+        border-color: #ff9800;
+        color: #ffc488;
+    }
+
+    .message-icon {
+        margin-right: 12px;
+        font-size: 1.2em;
+    }
+
+    .message-close {
+        background: none;
+        border: none;
+        color: inherit;
+        font-size: 1.5em;
+        cursor: pointer;
+        padding: 0 8px;
+        margin-left: 15px;
+    }
+
+    @keyframes slideIn {
+        from {
+            transform: translateY(-100%);
+            opacity: 0;
+        }
+        to {
+            transform: translateY(0);
+            opacity: 1;
+        }
+    }
+</style>
+
+<script>
+    function dismissMessage(element) {
+    const message = element.closest('.message');
+    message.style.animation = 'slideOut 0.3s ease-out';
+    message.addEventListener('animationend', () => {
+        message.remove();
+    });
+}
+
+// Add this CSS animation
+const style = document.createElement('style');
+style.textContent = `
+    @keyframes slideOut {
+        from { transform: translateY(0); opacity: 1; }
+        to { transform: translateY(-100%); opacity: 0; }
+    }
+`;
+document.head.appendChild(style);
+</script>

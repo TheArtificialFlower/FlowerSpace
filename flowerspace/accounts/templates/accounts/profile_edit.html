@@ -1,0 +1,150 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+<div class="profile-edit-container">
+    <h2>Edit Profile</h2>
+
+    <form method="POST" enctype="multipart/form-data">
+        {% csrf_token %}
+
+        <div class="form-group">
+            <label>Profile Picture</label>
+            <!-- Clicking on the image opens the file input -->
+            <label for="id_image" class="image-label">
+                <div class="image-preview">
+                    {% if profile.image %}
+                        <img id="profile-pic" src="{{ profile.image.url }}" alt="Current profile picture">
+                    {% else %}
+                        <div class="empty-image">
+                            <i class="fas fa-user-circle"></i>
+                        </div>
+                    {% endif %}
+                </div>
+            </label>
+            {{ form.image }}
+        </div>
+
+        <div class="form-group">
+            <label>First Name</label>
+            {{ form.first_name }}
+        </div>
+
+        <div class="form-group">
+            <label>Last Name</label>
+            {{ form.last_name }}
+        </div>
+
+        <div class="form-group">
+            <label>Description</label>
+            {{ form.desc }}
+        </div>
+
+        <button type="submit" class="save-button">Save Changes</button>
+    </form>
+</div>
+
+<style>
+    .profile-edit-container {
+        max-width: 600px;
+        margin: 20px auto;
+        padding: 30px;
+        background: #2b3a2c;
+        border-radius: 10px;
+        border: 1px solid #4a6650;
+    }
+
+    .form-group {
+        margin-bottom: 20px;
+    }
+
+    label {
+        display: block;
+        margin-bottom: 8px;
+        color: #ffb3bf;
+    }
+
+    input, textarea {
+        width: 100%;
+        padding: 10px;
+        background: #3a3a3a;
+        border: 1px solid #5a7d5e;
+        border-radius: 5px;
+        color: #f0f0f0;
+        font-size: 16px;
+    }
+
+    textarea {
+        height: 100px;
+        resize: vertical;
+    }
+
+    .image-label {
+        display: block;
+        cursor: pointer;
+        width: 150px;
+        height: 150px;
+        position: relative;
+        margin: 10px auto;
+    }
+
+    .image-preview {
+        width: 100%;
+        height: 100%;
+        border-radius: 50%;
+        overflow: hidden;
+        border: 2px solid #5a7d5e;
+    }
+
+    .image-preview img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+    }
+
+    .empty-image {
+        width: 100%;
+        height: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 4em;
+        color: #5a7d5e;
+    }
+
+    input[type="file"] {
+        display: none; /* Hide default file input */
+    }
+
+    .save-button {
+        background: #5a7d5e;
+        color: white;
+        padding: 12px 30px;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        font-size: 16px;
+        display: block;
+        width: 100%;
+        transition: background 0.3s ease;
+    }
+
+    .save-button:hover {
+        background: #4a6650;
+    }
+</style>
+
+<script>
+    document.getElementById("id_image").addEventListener("change", function(event) {
+        let file = event.target.files[0];
+        if (file) {
+            let reader = new FileReader();
+            reader.onload = function(e) {
+                document.getElementById("profile-pic").src = e.target.result;
+            };
+            reader.readAsDataURL(file);
+        }
+    });
+</script>
+
+{% endblock %}

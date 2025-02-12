@@ -1,0 +1,64 @@
+{% extends 'base.html' %}
+{% load static %}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Home</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    {% block headers %}
+        <link rel="stylesheet" href="{% static 'home/homepage.css' %}">
+        <link rel="stylesheet" href="{% static 'accounts/profile.css' %}">
+    {% endblock %}
+</head>
+
+<body>
+    {% block content %}
+    {% csrf_token %}
+                <div class="profile-header">
+                    <div class="profile-pic">
+
+                        <img src="{% if user.profile.image %} {{ user.profile.image.url }} {% endif %}" class="pfp">
+                        {% if request.user == user %}
+                        <div class="edit-pfp"><a href="{% url 'accounts:profile_edit' %}"><i class="fas fa-pencil "></i></a></div>
+                        {% endif %}
+                    </div>
+
+                    <div class="profile-info">
+                        <div class="profile-top">
+                            <h1 class="username">{{user.username}}</h1>
+                            <!-- Dynamic button based on profile ownership -->
+                            {% if request.user != user and request.user.is_authenticated %}
+                            <a href="{% url 'accounts:follow' user.username %}">
+                                {% if not is_following %}
+                                <button class="follow-btn" id="followBtn" onclick="toggleFollow()">Follow</button>
+                                {% else %}
+                                <button class="follow-btn" id="followBtn" onclick="toggleFollow()">Unfollow</button>
+                                {% endif %}
+                            </a>
+                            {% endif %}
+                        </div>
+
+                        <div class="profile-stats">
+                            <span><strong>{{ user.posts.count }}</strong> posts</span>
+                            <span><strong>{{ followers }}</strong> followers</span>
+                            <span><strong>{{ followings }}</strong> following</span>
+                        </div>
+
+                        <div class="bio">
+                            <h3>{{user.first_name}} {{user.last_name}}</h3>
+                            <p>{{ user.profile.desc }}</p>
+                        </div>
+                    </div>
+                </div>
+
+                {% include 'home/includes/post_template.html' %}
+    {% endblock %}
+
+
+
+
+
+
+</body>
+</html>
