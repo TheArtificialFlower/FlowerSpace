@@ -1,4 +1,4 @@
-# 🌸 Blossom Connect 🌸
+# 🌸 Flower Space 🌸
 
 **A Social Media Platform for Plant Lovers**
 
@@ -8,7 +8,7 @@
 
 ## 🌿 About
 
-Blossom Connect is a vibrant social media platform designed for plant enthusiasts to share their botanical journeys, connect with fellow gardeners, and grow their green communities. From sharing plant photos to discussing gardening tips, Blossom Connect brings nature lovers together.
+Flower Space is a vibrant social media platform designed for plant enthusiasts to share their botanical journeys, connect with fellow gardeners, and grow their green communities. From sharing plant photos to discussing gardening tips, Blossom Connect brings nature lovers together.
 
 ## ✨ Features
 
