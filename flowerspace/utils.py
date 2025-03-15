@@ -3,7 +3,7 @@ from django.contrib.auth.mixins import UserPassesTestMixin
 from onlineshop.models import Order
 from django.core.mail import send_mail
 
-
+# boo
 RECEIVER_EMAIL = 'projectspacedevs@gmail.com'
 
 def send_otp(request, email):
