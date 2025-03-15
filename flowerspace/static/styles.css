@@ -1,309 +1,590 @@
- /* Original Color Scheme */
+/* Global Reset and Base Styles */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    overflow-x: Unset;
+}
+
+/* Theme Colors */
 :root {
-	--dim-green: #2b3a2c;
-	--accent-green: #4a6650;
-	--soft-white: #f0f0f0;
-	--leaf-green: #5a7d5e;
-	--petal-pink: #ffb3bf;
+    /* Original Color Scheme (Kept for Compatibility) */
+    --dim-green: #2b3a2c;
+    --accent-green-old: #4a6650;
+    --soft-white: #f0f0f0;
+    --leaf-green: #5a7d5e;
+    --petal-pink: #ffb3bf;
+    /* Current Theme Colors */
+    --primary-green: #2e7d32;
+    --accent-green: #76c893;
+    --dark-bg: #1a2a1e;
+    --card-bg: #2e3b2f;
+    --text-dark: #e0e6d9;
+    --text-light: #ffffff;
+    --shadow: rgba(0, 0, 0, 0.3);
+    --gradient-accent: linear-gradient(45deg, #76c893, #4a704e);
+    --flower-accent: #d4a5a5;
+    --ar-bright: #2b9650;
+    --button-text: #2f2f2f;
 }
+
 body {
-	margin: 0;
-	font-family: 'Arial Rounded MT Bold', sans-serif;
-	background: #1a1a1a;
-	color: #e0e0e0;
+    font-family: 'Poppins', sans-serif;
+    background: linear-gradient(135deg, var(--dark-bg), #2e3b2f);
+    color: var(--text-dark);
+    overflow: hidden;
 }
+
 .container {
-	display: flex;
-	min-height: 100vh;
+    display: flex;
+    min-height: 100vh;
 }
-/* Original Navbar Style with Collapse Feature */
+
+/* Navbar */
 .navbar {
-	width: 220px;
-	background: #2d2d2d;
-	padding: 20px;
-	height: 100vh;
-	transition: all 0.3s ease;
-	position: sticky;
+    width: 250px;
+    background: var(--dark-bg);
+    padding: 20px;
+    height: 100vh;
+    transition: all 0.3s ease;
+    position: sticky;
+    top: 0;
+    box-shadow: 2px 0 20px var(--shadow);
+    border-right: 1px solid rgba(118, 200, 147, 0.2);
 }
+
 .navbar.collapsed {
-	width: 80px;
+    width: 80px;
 }
-.navbar.collapsed .nav-text,.navbar.collapsed .logo-full,.navbar.collapsed .search-bar {
-	display: none;
+
+.navbar.collapsed .nav-text,
+.navbar.collapsed .logo-full,
+.navbar.collapsed .search-bar,
+.navbar.collapsed .logo-arrow {
+    display: none;
 }
-.navbar.collapsed .collapse-btn {
-	display: none;
-}
+
 .navbar.collapsed .logo-icon {
-	display: block !important;
+    display: block !important;
+    top: 0;
 }
+
 .logo {
-	font-size: 24px;
-	font-weight: bold;
-	color: #4CAF50;
-	margin-bottom: 20px;
-	display: flex;
-	align-items: center;
+    font-size: 26px;
+    font-weight: 700;
+    color: var(--accent-green);
+    margin-bottom: 30px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    text-shadow: 0 2px 6px rgba(118, 200, 147, 0.3);
+    position: relative;
 }
+
+
+
 .logo-icon {
-	display: none;
-	font-size: 32px;
-	color: #4CAF50;
-	margin: 10px 0;
-	cursor: pointer;
+    display: none;
+    font-size: 32px;
+    color: var(--accent-green);
+    margin: 10px 0;
+    cursor: pointer;
+    transition: transform 0.3s ease;
 }
-/* Original Nav Links Style */
+
+.logo-icon:hover {
+    transform: scale(1.2) rotate(15deg);
+}
+
+.logo-arrow {
+    font-size: 24px;
+    color: var(--accent-green);
+    cursor: pointer;
+    transition: transform 0.3s ease;
+    margin-left: auto;
+}
+
+.logo-arrow:hover {
+    transform: rotate(180deg);
+}
+
+/* Nav Links (Flowers Outside) */
 .nav-links {
-	list-style: none;
-	padding: 0;
+    list-style: none;
+    padding: 0;
+    position: relative; /* For flower positioning */
 }
+
 .nav-links li {
-	margin: 15px 0;
-	padding: 10px;
-	border-radius: 8px;
-	transition: all 0.2s ease;
+    margin: 15px 0;
+    padding: 10px;
+    border-radius: 8px;
+    transition: all 0.2s ease;
+    background: linear-gradient(90deg, transparent, rgba(118, 200, 147, 0.1));
+    position: relative;
 }
+
 .nav-links li:hover {
-	background: var(--accent-green);
+    background: var(--gradient-accent);
+    transform: translateX(15px); /* Increased shift to make room for flower */
 }
+
+.nav-links li::before {
+    content: '❀'; /* Flower symbol */
+    position: absolute;
+    left: -20px; /* Outside the link */
+    top: 50%;
+    transform: translateY(-50%);
+    color: var(--flower-accent);
+    opacity: 0;
+    transition: opacity 0.3s ease, left 0.3s ease;
+    font-size: 16px;
+}
+
+.nav-links li:hover::before {
+    opacity: 1;
+    left: -25px; /* Slides further out on hover */
+}
+
 .nav-links a {
-	text-decoration: none;
-	color: #e0e0e0;
-	font-size: 18px;
-	display: flex;
-	align-items: center;
+    text-decoration: none;
+    color: var(--text-dark);
+    font-size: 18px;
+    display: flex;
+    align-items: center;
 }
+
 .nav-links i {
-	margin-right: 15px;
-	width: 25px;
+    margin-right: 15px;
+    width: 25px;
+    color: var(--accent-green);
+    transition: transform 0.3s ease;
 }
+
+.nav-links li:hover i {
+    transform: rotate(15deg);
+}
+
 .badge {
-	background-color: #4CAF50;
-	color: white;
-	padding: 2px 6px;
-	border-radius: 50%;
-	font-size: 12px;
-	margin-left: auto;
+    background-color: var(--flower-accent);
+    color: var(--text-light);
+    padding: 2px 6px;
+    border-radius: 50%;
+    font-size: 12px;
+    margin-left: auto;
+    animation: pulse 1.5s infinite;
 }
-/* Search Bar Fix */
+
+/* Search Bar */
 .search-bar {
-	margin: 20px 0;
-	position: relative;
+    margin: 20px 0;
+    position: relative;
 }
+
 .search-bar input {
-	width: 100%;
-	padding: 10px 15px;
-	border-radius: 20px;
-	border: none;
-	background: #3a3a3a;
-	color: #e0e0e0;
-	padding-left: 40px;
+    width: 100%;
+    padding: 10px 15px 10px 40px;
+    border-radius: 20px;
+    border: 1px solid var(--accent-green);
+    background: var(--card-bg);
+    color: var(--text-dark);
+    box-shadow: 0 3px 10px var(--shadow);
+    transition: all 0.3s ease;
 }
+
+.search-bar input:focus {
+    outline: none;
+    border-color: var(--flower-accent);
+    box-shadow: 0 5px 15px rgba(118, 200, 147, 0.5);
+}
+
 .search-bar i {
-	position: absolute;
-	left: 15px;
-	top: 50%;
-	transform: translateY(-50%);
-	color: #4CAF50;
+    position: absolute;
+    left: 15px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: var(--accent-green);
+    cursor: pointer; /* Make it clickable */
 }
-/* Main Content Area (Original Structure) */
+
+.search-bar i:hover {
+    color: var(--flower-accent); /* Optional hover effect */
+}
+
+/* Main Content Area */
 .main-content {
-	flex-grow: 1;
-	padding: 20px;
-	display: flex;
-	gap: 20px;
-	transition: all 0.3s ease;
+    flex-grow: 1;
+    padding: 20px;
+    display: flex;
+    gap: 20px;
+    transition: all 0.3s ease;
+    background: linear-gradient(to bottom, rgba(26, 42, 30, 0.9), rgba(46, 59, 47, 0.9));
 }
+
 .middle-content {
-	flex: 5;
-	background: #2d2d2d;
-	border-radius: 8px;
-	padding: 20px;
-	width: 100px;
-	z-index: 999;
+    flex: 5;
+    background: var(--card-bg);
+    border-radius: 8px;
+    padding: 20px;
+    overflow-y: auto;
+    height: calc(100vh - 40px);
+    box-shadow: 0 5px 20px var(--shadow);
+    position: relative;
+    overflow-x: clip;
 }
+
+.middle-content::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: url('https://www.transparenttextures.com/patterns/leaf.png');
+    opacity: 0.1;
+    pointer-events: none;
+}
+
 .right-content {
-	flex: 1;
-	background: #2d2d2d;
-	border-radius: 8px;
-	padding: 20px;
-	min-width: 300px;
-	display: none;
-	transition: all 500ms linear;
+    flex: 1;
+    background: var(--card-bg);
+    border-radius: 8px;
+    padding: 20px;
+    min-width: 300px;
+    display: none;
+    transition: all 0.5s linear;
+    box-shadow: 0 5px 20px var(--shadow);
 }
-/* Notification System in Original Message Style */
+
+/* Notification System */
 .message-thread {
-	padding: 15px;
-	margin: 10px 0;
-	background: #3a3a3a;
-	border-radius: 8px;
-	cursor: pointer;
-	transition: all 0.2s ease;
-	position: relative;
+    padding: 15px;
+    margin: 10px 0;
+    background: linear-gradient(135deg, var(--dark-bg), #35453b);
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    position: relative;
+    border: 1px solid rgba(118, 200, 147, 0.2);
 }
+
 .message-thread:hover {
-	background: #4a6650;
-	transform: translateX(5px);
+    background: var(--gradient-accent);
+    transform: translateX(5px);
+    border-color: var(--accent-green);
 }
-/* Collapse Button */
-.collapse-btn {
-	position: absolute;
-	top: 20px;
-	left: 90%;
-	transform: translateX(-50%);
-	background: #4CAF50;
-	border: none;
-	color: white;
-	padding: 8px;
-	border-radius: 50%;
-	cursor: pointer;
-	transition: all 0.3s ease;
-}
-/* Add these new styles at the bottom of existing styles */
-/* Disable body scrolling */
-body {
-	overflow: hidden;
-}
-/* Make main content scrollable */
-.middle-content {
-	overflow-y: auto;
-	height: calc(100vh - 40px);
-	/* Adjust based on your padding */
-}
+
+/* Profile Icon */
 .profile-icon {
-	width: 40px;
-	/* Adjust size to match the icon size */
-	height: 40px;
-	/* Adjust size */
-	border-radius: 50%;
-	/* Keep it circular */
-	overflow: hidden;
-	/* To crop the image into a circle */
-	display: inline-block;
-	margin-right: 10px;
-	/* Space between the profile image and username */
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    overflow: hidden;
+    display: inline-block;
+    margin-right: 10px;
+    border: 2px solid var(--accent-green);
 }
+
 .profile-img {
-	width: 100%;
-	height: 100%;
-	object-fit: cover;
-	/* Ensures the image fits well inside the circle */
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
 }
+
 .post-header i {
-	display: none;
-	/* Hide the default icon */
+    display: none;
 }
+
 .user a {
-	text-decoration: none;
-	color: white;
+    text-decoration: none;
+    color: var(--text-light);
 }
+
 /* Responsive Navbar Styles */
 @media (max-width: 768px) {
-	.container {
-		flex-direction: column;
-	}
-	.navbar.collapsed::before {
-		display: block;
-	}
-	.navbar {
-		position: fixed;
-		top: 0;
-		left: 0;
-		width: 100%;
-		height: 60px;
-		z-index: 1000;
-		padding: 10px;
-		transition: all 0.3s ease;
-	}
-	.navbar:not(.collapsed) {
-		height: 100vh;
-		background: rgba(45, 45, 45, 0.98);
-		backdrop-filter: blur(5px);
-	}
-	.navbar.collapsed {
-		width: 100%;
-		height: 60px;
-	}
-	.navbar.collapsed .nav-links,.navbar.collapsed .logo-full,.navbar.collapsed .search-bar {
-		display: none;
-	}
-	.logo-icon {
-		display: none !important;
-		font-size: 28px;
-		position: absolute;
-		left: 15px;
-		top: 15px;
-	}
-	.nav-links {
-		margin-top: 60px;
-		padding: 20px;
-	}
-	.nav-links li {
-		margin: 10px 0;
-		padding: 15px;
-	}
-	.main-content {
-		margin-top: 60px;
-		padding: 15px;
-	}
-	/* Mobile Notifications */
-	.right-content {
-		position: fixed;
-		right: -100%;
-		top: 60px;
-		bottom: 0;
-		width: 80%;
-		min-width: unset;
-		transition: right 0.3s ease;
-		z-index: 999;
-	}
-	.right-content.active {
-		right: 0;
-	}
-	/* Click Outside Handling */
-	.navbar-overlay {
-		position: fixed;
-		top: 60px;
-		left: 0;
-		right: 0;
-		bottom: 0;
-		background: rgba(0,0,0,0.5);
-		z-index: 998;
-		display: none;
-	}
-	.navbar:not(.collapsed) + .navbar-overlay {
-		display: block;
-	}
+    .container {
+        flex-direction: column;
+    }
+
+    .navbar {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 60px;
+        z-index: 1000;
+        padding: 10px;
+        transition: all 0.3s ease;
+    }
+
+    .navbar:not(.collapsed) {
+        height: 100vh;
+        background: rgba(26, 42, 30, 0.98);
+        backdrop-filter: blur(5px);
+    }
+
+    .navbar.collapsed {
+        width: 100%;
+        height: 60px;
+    }
+
+    .navbar.collapsed .nav-links,
+    .navbar.collapsed .logo-full,
+    .navbar.collapsed .search-bar {
+        display: none;
+    }
+
+    .logo-icon {
+        display: none !important;
+        font-size: 28px;
+        position: absolute;
+        left: 15px;
+        top: 15px;
+    }
+
+    .nav-links {
+        margin-top: 60px;
+        padding: 20px;
+    }
+
+    .nav-links li {
+        margin: 10px 0;
+        padding: 15px;
+    }
+
+    .main-content {
+        margin-top: 60px;
+        padding: 15px;
+    }
+
+    .right-content {
+        position: fixed;
+        right: -100%;
+        top: 60px;
+        bottom: 0;
+        width: 80%;
+        min-width: unset;
+        transition: right 0.3s ease;
+        z-index: 999;
+    }
+
+    .right-content.active {
+        right: 0;
+    }
+
+    .navbar-overlay {
+        position: fixed;
+        top: 60px;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: rgba(0, 0, 0, 0.5);
+        z-index: 998;
+        display: none;
+    }
+
+    .navbar:not(.collapsed) + .navbar-overlay {
+        display: block;
+    }
 }
+
 /* JavaScript Interaction Classes */
 .navbar-mobile-menu {
-	display: none;
-	position: fixed;
-	top: 60px;
-	left: 0;
-	right: 0;
-	background: var(--dim-green);
-	padding: 20px;
-	z-index: 999;
+    display: none;
+    position: fixed;
+    top: 60px;
+    left: 0;
+    right: 0;
+    background: var(--card-bg);
+    padding: 20px;
+    z-index: 999;
 }
+
 .navbar-mobile-menu.active {
-	display: block;
+    display: block;
 }
+
 /* Notification Badge Animation */
 .badge {
-	animation: pulse 1.5s infinite;
+    animation: pulse 1.5s infinite;
+}
+
+.notification-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.5);
+    z-index: 1000; /* Below panel, above content */
+    display: none;
+}
+
+.right-content.active + .notification-overlay {
+    display: block;
+}
+
+/* Right Content (Notifications) */
+.right-content {
+    flex: 1;
+    background: var(--card-bg);
+    border-radius: 8px;
+    padding: 20px;
+    min-width: 300px;
+    transition: all 0.3s ease; /* Smooth slide animation */
+    box-shadow: 0 5px 20px var(--shadow);
+}
+
+/* Close Button Styling */
+.close-btn {
+    position: absolute;
+    top: 15px;
+    right: 15px;
+    background: none;
+    border: none;
+    font-size: 24px;
+    color: var(--text-light);
+    cursor: pointer;
+    transition: color 0.3s ease;
+}
+
+.close-btn:hover {
+    color: var(--petal-pink);
+}
+
+/* Trigger Button Styling (for navbar) */
+.notification-toggle {
+    background: none;
+    border: none;
+    color: var(--accent-green);
+    font-size: 24px;
+    cursor: pointer;
+    margin-left: auto; /* Aligns to the right in navbar */
+}
+
+
+
+
+/* Mobile Adjustments */
+@media (max-width: 768px) {
+    .right-content {
+        position: fixed;
+        right: -100%; /* Hidden off-screen by default */
+        top: 60px; /* Below navbar */
+        width: 80%;
+        height: calc(100vh - 60px); /* Adjust for navbar height */
+        z-index: 1001; /* Above other content */
+        overflow-y: auto;
+        display: block; /* Override display: none */
+    }
+
+    .right-content.active {
+        right: 0; /* Slide in when active */
+    }
+
+    .message-container {
+            top: 60px;
+        }
 }
 @keyframes pulse {
-	0% {
-		transform: scale(1);
-	}
-	50% {
-		transform: scale(1.1);
-	}
-	100% {
-		transform: scale(1);
-	}
+    0% { transform: scale(1); }
+    50% { transform: scale(1.1); }
+    100% { transform: scale(1); }
 }
-.navbar.collapsed .collapse-btn {
-	display: none;
+
+@media (max-width: 480px) {
+
+        .middle-content{
+            padding: 10;
+        }
+
+        .main-content {
+            padding: 0;
+        }
+
+        .message-container {
+            top: 60px;
+        }
+
+
 }
+
+
+/* Profile Snapshot */
+.profile-snapshot {
+    margin: 20px 0;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 10px;
+    background: linear-gradient(90deg, transparent, rgba(118, 200, 147, 0.1));
+    border-radius: 20px;
+    transition: all 0.3s ease;
+}
+
+.profile-link {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    text-decoration: none;
+    color: var(--text-dark);
+    width: 100%;
+}
+
+.profile-avatar {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 2px solid var(--accent-green);
+}
+
+.profile-avatar-default {
+    width: 40px;
+    height: 40px;
+    font-size: 24px; /* Adjust icon size */
+    line-height: 40px; /* Center vertically */
+    text-align: center;
+    border-radius: 50%;
+    border: 2px solid var(--accent-green);
+    color: var(--accent-green);
+    background: var(--card-bg);
+}
+
+.profile-name {
+    font-size: 16px;
+    font-weight: 500;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.profile-snapshot:hover {
+    background: var(--gradient-accent);
+    transform: translateX(5px);
+}
+
+/* Adjust for collapsed navbar */
+.navbar.collapsed .profile-snapshot {
+    display: none;
+}
+
+/* Mobile adjustments */
+@media (max-width: 768px) {
+    .profile-snapshot {
+        margin: 10px 0;
+        padding: 8px;
+    }
+
+    .profile-avatar, .profile-avatar-default {
+        width: 30px;
+        height: 30px;
+        font-size: 18px; /* Smaller icon on mobile */
+        line-height: 30px;
+    }
+
+    .profile-name {
+        font-size: 14px;
+    }
+}
+

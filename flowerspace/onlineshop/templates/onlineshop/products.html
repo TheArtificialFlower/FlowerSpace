@@ -1,0 +1,171 @@
+{% extends 'base.html' %}
+{% load static %}
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Products -- FlowerSpace</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&family=Playfair+Display:wght@400;500&display=swap"
+          rel="stylesheet">
+    {% block headers %}
+    <link rel="stylesheet" href="{% static 'onlineshop/products.css' %}">
+    {% endblock %}
+</head>
+{% block content %}
+<div class="shop-header">
+    <div class="shop-search">
+        <form id="shopSearchForm" method="GET">
+            <input type="text" placeholder="Search plants & tools..." id="shopSearch" name="search">
+            <i class="fas fa-search" id="searchIcon"></i>
+        </form>
+    </div>
+    <div class="shop-sort" id="sortByContainer">
+        <button class="sort-btn">Sort by</button>
+        <div class="shop-sort-dropdown">
+            <a href="?sort_by=price">Price: Low to High</a>
+            <a href="?sort_by=-price">Price: High to Low</a>
+            <a href="?sort_by=created">Oldest</a>
+            <a href="?sort_by=-created">Newest</a>
+        </div>
+    </div>
+    <div class="shop-sort" id="categoryContainer">
+        <button class="sort-btn">Categories</button>
+        <div class="shop-sort-dropdown">
+            <div class="category-item">
+                <a href="{% url 'shop:product_list' %}">All</a>
+            </div>
+            {% for category in categories %}
+            {% if not category.is_sub %}
+            <div class="category-item">
+                <a href="{{ category.get_absolute_url }}">{{ category.name }}</a>
+                <div class="subcategory-dropdown">
+                    {% for sub_category in category.s_categories.all %}
+                    <a href="{{ sub_category.get_absolute_url }}">{{ sub_category.name }}</a>
+                    {% endfor %}
+                </div>
+            </div>
+            {% endif %}
+            {% endfor %}
+        </div>
+    </div>
+    {% if request.user.is_staff %}
+    <a href="{% url 'shop:product_add' %}" style="text-decoration: None;">
+    <button class="add-item-btn">
+        Add Item <i class="fas fa-plus"></i>
+    </button>
+    </a>
+    {% endif %}
+</div>
+
+<div class="shop-container">
+    <div class="products-grid" id="productsGrid">
+        {% for product in products %}
+        {% if product.available %}
+        <!-- Product Card (Enabled) -->
+        <div class="product-card">
+            <img src="{{ product.image.url }}" class="product-image" alt="{{ product.title }}">
+            <div class="product-info">
+                <h3 class="product-name">{{ product.title }}</h3>
+                <div class="product-price">${{ product.price }}</div>
+                <div class="product-actions">
+                    <a href="{{ product.get_absolute_url }}" class="btn-view">View</a>
+                    <a href="#" class="btn-try">Try AR</a>
+                </div>
+                {% if request.user.is_staff %}
+                <div class="product-controls">
+                    <a href="{% url 'shop:product_update' product.pk %}"><button class="edit-btn"><i class="fas fa-edit"></i></button></a>
+                    <a href="{% url 'shop:product_delete' product.pk %}"><button class="delete-btn"><i class="fas fa-trash"></i></button></a>
+                </div>
+                {% endif %}
+            </div>
+        </div>
+        {% else %}
+        <!-- Disabled Product Card -->
+        <div class="product-card disabled">
+            <img src="{{ product.image.url }}" class="product-image" alt="Sold Out Plant">
+            <div class="product-info">
+                <h3 class="product-name">{{ product.title }}</h3>
+                <div class="product-price">${{ product.price }}</div>
+                <div class="product-actions">
+                    <a href="#" class="btn-view disabled-btn">Sold Out</a>
+                    <a href="#" class="btn-try disabled-btn">Try AR</a>
+                </div>
+                <div class="product-controls">
+                    <a href="{% url 'shop:product_update' product.pk %}"><button class="edit-btn"><i class="fas fa-edit"></i></button></a>
+                    <a href="{% url 'shop:product_delete' product.pk %}"><button class="delete-btn"><i class="fas fa-trash"></i></button></a>
+                </div>
+            </div>
+        </div>
+        {% endif %}
+        {% endfor %}
+    </div>
+</div>
+
+<script>
+// Sort By Dropdown
+const sortContainer = document.getElementById('sortByContainer');
+if (sortContainer) {
+    sortContainer.addEventListener('click', function (e) {
+        e.stopPropagation();
+        this.classList.toggle('active');
+    });
+}
+
+// Categories Dropdown with Subcategories
+const categoryContainer = document.getElementById('categoryContainer');
+if (categoryContainer) {
+    categoryContainer.addEventListener('click', function (e) {
+        e.stopPropagation();
+        this.classList.toggle('active');
+    });
+
+    // Handle subcategory dropdowns
+    const categoryItems = document.querySelectorAll('.category-item');
+    categoryItems.forEach(item => {
+        item.addEventListener('click', function (e) {
+            e.stopPropagation(); // Prevent closing parent dropdown
+            const subcategory = this.querySelector('.subcategory-dropdown');
+            if (subcategory) {
+                subcategory.classList.toggle('active');
+            }
+        });
+    });
+}
+
+// Close All Dropdowns on Outside Click
+document.addEventListener('click', function (e) {
+    // Sort By
+    if (sortContainer && !sortContainer.contains(e.target)) {
+        sortContainer.classList.remove('active');
+    }
+    // Categories and Subcategories
+    if (categoryContainer && !categoryContainer.contains(e.target)) {
+        categoryContainer.classList.remove('active');
+        document.querySelectorAll('.subcategory-dropdown').forEach(sub => {
+            sub.classList.remove('active');
+        });
+    }
+});
+
+// Shop Search Submission
+const shopSearchForm = document.getElementById('shopSearchForm');
+const searchInput = document.getElementById('shopSearch');
+const searchIcon = document.getElementById('searchIcon');
+
+if (shopSearchForm && searchInput && searchIcon) {
+    // Submit on Enter key
+    searchInput.addEventListener('keydown', function (e) {
+        if (e.key === 'Enter') {
+            e.preventDefault();
+            shopSearchForm.submit();
+        }
+    });
+
+    // Submit on icon click
+    searchIcon.addEventListener('click', function (e) {
+        e.preventDefault();
+        shopSearchForm.submit();
+    });
+}
+</script>
+{% endblock %}

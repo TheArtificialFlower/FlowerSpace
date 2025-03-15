@@ -21,7 +21,9 @@ class UserProfile(View):
     def setup(self, request, *args, **kwargs):
         self.user = User.objects.get(username=kwargs['username'])
         self.user_posts = self.user.posts.all()
-        self.is_following = Relations.objects.filter(from_user=request.user, to_user=self.user).exists()
+        self.is_following = False
+        if request.user.is_authenticated:
+            self.is_following = Relations.objects.filter(from_user=request.user, to_user=self.user).exists()
         self.followers_count = self.user.followings.count()
         self.followings_count = self.user.followers.count()
         return super().setup(request, *args, **kwargs)

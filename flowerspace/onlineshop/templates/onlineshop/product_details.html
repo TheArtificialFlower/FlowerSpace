@@ -1,0 +1,52 @@
+{% extends 'base.html' %}
+{% load static %}
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&family=Playfair+Display:wght@400;500&display=swap"
+          rel="stylesheet">
+    {% block headers %}
+    <link rel="stylesheet" href="{% static 'onlineshop/products.css' %}">
+    {% endblock %}
+</head>
+
+{% block title %} {{ product.title }} -- {{ product.category.first }} {% endblock %}
+
+{% block content %}
+<div class="item-details-container">
+    <div class="item-header">
+        <h1 class="item-title">{{ product.title }}</h1>
+        <div class="cart-quantity">
+            <i class="fas fa-shopping-cart"></i>
+            <span>In Cart: {{ cart_count }}</span>
+        </div>
+    </div>
+    <div class="item-content">
+        <div class="item-image-wrapper">
+            <img src="{{ product.image.url }}" alt="{{ product.title }}" class="item-image">
+        </div>
+        <div class="item-info">
+            <p class="item-price">${{ product.price }}</p>
+            <p class="item-quantity">Categories: {% for category in product.category.all %} {{ category.name }} {% endfor %}</p>
+            <p class="item-description">
+                {{ product.description }}
+            </p>
+            {% if product.available %}
+            <div class="item-actions">
+                {% if cart_count > 0 %}
+                <form method="POST" action="" class="item-action-form">
+                    {% csrf_token %}
+                    <button type="submit" name="remove" class="remove-from-cart-btn">Remove from Cart</button>
+                </form>
+                {% endif %}
+                <form method="POST" action="" class="item-action-form">
+                    {% csrf_token %}
+                    <button type="submit" name="add" class="add-to-cart-btn">Add to Cart</button>
+                </form>
+            </div>
+            {% endif %}
+        </div>
+    </div>
+</div>
+{% endblock %}

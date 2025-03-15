@@ -1,0 +1,70 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block headers %}
+<link rel="stylesheet" href="{% static 'onlineshop/product_form.css' %}">
+{% endblock %}
+
+{% block content %}
+<div class="form-container">
+    <h1 class="form-title">{{ product.title|default:'New' }} Product</h1>
+    <form method="POST" enctype="multipart/form-data" class="product-form">
+        {% csrf_token %}
+        <div class="form-field">
+            <label for="{{ form.title.id_for_label }}" class="form-label">Title</label>
+            {{ form.title }}
+            <span class="form-effect"></span>
+        </div>
+        <div class="form-field">
+            <label for="{{ form.description.id_for_label }}" class="form-label">Description</label>
+            {{ form.description }}
+            <span class="form-effect"></span>
+        </div>
+        <div class="form-field">
+            <label for="{{ form.price.id_for_label }}" class="form-label">Price ($)</label>
+            {{ form.price }}
+            <span class="form-effect"></span>
+        </div>
+        <div class="form-field image-upload">
+            <label for="{{ form.image.id_for_label }}" class="form-label">Image</label>
+            {{ form.image }}
+            <span class="image-preview" id="imagePreview">
+                {% if product.image %}
+                <img src="{{ product.image.url }}" alt="Current Image" class="preview-img">
+                {% endif %}
+            </span>
+        </div>
+        <div class="form-field checkbox-field">
+            <label class="checkbox-label">
+                {{ form.available }} Available
+                <span class="checkbox-effect"></span>
+            </label>
+        </div>
+        <div class="form-field category-field">
+            <label class="form-label">Categories</label>
+            <div class="category-checkboxes">
+                {{ form.category }}
+            </div>
+        </div>
+        <button type="submit" class="submit-btn">Save Product</button>
+    </form>
+</div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+    // Image Preview
+    const imageInput = document.querySelector('#{{ form.image.id_for_label }}');
+    const imagePreview = document.querySelector('#imagePreview');
+    imageInput.addEventListener('change', function () {
+        const file = this.files[0];
+        if (file) {
+            const reader = new FileReader();
+            reader.onload = function (e) {
+                imagePreview.innerHTML = `<img src="${e.target.result}" alt="Preview" class="preview-img">`;
+            };
+            reader.readAsDataURL(file);
+        }
+    });
+});
+</script>
+{% endblock %}

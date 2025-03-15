@@ -1,8 +1,7 @@
- /* Profile Page Specific Styles */
-  .profile-page {
+/* Profile Page Specific Styles */
+.profile-page {
     padding: 30px 5% !important;
 }
-
 
 a {
     text-decoration: none;
@@ -14,6 +13,51 @@ a {
     gap: 40px;
     padding-bottom: 30px;
     border-bottom: 1px solid var(--accent-green);
+    position: relative; /* For absolute positioning of actions */
+}
+
+/* New Profile Actions Container */
+.profile-actions {
+    position: absolute;
+    top: 0;
+    right: 0; /* Moved to top right */
+    display: flex;
+    gap: 15px;
+}
+
+.action-btn {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 8px 20px;
+    border-radius: 25px; /* Pill shape */
+    border: 2px solid var(--leaf-green);
+    background: var(--dim-green);
+    color: var(--soft-white);
+    font-family: 'Poppins', sans-serif;
+    font-size: 14px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.action-btn i {
+    font-size: 16px;
+}
+
+.action-btn:hover {
+    background: var(--leaf-green);
+    transform: translateY(-3px); /* Lift effect */
+    box-shadow: 0 4px 12px rgba(118, 200, 147, 0.5); /* Glow */
+    border-color: var(--accent-green);
+}
+
+.bookmarks-btn {
+    /* Specific tweaks if needed */
+}
+
+.logout-btn {
+    /* Specific tweaks if needed */
 }
 
 .profile-pic {
@@ -32,8 +76,8 @@ a {
 
 .edit-pfp {
     position: absolute;
-    bottom: 0;
-    right: 0;
+    bottom: 2;
+    right: 8;
     background: var(--dim-green);
     border: 2px solid var(--leaf-green);
     width: 40px;
@@ -112,122 +156,107 @@ a {
     background: transparent;
 }
 
+/* Rest of your existing styles remain unchanged */
+.profile-edit-container {
+    max-width: 600px;
+    margin: 0 auto;
+    padding: 30px;
+    background: var(--dim-green);
+    border-radius: 15px;
+    border: 2px solid var(--accent-green);
+}
 
+.profile-pic-upload {
+    text-align: center;
+    margin-bottom: 30px;
+}
 
+.profile-pic-label {
+    cursor: pointer;
+    position: relative;
+    display: inline-block;
+}
 
+.profile-pic-preview {
+    width: 150px;
+    height: 150px;
+    border-radius: 50%;
+    overflow: hidden;
+    position: relative;
+    border: 3px solid var(--leaf-green);
+}
 
+.profile-pic-preview img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
 
+.empty-pfp {
+    width: 100%;
+    height: 100%;
+    background: var(--accent-green);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 5em;
+    color: var(--leaf-green);
+}
 
+.change-pfp-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0,0,0,0.5);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
 
+.profile-pic-label:hover .change-pfp-overlay {
+    opacity: 1;
+}
 
+.change-pfp-overlay i {
+    font-size: 2em;
+    color: var(--petal-pink);
+}
 
-   .profile-edit-container {
-        max-width: 600px;
-        margin: 0 auto;
-        padding: 30px;
-        background: var(--dim-green);
-        border-radius: 15px;
-        border: 2px solid var(--accent-green);
-    }
+.form-group {
+    margin-bottom: 20px;
+}
 
-    .profile-pic-upload {
-        text-align: center;
-        margin-bottom: 30px;
-    }
+.form-group label {
+    display: block;
+    margin-bottom: 8px;
+    color: var(--petal-pink);
+}
 
-    .profile-pic-label {
-        cursor: pointer;
-        position: relative;
-        display: inline-block;
-    }
+.form-group input,
+.form-group textarea {
+    width: 100%;
+    padding: 12px;
+    background: var(--accent-green);
+    border: 1px solid var(--leaf-green);
+    border-radius: 8px;
+    color: var(--soft-white);
+    font-size: 16px;
+    transition: all 0.3s ease;
+}
 
-    .profile-pic-preview {
-        width: 150px;
-        height: 150px;
-        border-radius: 50%;
-        overflow: hidden;
-        position: relative;
-        border: 3px solid var(--leaf-green);
-    }
+.form-group textarea {
+    resize: vertical;
+    min-height: 100px;
+}
 
-    .profile-pic-preview img {
-        width: 100%;
-        height: 100%;
-        object-fit: cover;
-    }
+#id_profile_pic {
+    display: none;
+}
 
-    .empty-pfp {
-        width: 100%;
-        height: 100%;
-        background: var(--accent-green);
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        font-size: 5em;
-        color: var(--leaf-green);
-    }
-
-    .change-pfp-overlay {
-        position: absolute;
-        top: 0;
-        left: 0;
-        right: 0;
-        bottom: 0;
-        background: rgba(0,0,0,0.5);
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        opacity: 0;
-        transition: opacity 0.3s ease;
-    }
-
-    .profile-pic-label:hover .change-pfp-overlay {
-        opacity: 1;
-    }
-
-    .change-pfp-overlay i {
-        font-size: 2em;
-        color: var(--petal-pink);
-    }
-
-    .form-group {
-        margin-bottom: 20px;
-    }
-
-    .form-group label {
-        display: block;
-        margin-bottom: 8px;
-        color: var(--petal-pink);
-    }
-
-    .form-group input,
-    .form-group textarea {
-        width: 100%;
-        padding: 12px;
-        background: var(--accent-green);
-        border: 1px solid var(--leaf-green);
-        border-radius: 8px;
-        color: var(--soft-white);
-        font-size: 16px;
-        transition: all 0.3s ease;
-    }
-
-    .form-group textarea {
-        resize: vertical;
-        min-height: 100px;
-    }
-
-    #id_profile_pic {
-        display: none;
-    }
-
-
-
-
-
-
-
-    /* Add these to your styles.css */
 .form-input {
     width: 100%;
     padding: 12px 15px;
@@ -246,7 +275,7 @@ a {
 }
 
 .form-file-input {
-    display: none;  /* Keep the actual file input hidden */
+    display: none; /* Keep the actual file input hidden */
 }
 
 /* Error state styling */
@@ -260,5 +289,215 @@ a {
     25% { transform: translateX(-5px); }
     75% { transform: translateX(5px); }
 }
+/* Profile Page Specific Styles */
+.profile-page {
+    padding: 30px 5% !important;
+}
+
+a {
+    text-decoration: none;
+    color: white;
+}
+
+.profile-header {
+    display: flex;
+    gap: 40px;
+    padding-bottom: 30px;
+    border-bottom: 1px solid var(--accent-green);
+    position: relative;
+}
+
+.profile-actions {
+    position: absolute;
+    top: 0;
+    right: 0;
+    display: flex;
+    gap: 15px;
+}
+
+.action-btn {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 8px 20px;
+    border-radius: 25px;
+    border: 2px solid var(--leaf-green);
+    background: var(--dim-green);
+    color: var(--soft-white);
+    font-family: 'Poppins', sans-serif;
+    font-size: 14px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.action-btn i {
+    font-size: 16px;
+}
+
+.action-btn:hover {
+    background: var(--leaf-green);
+    transform: translateY(-3px);
+    box-shadow: 0 4px 12px rgba(118, 200, 147, 0.5);
+    border-color: var(--accent-green);
+}
+
+.profile-pic {
+    position: relative;
+    width: 150px;
+    height: 150px;
+    border-radius: 50%;
+    overflow: hidden;
+}
+
+.pfp {
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 3px solid var(--leaf-green);
+}
 
 
+.profile-info {
+    flex-grow: 1;
+}
+
+.profile-top {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    margin-bottom: 20px;
+}
+
+.username {
+    margin: 0;
+    font-size: 28px;
+}
+
+.profile-stats {
+    display: flex;
+    gap: 30px;
+    margin-bottom: 20px;
+}
+
+.profile-stats span {
+    cursor: pointer;
+    transition: color 0.2s;
+}
+
+.profile-stats span:hover {
+    color: var(--petal-pink);
+}
+
+.bio h3 {
+    margin: 0 0 10px 0;
+    color: var(--petal-pink);
+}
+
+.bio p {
+    margin: 5px 0;
+    line-height: 1.5;
+}
+
+.follow-btn, .edit-profile {
+    padding: 8px 25px;
+    border-radius: 8px;
+    border: 1px solid var(--leaf-green);
+    background: var(--accent-green);
+    color: var(--soft-white);
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.follow-btn:hover, .edit-profile:hover {
+    background: var(--leaf-green);
+    transform: scale(1.05);
+}
+
+.follow-btn.following {
+    background: var(--leaf-green);
+    border-color: var(--petal-pink);
+}
+
+.edit-profile {
+    display: none;
+}
+
+/* Responsive Adjustments */
+@media (max-width: 768px) {
+    .profile-header {
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+        gap: 20px;
+    }
+
+    .profile-actions {
+        position: static;
+        margin-bottom: 20px;
+    }
+
+    .profile-pic {
+        width: 120px;
+        height: 120px;
+    }
+
+    .profile-top {
+        flex-direction: column;
+        gap: 10px;
+    }
+
+    .username {
+        font-size: 24px;
+    }
+
+    .profile-stats {
+        justify-content: center;
+        gap: 20px;
+        flex-wrap: wrap;
+    }
+
+    .bio h3 {
+        font-size: 18px;
+    }
+
+    .bio p {
+        font-size: 14px;
+    }
+
+    .action-btn {
+        padding: 6px 15px;
+        font-size: 16px;
+    }
+
+    .follow-btn {
+        padding: 6px 20px;
+        font-size: 14px;
+    }
+}
+
+@media (max-width: 480px) {
+    .profile-pic {
+        width: 100px;
+        height: 100px;
+    }
+
+    .username {
+        font-size: 20px;
+    }
+
+    .profile-stats span {
+        font-size: 14px;
+    }
+
+    .action-btn {
+        padding: 5px 12px;
+        font-size: 15px;
+    }
+
+    .follow-btn {
+        padding: 5px 15px;
+        font-size: 12px;
+    }
+}

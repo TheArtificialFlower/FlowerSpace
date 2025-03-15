@@ -1,0 +1,30 @@
+<div class="search-bar">
+    <form method="GET" action="" id="SearchForm">
+        <input type="text" name="search" id="search" placeholder="Search...">
+    </form>
+    <i class="fas fa-search" id="searchIcon"></i>
+</div>
+
+
+<script>
+
+    const shopSearchForm = document.getElementById('SearchForm');
+    const searchInput = document.getElementById('search');
+    const searchIcon = document.getElementById('searchIcon');
+
+    if (shopSearchForm && searchInput && searchIcon) {
+        // Submit on Enter key
+        searchInput.addEventListener('keydown', function (e) {
+            if (e.key === 'Enter') {
+                e.preventDefault();
+                shopSearchForm.submit();
+            }
+        });
+
+        // Submit on icon click
+        searchIcon.addEventListener('click', function (e) {
+            e.preventDefault();
+            shopSearchForm.submit();
+        });
+    }
+</script>

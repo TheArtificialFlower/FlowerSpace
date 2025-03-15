@@ -1,0 +1,110 @@
+{% extends 'base.html' %}
+{% load static %}
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&family=Playfair+Display:wght@400;500&display=swap"
+          rel="stylesheet">
+    {% block headers %}
+    <link rel="stylesheet" href="{% static 'onlineshop/all_orders.css' %}">
+    <link rel="stylesheet" href="{% static 'onlineshop/products.css' %}">
+    {% endblock %}
+</head>
+
+{% block title %} All Orders {% endblock %}
+
+{% block content %}
+<div class="orders-container">
+    <h2 class="orders-title">All Orders</h2>
+    <div class="orders-controls">
+        <div class="shop-search">
+            <form id="shopSearchForm" method="GET">
+                <input type="text" placeholder="Search orders..." id="shopSearch" name="search">
+                <i class="fas fa-search" id="searchIcon"></i>
+            </form>
+        </div>
+        <div class="sort-by">
+            <button class="sort-btn">Sort By</i></button>
+            <div class="sort-dropdown">
+                <a href="?sort_by=created"><button>Newest</button></a>
+                <a href="?sort_by=-created"><button>Oldest</button></a>
+                <a href="?sort_by=total"><button>Price</button></a>
+            </div>
+        </div>
+    </div>
+
+    {% for order in orders %}
+    <div class="orders-list" id="ordersList">
+        <!-- Sample Order 1 -->
+        <div class="order-card" data-order-id="1" data-total="189.97" data-status="pending" data-date="2025-03-01">
+            <div class="order-header">
+                <span class="order-total">${{ order.get_total_price }}</span>
+                <div class="order-status-form">
+                    <span class="current-status {{ order.status }}">{{ order.status|upper }}</span>
+                    <form method="POST" action="{% url 'shop:order_update' order.pk %}" class="status-form">
+                        {% csrf_token %}
+                        <input type="hidden" name="status" value="pending">
+                        <button type="submit" class="status-btn pending" {% if order.status == 'pending' %}disabled{% endif %}>PENDING</button>
+                    </form>
+                    <form method="POST" action="{% url 'shop:order_update' order.pk %}" class="status-form">
+                        {% csrf_token %}
+                            <input type="hidden" name="status" value="shipping">
+                            <button type="submit" class="status-btn shipping" {% if order.status == 'shipping' %}disabled{% endif %}>SHIPPING</button>
+                    </form>
+                    <form method="POST" action="{% url 'shop:order_update' order.pk %}" class="status-form">
+                        {% csrf_token %}
+                        <input type="hidden" name="status" value="denied">
+                        <button type="submit" class="status-btn denied" {% if order.status == 'denied' %}disabled{% endif %}>DENIED</button>
+                    </form>
+                </div>
+            </div>
+            <div class="order-details">
+                <p><strong>User:</strong> {{ order.client_info }}</p>
+                <p><strong>Address:</strong>{{ order.address }}</p>
+                <p><strong>Date:</strong> {{ order.created|date:'Y, M d' }}</p>
+                <p><strong>Items:</strong>{% for item in order.items.all %}
+                    <a href="{{ item.product.get_absolute_url }}">{{ item.product.title }}({{ item.quantity }})</a> {% endfor %}</p>
+            </div>
+        </div>
+
+    </div>
+    {% endfor %}
+</div>
+
+
+<script>
+
+    document.querySelector('.sort-btn').addEventListener('click', function () {
+        const sortBy = document.querySelector('.sort-by');
+        sortBy.classList.toggle('active');
+    });
+
+    document.addEventListener('click', function (e) {
+        const sortBy = document.querySelector('.sort-by');
+        if (!sortBy.contains(e.target)) {
+            sortBy.classList.remove('active');
+        }
+    });
+    // Shop Search Submission
+const shopSearchForm = document.getElementById('shopSearchForm');
+const searchInput = document.getElementById('shopSearch');
+const searchIcon = document.getElementById('searchIcon');
+
+if (shopSearchForm && searchInput && searchIcon) {
+    // Submit on Enter key
+    searchInput.addEventListener('keydown', function (e) {
+        if (e.key === 'Enter') {
+            e.preventDefault();
+            shopSearchForm.submit();
+        }
+    });
+
+    // Submit on icon click
+    searchIcon.addEventListener('click', function (e) {
+        e.preventDefault();
+        shopSearchForm.submit();
+    });
+}
+</script>
+{% endblock %}

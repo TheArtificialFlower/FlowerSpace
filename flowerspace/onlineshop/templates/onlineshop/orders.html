@@ -1,0 +1,119 @@
+{% extends 'base.html' %}
+{% load static %}
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&family=Playfair+Display:wght@400;500&display=swap"
+          rel="stylesheet">
+    {% block headers %}
+    <link rel="stylesheet" href="{% static 'onlineshop/orders.css' %}">
+    {% endblock %}
+</head>
+
+{% block title %} Your Orders {% endblock %}
+
+{% block content %}
+<div class="order-container">
+    <!-- Old Orders Dropdown -->
+    <div class="old-orders-section">
+        <button class="toggle-old-orders-btn" onclick="toggleOldOrders()">Past Paid Orders <i
+                class="fas fa-chevron-down"></i></button>
+        <div class="old-orders" id="oldOrders">
+            {% for order in orders %}
+            {% if order.paid %}
+            <div class="old-order-card">
+                <div class="old-order-header">
+                    <span class="old-order-total">${{ order.get_total_price }}</span>
+                    <span class="old-order-status {{ order.status }}">{{ order.status|upper }}</span>
+                </div>
+                <div class="old-order-details">
+                    <p><strong>For: </strong>{{ order.client_info }}</p>
+                    <p><strong>Address: </strong>{{ order.address }}</p>
+                    <p><strong>Ordered at: </strong>{{ order.created|date:'Y-m-d' }}</p>
+                </div>
+            </div>
+            {% endif %}
+            {% endfor %}
+
+        </div>
+    </div>
+
+    <h2 class="order-title">Your Current Order</h2>
+    <div class="order-items" id="orderItems">
+        {% for item in current_order.items.all %}
+        <div class="order-item">
+            <img src="{{ item.product.image.url }}" alt="Monstera Plant" class="order-item-image">
+            <div class="order-item-info">
+                <h3 class="order-item-name">{{ item.product.title }}</h3>
+                <p class="order-item-price">${{item.product.price}}</p>
+                <p class="order-item-quantity">Quantity: {{ item.quantity }}</p>
+            </div>
+
+        </div>
+        {% endfor %}
+
+    </div>
+    {% if current_order %}
+    <div class="order-summary">
+        <p>Total: <span id="orderTotal">${{ current_order.get_total_price }}</span></p>
+        <div class="coupon-form">
+            <form method="post" action="" name="coupon_form">
+                {% csrf_token %}
+                {{ coupon_form.code }}
+                <button name="coupon_form" type="submit" class="apply-coupon-btn">Apply</button>
+            </form>
+        </div>
+        <!-- User Details Form -->
+        <div class="user-details-section">
+            <button class="toggle-details-btn" onclick="toggleUserDetails()">Shipping Details <i
+                    class="fas fa-chevron-down"></i></button>
+            <form class="user-details-form" id="userDetailsForm" method="post" action="" name="info_form">
+                {% csrf_token %}
+                <div class="form-field">
+                    {{ info_form.name }}
+                    <span class="form-effect"></span>
+                </div>
+                <div class="form-field">
+                    {{ info_form.last_name }}
+                    <span class="form-effect"></span>
+                </div>
+                <div class="form-field">
+                    {{ info_form.address }}
+                    <span class="form-effect"></span>
+                </div>
+                <button type="submit" name="info_form" class="save-details-btn">Save</button>
+            </form>
+        </div>
+    </div>
+    <div class="order-actions">
+        <form method="post" action="">
+            {% csrf_token %}
+            <button class="order-btn delete-btn" name="delete">Delete Order</button>
+        </form>
+        <form method="post" action="">
+            {% csrf_token %}
+            <button type="submit" name="checkout" class="order-btn checkout-btn">Checkout</button>
+        </form>
+    </div>
+    {% endif %}
+</div>
+
+<script>
+    function toggleOldOrders() {
+        const oldOrders = document.getElementById('oldOrders');
+        const btnIcon = document.querySelector('.toggle-old-orders-btn i');
+        oldOrders.classList.toggle('active');
+        btnIcon.classList.toggle('fa-chevron-down');
+        btnIcon.classList.toggle('fa-chevron-up');
+    }
+
+    function toggleUserDetails() {
+        const form = document.getElementById('userDetailsForm');
+        const btnIcon = document.querySelector('.toggle-details-btn i');
+        form.classList.toggle('active');
+        btnIcon.classList.toggle('fa-chevron-down');
+        btnIcon.classList.toggle('fa-chevron-up');
+    }
+</script>
+{% endblock %}

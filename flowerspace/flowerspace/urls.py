@@ -7,5 +7,6 @@ urlpatterns = [
     path('superdupersecretadminpanel/', admin.site.urls),
     path("ckeditor5/", include('django_ckeditor_5.urls')),
     path('accounts/', include('accounts.urls', namespace='accounts')),
+    path('shop/', include('onlineshop.urls', namespace='shop')),
     path('', include('home.urls', namespace='home')),
-]
+] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

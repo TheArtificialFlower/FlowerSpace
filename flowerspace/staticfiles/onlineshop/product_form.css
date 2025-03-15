@@ -1,0 +1,266 @@
+/* Theme Colors (From Your Existing Setup) */
+:root {
+    --primary-green: #2e7d32;
+    --accent-green: #76c893;
+    --dark-bg: #1a2a1e;
+    --card-bg: #2e3b2f;
+    --text-dark: #e0e6d9;
+    --text-light: #ffffff;
+    --shadow: rgba(0, 0, 0, 0.3);
+    --gradient-accent: linear-gradient(45deg, #76c893, #4a704e);
+    --flower-accent: #d4a5a5;
+    --ar-bright: #a5d6a7;
+    --button-text: #2f2f2f;
+}
+
+/* Form Container */
+.form-container {
+    padding: 30px;
+    background: linear-gradient(135deg, var(--card-bg), #35453b);
+    border-radius: 15px;
+    box-shadow: 0 6px 25px var(--shadow);
+    max-width: 600px;
+    margin: 30px auto;
+    animation: fadeIn 0.5s ease-in-out;
+}
+
+/* Form Title */
+.form-title {
+    color: var(--accent-green);
+    font-family: 'Playfair Display', serif;
+    font-size: 2em;
+    text-align: center;
+    margin-bottom: 30px;
+    text-shadow: 0 2px 6px rgba(118, 200, 147, 0.3);
+}
+
+/* Product Form */
+.product-form {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+/* Form Fields */
+.form-field {
+    position: relative;
+    margin-bottom: 20px;
+}
+
+.form-label {
+    color: var(--text-dark);
+    font-family: 'Poppins', sans-serif;
+    font-size: 1.1em;
+    margin-bottom: 8px;
+    display: block;
+    transition: color 0.3s ease;
+}
+
+.form-input,
+.form-textarea {
+    width: 100%;
+    padding: 12px 15px;
+    border-radius: 10px;
+    border: 1px solid var(--accent-green);
+    background: var(--dark-bg);
+    color: var(--text-dark);
+    font-family: 'Poppins', sans-serif;
+    font-size: 1em;
+    box-shadow: 0 2px 8px var(--shadow);
+    transition: all 0.3s ease;
+}
+
+.form-input:focus,
+.form-textarea:focus {
+    outline: none;
+    border-color: var(--flower-accent);
+    box-shadow: 0 5px 15px rgba(118, 200, 147, 0.5);
+}
+
+.form-textarea {
+    min-height: 100px;
+    resize: vertical;
+}
+
+/* Form Effect (Underline Animation) */
+.form-effect {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 0;
+    height: 2px;
+    background: var(--flower-accent);
+    transition: width 0.4s ease;
+}
+
+.form-input:focus ~ .form-effect,
+.form-textarea:focus ~ .form-effect {
+    width: 100%;
+}
+
+/* Image Upload */
+.image-upload .form-file {
+    width: 100%;
+    padding: 10px;
+    border: 1px dashed var(--accent-green);
+    background: var(--dark-bg);
+    color: var(--text-dark);
+    border-radius: 10px;
+    cursor: pointer;
+    transition: border-color 0.3s ease;
+}
+
+.image-upload .form-file:hover {
+    border-color: var(--flower-accent);
+}
+
+.image-preview {
+    display: block;
+    margin-top: 10px;
+}
+
+.preview-img {
+    max-width: 100%;
+    height: auto;
+    border-radius: 10px;
+    box-shadow: 0 5px 15px var(--shadow);
+    transition: transform 0.3s ease;
+}
+
+.preview-img:hover {
+    transform: scale(1.05);
+}
+
+/* Checkbox Field */
+.checkbox-field {
+    display: flex;
+    align-items: center;
+}
+
+.form-checkbox {
+    appearance: none; /* Remove default checkbox look */
+    width: 20px;
+    height: 20px;
+    border: 2px solid var(--accent-green);
+    border-radius: 5px;
+    background: var(--dark-bg);
+    cursor: pointer;
+    position: relative;
+    transition: all 0.3s ease;
+}
+
+.form-checkbox:checked {
+    background: var(--flower-accent);
+    border-color: var(--flower-accent);
+}
+
+.form-checkbox:checked:after {
+    content: '\f00c'; /* Checkmark icon */
+    font-family: 'Font Awesome 6 Free';
+    font-weight: 900;
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    color: var(--text-light);
+    font-size: 12px;
+}
+
+.checkbox-label {
+    color: var(--text-dark);
+    font-family: 'Poppins', sans-serif;
+    font-size: 1.1em;
+    margin-left: 10px;
+    cursor: pointer;
+}
+
+/* Category Checkboxes */
+.category-checkboxes ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.category-checkboxes li {
+    margin: 10px 0;
+}
+
+.category-checkboxes input[type="checkbox"] {
+    appearance: none;
+    width: 20px;
+    height: 20px;
+    border: 2px solid var(--accent-green);
+    border-radius: 5px;
+    background: var(--dark-bg);
+    cursor: pointer;
+    position: relative;
+    transition: all 0.3s ease;
+    vertical-align: middle;
+}
+
+.category-checkboxes input[type="checkbox"]:checked {
+    background: var(--flower-accent);
+    border-color: var(--flower-accent);
+}
+
+.category-checkboxes input[type="checkbox"]:checked:after {
+    content: '\f00c';
+    font-family: 'Font Awesome 6 Free';
+    font-weight: 900;
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    color: var(--text-light);
+    font-size: 12px;
+}
+
+.category-checkboxes label {
+    color: var(--text-dark);
+    font-family: 'Poppins', sans-serif;
+    font-size: 1em;
+    margin-left: 10px;
+    cursor: pointer;
+    vertical-align: middle;
+}
+
+
+.category-checkboxes input[type="checkbox"]:checked + label:before {
+    background: var(--flower-accent);
+    border-color: var(--flower-accent);
+}
+
+.category-checkboxes input[type="checkbox"]:checked + label:after {
+    content: '\f00c';
+    font-family: 'Font Awesome 6 Free';
+    font-weight: 900;
+    position: absolute;
+    left: 5px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: var(--text-light);
+    font-size: 12px;
+}
+
+/* Submit Button */
+.submit-btn {
+    background: var(--gradient-accent);
+    color: var(--button-text);
+    padding: 15px 30px;
+    border: none;
+    border-radius: 30px;
+    font-family: 'Playfair Display', serif;
+    font-size: 1.2em;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 5px 15px var(--shadow);
+    align-self: center;
+}
+
+.submit-btn:hover {
+    background: var(--primary-green);
+    color: var(--text-light);
+    transform: translateY(-5px);
+    box-shadow: 0 8px 20px rgba(118, 200, 147, 0.7);
+}

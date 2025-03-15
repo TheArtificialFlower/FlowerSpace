@@ -306,3 +306,10 @@
     border: none; /* Removes the dashed border */
     background: none; /* Removes any background */
 }
+
+@media (max-width: 680px) {
+
+        .form-section {
+            margin-top: 15px;
+        }
+}

@@ -1,5 +1,5 @@
 from django.shortcuts import render, redirect, get_object_or_404
-from django.views.generic import ListView, DetailView, CreateView, View, DeleteView
+from django.views.generic import ListView, DetailView, CreateView, View, DeleteView, TemplateView, FormView
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib import messages
 from django.db.models import Q
@@ -7,10 +7,14 @@ from django.http import JsonResponse
 from django.urls import reverse_lazy
 from django.utils.decorators import method_decorator
 from django.contrib.auth.decorators import login_required
-from .forms import CreatePostForm, CommentForm
+from .forms import CreatePostForm, CommentForm, ContactForm
 from .models import Hashtag, Posts, Comment, Likes, BookMarks, Article
 from accounts.models import Relations
 from django.http import HttpResponseForbidden
+from utils import send_contact_mail
+from django_ratelimit.decorators import ratelimit
+from django.utils.decorators import method_decorator
+
 
 
 
@@ -149,3 +153,29 @@ class ArticleDetailsView(DetailView):
     template_name = "home/articles_details.html"
     context_object_name = "article"
     pk_url_kwarg = "article_id"
+
+
+
+
+class ContactUsView(LoginRequiredMixin, FormView):
+    template_name = 'home/contact_us.html'
+    form_class = ContactForm
+    success_url = reverse_lazy('home:contact')
+
+    @method_decorator(ratelimit(key='post:email', rate='1/h', method='POST', block=True))
+    def dispatch(self, request, *args, **kwargs):
+        return super().dispatch(request, *args, **kwargs)
+
+    def get_form_kwargs(self):
+        kwargs = super().get_form_kwargs()
+        kwargs['initial'] = {'email': self.request.user.email}
+        return kwargs
+
+    def form_valid(self, form):
+        cd = form.cleaned_data
+        send_contact_mail(cd['name'], self.request.user.email, cd['message'])
+        messages.success(self.request, "Your message had been sent successfully!")
+        return redirect('home:contact')
+
+
+

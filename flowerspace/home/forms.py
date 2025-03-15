@@ -37,3 +37,8 @@ class CommentForm(forms.ModelForm):
             'text': forms.TextInput(attrs={'rows':2, 'placeholder':'Add a comment....', 'class':'textarea'})
         }
 
+
+class ContactForm(forms.Form):
+    name = forms.CharField(widget=forms.TextInput(attrs={'placeholder': 'Enter your name', 'class': 'form-input'}))
+    email = forms.EmailField(widget=forms.EmailInput(attrs={'placeholder': 'Enter your email', 'class': 'form-input', 'readonly': 'readonly'}))
+    message = forms.CharField(widget=forms.Textarea(attrs={'placeholder': 'Write your message...', 'class': 'form-textarea', 'rows': 5}))

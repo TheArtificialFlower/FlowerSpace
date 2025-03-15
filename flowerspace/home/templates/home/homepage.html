@@ -14,7 +14,9 @@
 <body>
     {% block content %}
     {% csrf_token %}
+
     <h2><i class="fas fa-feather-alt"></i> Recent Posts</h2>
+    {% include 'searchbar.html' %}
     {% include 'home/includes/post_template.html' %}
     {% endblock %}
 

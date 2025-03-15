@@ -1,0 +1,50 @@
+{% extends 'base.html' %}
+{% load static %}
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&family=Playfair+Display:wght@400;500&display=swap"
+          rel="stylesheet">
+    {% block headers %}
+    <link rel="stylesheet" href="{% static 'onlineshop/cart.css' %}">
+    {% endblock %}
+</head>
+
+{% block title %} Your cart {% endblock %}
+
+{% block content %}
+<div class="cart-container">
+    <h2 class="cart-title">Your Cart</h2>
+
+
+    <div class="cart-items" id="cartItems">
+        {% for item in cart.items %}
+        <div class="cart-item">
+            <img src="{{ item.product.image.url }}" alt="Monstera Plant" class="cart-item-image">
+            <div class="cart-item-info">
+                <h3 class="cart-item-name">{{ item.product.title }} ({{ item.quantity }})</h3>
+                <p class="cart-item-price">${{ item.product.price }}</p>
+            </div>
+            <a href="{% url 'shop:cart_delete' item.product.id %}"><button class="remove-item-btn"><i class="fas fa-trash"></i></button></a>
+        </div>
+        {% endfor %}
+
+    </div>
+    <div class="cart-total">
+        <p>Total price: <span id="cartTotal">${{ cart.get_total_price }}</span></p>
+        <p>Total quantity: <span>{{ cart.get_total_quantity }}</span></p>
+    </div>
+    {% if cart.get_total_quantity != 0 %}
+    <div class="cart-actions">
+        <a href="{% url 'shop:cart_clear' %}"><button class="cart-btn clear-btn">Clear Cart</button></a>
+        <form method="POST" action="">
+            {% csrf_token %}
+            <button class="cart-btn order-btn" type="submit">Order Now</button>
+        </form>
+    </div>
+    {% endif %}
+</div>
+
+
+{% endblock %}

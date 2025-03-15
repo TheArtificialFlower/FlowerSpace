@@ -34,7 +34,7 @@
 
 
     .comment {
-        background: var(--accent-green);
+        background: rgba(118, 200, 147, 0.1);
         border-radius: 8px;
         padding: 15px;
         margin-bottom: 15px;
@@ -86,7 +86,7 @@
     .comment-form .textarea {
         flex-grow: 1;
         padding: 12px;
-        background: var(--accent-green);
+        background: linear-gradient(90deg, transparent, rgba(118, 200, 147, 0.1));
         border: 2px solid var(--leaf-green);
         border-radius: 8px;
         color: var(--soft-white);
@@ -106,3 +106,25 @@
     .comment-submit:hover {
         background: #457a4a;
     }
+
+    @media (max-width: 480px) {
+
+        .middle-content{
+            padding: 10;
+        }
+
+        .main-content {
+            padding: 0;
+        }
+
+        .comment {
+            padding: 10;
+            margin-bottom: 5;
+        }
+
+        .comment-list {
+            margin-top: 12px;
+        }
+    }
+
+

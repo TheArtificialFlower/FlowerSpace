@@ -1,36 +1,70 @@
+<nav class="navbar">
+    <div class="logo">
 
-       <nav class="navbar">
-            <div class="logo">
-                <span class="logo-full">FlowerSpace</span>
-                <i class="fas fa-seedling logo-icon" onclick="toggleNavbar()"></i>
-            </div>
+        <span class="logo-full">FlowerSpace</span>
+        <i class="fas fa-seedling logo-icon" onclick="toggleNavbar()"></i>
+        <i class="fas fa-arrow-left logo-arrow" onclick="toggleNavbar()"></i>
+    </div>
 
-            <div class="search-bar">
-                <form method="GET" action="" id="searchForm">
-                    <input type="text" name="search" id="search" placeholder="Search...">
-                </form>
-                <i class="fas fa-search"></i>
-            </div>
+    <div class="profile-snapshot">
+        {% if request.user.is_authenticated %}
+            <a href="{% url 'accounts:profile' request.user.username %}" class="profile-link">
+                <img src="{{ request.user.profile.image.url|default:'https://via.placeholder.com/40' }}" alt="{{ request.user.username }}" class="profile-avatar">
+                <span class="profile-name">{{ request.user.username }}</span>
+            </a>
+        {% else %}
+            <a href="{% url 'accounts:register' %}" class="profile-link">
+                <i class="fas fa-user profile-avatar-default"></i>
+                <span class="profile-name">Guest</span>
+            </a>
+        {% endif %}
+    </div>
+    {% if not 'shop/' in request.path %}
+    <ul class="nav-links">
+        <li><a href="{% url 'home:homepage' %}"><i class="fas fa-home"></i><span class="nav-text">Home</span></a></li>
+        <li><a href="{% url 'home:post_create' %}"><i class="fas fa-plus"></i><span class="nav-text">Create</span></a>
+        </li>
 
-            <ul class="nav-links">
-                <li><a href="{% url 'home:homepage' %}"><i class="fas fa-home"></i><span class="nav-text">Home</span></a></li>
-                <li><a href="{% url 'home:post_create' %}"><i class="fas fa-plus"></i><span class="nav-text">Create</span></a></li>
-                {% if not request.user.is_authenticated %}
-                <li><a href="{% url 'accounts:register' %}"><i class="fas fa-sign-in"></i><span class="nav-text">Login/Register</span></a></li>
-                {% else %}
-                <li><a href="{% url 'accounts:profile' request.user.username %}"><i class="fas fa-user-circle"></i><span class="nav-text">Profile</span></a></li>
-                <li><a href="{% url 'accounts:logout' %}"><i class="fas fa-sign-out"></i><span class="nav-text">Logout</span></a></li>
-                <li><a href="{% url 'accounts:bookmarks' %}"><i class="fas fa-bookmark"></i><span class="nav-text">Bookmarks</span></a></li>
-                <li onclick="toggleNotifications()"><a style="cursor: pointer;"><i class="fas fa-bell"></i><span class="nav-text">Notifications</span>
-                {% endif %}
-                <li><a href="{% url 'home:articles' %}"><i class="fas fa-file-text"></i><span class="nav-text">Articles</span></a></li>
-            </ul>
+        {% if not request.user.is_authenticated %}
+        <li><a href="{% url 'accounts:register' %}"><i class="fas fa-sign-in"></i><span
+                class="nav-text">Login/Register</span></a></li>
+        {% else %}
+        <li><a href="{% url 'accounts:profile' request.user.username %}"><i class="fas fa-user-circle"></i><span
+                class="nav-text">Profile</span></a></li>
 
-            <button class="collapse-btn" onclick="toggleNavbar()">
-                <i class="fas fa-times-circle"></i>
-            </button>
+        <li onclick="toggleNotifications()"><a style="cursor: pointer;"><i class="fas fa-bell"></i><span
+                class="nav-text">Notifications</span>
+            {% endif %}
+            <li><a href="{% url 'home:articles' %}"><i class="fas fa-file-text"></i><span
+                    class="nav-text">Articles</span></a></li>
+            <li><a href="{% url 'home:contact' %}"><i class="fa fa-coffee"></i><span class="nav-text">Contact us</span></a></li>
+            <li><a href="{% url 'shop:product_list' %}"><i class="fas fa-arrow-circle-right "></i><span class="nav-text">See Shop</span></a>
+    </ul>
 
-        </nav>
-        <div class="navbar-overlay"></div>
+    {% else %}
+        <ul class="nav-links">
+        <li><a href="{% url 'shop:product_list' %}"><i class="fas fa-leaf"></i><span class="nav-text">Products</span></a></li>
+        <li><a href=""><i class="fa fa-camera"></i><span class="nav-text">AI suggestions</span></a>
+        </li>
+        {% if not request.user.is_authenticated %}
+        <li><a href="{% url 'accounts:register' %}"><i class="fas fa-sign-in"></i><span
+                class="nav-text">Login/Register</span></a></li>
+        {% else %}
+        <li><a href="{% url 'shop:order' %}"><i class="fas fa-shopping-basket"></i><span
+                class="nav-text">Your order</span></a></li>
+        {% if request.user.is_staff %}
+            <li><a href="{% url 'shop:order_all' %}"><i class="fa fa-truck"></i><span class="nav-text">All orders</span></a></li>
+        {% endif %}
+
+            {% endif %}
+            <li><a href="{% url 'shop:cart' %}"><i class="fas fa-shopping-cart"></i><span class="nav-text">Your cart</span></a></li>
+            <li><a href="{% url 'home:contact' %}"><i class="fa fa-coffee "></i><span class="nav-text">Contact us</span></a></li>
+            <li><a href="{% url 'home:homepage' %}"><i class="fas fa-arrow-circle-left"></i><span class="nav-text">See Social</span></a>
+    </ul>
+    {% endif %}
+
+
+</nav>
+<div class="navbar-overlay"></div>
 
 

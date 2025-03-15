@@ -1,0 +1,66 @@
+{% extends 'base.html' %}
+{% load static %}
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&family=Playfair+Display:wght@400;500&display=swap" rel="stylesheet">
+    {% block headers %}
+    <link rel="stylesheet" href="{% static 'home/contact_us.css' %}">
+    {% endblock %}
+</head>
+
+{% block title %} Contact Us {% endblock %}
+
+{% block content %}
+<div class="contact-us-container">
+    <div class="contact-top">
+        <div class="contact-info">
+            <h1 class="header-title">Whisper to the Leaves</h1>
+            <p class="header-desc">
+                In the heart of FlowerSpace, every bloom listens. Share your thoughts, questions, or dreams with
+                us—let’s nurture something beautiful together. Reach out, and let the petals carry your words.
+            </p>
+            <div class="contact-details">
+                <p><i class="fas fa-envelope"></i> projectspacedevs@gmail.com</p>
+                <p><i class="fas fa-phone"></i> (555) 123-4567</p>
+            </div>
+        </div>
+        <div class="contact-image">
+            <img src="{% static 'home/basil.gif' %}" alt="Floral Bloom" class="floral-img">
+        </div>
+    </div>
+    <div class="contact-form-wrapper">
+        <h2 class="form-title">Send Us a Message</h2>
+        <form method="POST" class="contact-form" action="" novalidate>
+            {% csrf_token %}
+            <div class="form-field">
+                {{ form.name.label_tag }}
+                {{ form.name }}
+                <span class="form-effect"></span>
+                {% if form.name.errors %}
+                    <div class="form-errors">{{ form.name.errors }}</div>
+                {% endif %}
+            </div>
+            <div class="form-field">
+                {{ form.email.label_tag }}
+                {{ form.email }}
+                <span class="form-effect"></span>
+                {% if form.email.errors %}
+                    <div class="form-errors">{{ form.email.errors }}</div>
+                {% endif %}
+            </div>
+            <div class="form-field">
+                {{ form.message.label_tag }}
+                {{ form.message }}
+                <span class="form-effect"></span>
+                {% if form.message.errors %}
+                    <div class="form-errors">{{ form.message.errors }}</div>
+                {% endif %}
+            </div>
+            <button type="submit" class="submit-btn">Send Message <i class="fas fa-paper-plane"></i></button>
+        </form>
+    </div>
+</div>
+{% endblock %}

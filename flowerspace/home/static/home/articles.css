@@ -68,7 +68,7 @@
 }
 
 .article-card {
-    background: var(--accent-green);
+    background:  rgba(118, 200, 147, 0.1);
     border-radius: 12px;
     overflow: hidden;
     transition: transform 0.3s ease, box-shadow 0.3s ease;

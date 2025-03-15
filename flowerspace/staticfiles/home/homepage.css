@@ -1,6 +1,6 @@
      /* Instagram-style post container */
         .post-container {
-            background: #3a3a3a;
+            background: var(--dark-bg);
             border-radius: 12px;
             margin: 20px 0;
             padding: 15px;
