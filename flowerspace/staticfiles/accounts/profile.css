@@ -404,16 +404,45 @@ a {
     padding: 8px 25px;
     border-radius: 8px;
     border: 1px solid var(--leaf-green);
-    background: var(--accent-green);
+    background: #325940;
     color: var(--soft-white);
     cursor: pointer;
     transition: all 0.2s ease;
+    font-weight: bold;
 }
 
 .follow-btn:hover, .edit-profile:hover {
     background: var(--leaf-green);
     transform: scale(1.05);
 }
+
+.block-btn {
+    padding: 8px 25px;
+    border-radius: 8px;
+    border: 1px solid #752121;
+    background: #cc2f2f;
+    color: var(--soft-white);
+    cursor: pointer;
+    transition: all 0.2s ease;
+    margin-left: 5px;
+    font-weight: bold;
+}
+
+.block-btn:hover {
+    background: #a62020;
+    transform: scale(1.05);
+}
+
+.block-btn.is-blocking {
+    background: #752121;
+    border-color: #a62020;
+}
+
+.block-btn.is-blocking:hover {
+    background: #5c1919;
+    transform: scale(1.05);
+}
+
 
 .follow-btn.following {
     background: var(--leaf-green);

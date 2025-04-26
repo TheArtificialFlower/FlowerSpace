@@ -1,0 +1,327 @@
+.earth-news-container {
+    max-width: 1000px;
+    margin: 40px auto;
+    padding: 20px;
+    font-family: 'Playfair Display', serif;
+    color: #ffffff;
+    position: relative;
+}
+
+/* Header Quote */
+.header-quote {
+    position: relative;
+    max-width: 800px;
+    width: 90%;
+    margin: 0 auto 30px;
+    background: linear-gradient(135deg, #1a3c34, #2e593f);
+    border-radius: 20px;
+    padding: 20px 30px;
+    box-shadow: 0 6px 20px rgba(26, 60, 52, 0.5);
+    overflow: hidden;
+    text-align: center;
+    border: 1px solid rgba(118, 200, 147, 0.3);
+    animation: fadeIn 1.2s ease-in-out;
+}
+
+.header-quote .quote-content {
+    position: relative;
+    z-index: 1;
+}
+
+.header-quote .quote-icon {
+    font-size: 28px;
+    color: #e63946;
+    opacity: 0.9;
+    margin-bottom: 8px;
+    filter: drop-shadow(0 2px 4px rgba(46, 59, 47, 0.3));
+}
+
+.header-quote .quote-text {
+    font-size: 22px;
+    font-style: italic;
+    line-height: 1.3;
+    margin: 0 0 8px;
+    text-shadow: 0 1px 4px rgba(26, 60, 52, 0.4);
+    letter-spacing: 0.5px;
+}
+
+.header-quote .quote-author {
+    font-size: 15px;
+    font-weight: 500;
+    opacity: 0.85;
+    margin: 0;
+    letter-spacing: 1px;
+}
+
+.header-quote .quote-label {
+    position: absolute;
+    bottom: 10px;
+    right: 20px;
+    background: linear-gradient(135deg, #76c893, #2e7d32);
+    font-size: 11px;
+    text-transform: uppercase;
+    padding: 5px 14px;
+    border-radius: 14px;
+    letter-spacing: 1.2px;
+    box-shadow: 0 2px 8px rgba(26, 60, 52, 0.4);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.header-quote .quote-label:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(118, 200, 147, 0.5);
+}
+
+.header-quote::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: url('data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" width="30" height="30" viewBox="0 0 30 30"%3E%3Cpath fill="%2311824F" fill-opacity="0.15" d="M15 3c-6.6 0-12 5.4-12 12s5.4 12 12 12 12-5.4 12-12-5.4-12-12-12zm0 20c-4.4 0-8-3.6-8-8s3.6-8 8 8-3.6 8-8 8z"/%3E%3C/svg%3E');
+    opacity: 0.4;
+    z-index: 0;
+}
+
+/* News Title */
+.news-title {
+    font-size: 28px;
+    color: #76c893;
+    text-align: center;
+    margin-bottom: 20px;
+    text-shadow: 0 1px 3px rgba(26, 60, 52, 0.4);
+}
+
+.news-title i {
+    margin-right: 10px;
+    color: #e63946;
+}
+
+/* News Section */
+.news-section {
+    position: relative;
+    max-height: 600px;
+    overflow-y: auto;
+    padding: 10px;
+    background: linear-gradient(135deg, #1a3c34, #2e593f);
+    border-radius: 15px;
+    box-shadow: 0 4px 12px rgba(26, 60, 52, 0.5);
+    overflow-x: hidden;
+}
+
+/* Falling Leaves */
+.leaves-container {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: 1;
+}
+
+.leaf-fall {
+    position: absolute;
+    font-size: 20px;
+    color: #76c893;
+    opacity: 0.7;
+    animation: fall linear infinite;
+}
+
+.leaf-1 { left: 10%; animation-duration: 10s; animation-delay: 0s; }
+.leaf-2 { left: 30%; animation-duration: 12s; animation-delay: 2s; transform: rotate(45deg); }
+.leaf-3 { left: 50%; animation-duration: 11s; animation-delay: 4s; transform: rotate(-30deg); }
+.leaf-4 { left: 70%; animation-duration: 13s; animation-delay: 1s; }
+.leaf-5 { left: 90%; animation-duration: 9s; animation-delay: 3s; transform: rotate(60deg); }
+
+@keyframes fall {
+    0% {
+        transform: translateY(-100px) rotate(0deg);
+        opacity: 0.7;
+    }
+    50% {
+        transform: translateY(300px) rotate(180deg);
+        opacity: 0.5;
+    }
+    100% {
+        transform: translateY(600px) rotate(360deg);
+        opacity: 0;
+    }
+}
+
+/* Custom Scrollbar */
+.news-section::-webkit-scrollbar {
+    width: 8px;
+}
+
+.news-section::-webkit-scrollbar-track {
+    background: #2e593f;
+    border-radius: 10px;
+}
+
+.news-section::-webkit-scrollbar-thumb {
+    background: #76c893;
+    border-radius: 10px;
+}
+
+.news-section::-webkit-scrollbar-thumb:hover {
+    background: #e63946;
+}
+
+.news-card {
+    position: relative;
+    display: flex;
+    background: rgba(46, 59, 47, 0.8);
+    border-radius: 12px;
+    margin-bottom: 15px;
+    overflow: hidden;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    z-index: 2;
+}
+
+.news-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 6px 16px rgba(118, 200, 147, 0.3);
+}
+
+.news-image {
+    width: 150px;
+    height: 150px;
+    object-fit: cover;
+    border-right: 2px solid #76c893;
+}
+
+.news-content {
+    padding: 15px;
+    flex: 1;
+}
+
+.news-time {
+    font-size: 12px;
+    color: #b0d1b8;
+    margin: 0 0 5px;
+    font-family: 'Poppins', sans-serif;
+}
+
+.news-heading {
+    font-size: 20px;
+    color: #ffffff;
+    margin: 0 0 8px;
+    font-weight: 500;
+}
+
+.news-desc {
+    font-size: 14px;
+    color: #d3e2d6;
+    margin: 0;
+    line-height: 1.5;
+    font-family: 'Poppins', sans-serif;
+}
+
+.no-news {
+    text-align: center;
+    font-size: 16px;
+    color: #b0d1b8;
+    padding: 20px;
+}
+
+a {
+    text-decoration: none;
+    color: white;
+}
+
+/* Responsive Adjustments */
+
+@media (max-width: 1000px) {
+
+    .quote-label {
+        display: none;
+    }
+}
+@media (max-width: 768px) {
+    .earth-news-container {
+        padding: 15px;
+    }
+
+    .header-quote {
+        padding: 15px 20px;
+    }
+
+    .header-quote .quote-text {
+        font-size: 18px;
+    }
+
+    .header-quote .quote-author {
+        font-size: 13px;
+    }
+
+    .news-title {
+        font-size: 24px;
+    }
+
+    .news-section {
+        max-height: 500px;
+    }
+
+    .leaf-fall {
+        font-size: 18px;
+    }
+
+    .news-card {
+        flex-direction: column;
+    }
+
+    .news-image {
+        width: 100%;
+        height: 200px;
+        border-right: none;
+        border-bottom: 2px solid #76c893;
+    }
+
+    .news-content {
+        padding: 12px;
+    }
+
+    .news-heading {
+        font-size: 18px;
+    }
+
+    .news-desc {
+        font-size: 13px;
+    }
+}
+
+@media (max-width: 480px) {
+    .header-quote {
+        padding: 12px 15px;
+    }
+
+    .header-quote .quote-text {
+        font-size: 16px;
+    }
+
+    .header-quote .quote-author {
+        font-size: 12px;
+    }
+
+    .news-title {
+        font-size: 20px;
+    }
+
+    .news-section {
+        max-height: 400px;
+    }
+
+    .leaf-fall {
+        font-size: 16px;
+    }
+
+    .news-heading {
+        font-size: 16px;
+    }
+
+    .news-desc {
+        font-size: 12px;
+    }
+}

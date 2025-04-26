@@ -8,7 +8,7 @@
 {% block content %}
 <div class="form-container">
     <h1 class="form-title">{{ product.title|default:'New' }} Product</h1>
-    <form method="POST" enctype="multipart/form-data" class="product-form">
+    <form method="POST" enctype="multipart/form-data" class="product-form" id="productForm">
         {% csrf_token %}
         <div class="form-field">
             <label for="{{ form.title.id_for_label }}" class="form-label">Title</label>
@@ -25,8 +25,16 @@
             {{ form.price }}
             <span class="form-effect"></span>
         </div>
+
+        <div class="form-field">
+            <label for="{{ form.discount.id_for_label }}" class="form-label">Discount (%)</label>
+            {{ form.discount }}
+            <span class="form-effect"></span>
+        </div>
+
+
         <div class="form-field image-upload">
-            <label for="{{ form.image.id_for_label }}" class="form-label">Image</label>
+            <label for="{{ form.image.id_for_label }}" class="form-label">Main Image</label>
             {{ form.image }}
             <span class="image-preview" id="imagePreview">
                 {% if product.image %}
@@ -34,6 +42,33 @@
                 {% endif %}
             </span>
         </div>
+        <h3>Current Extra Images</h3>
+        <div class="current-extra-images">
+            {% for img in product.extra_images.all %}
+            <div class="image-block">
+                <img src="{{ img.image.url }}" class="preview">
+                <input type="checkbox" name="delete_image_{{ img.id }}" id="delete_{{ img.id }}" style="display: none;">
+                <label for="delete_{{ img.id }}">Delete</label>
+            </div>
+            {% empty %}
+            <p>No extra images.</p>
+            {% endfor %}
+        </div>
+
+        <h3>Upload New Extra Images</h3>
+        <div class="new-extra-images">
+            <label>
+                <input type="file" name="extra_image_1" accept="image/*">
+            </label>
+            <label>
+                <input type="file" name="extra_image_2" accept="image/*">
+            </label>
+            <label>
+                <input type="file" name="extra_image_3" accept="image/*">
+            </label>
+        </div>
+
+
         <div class="form-field checkbox-field">
             <label class="checkbox-label">
                 {{ form.available }} Available
@@ -42,17 +77,21 @@
         </div>
         <div class="form-field category-field">
             <label class="form-label">Categories</label>
-            <div class="category-checkboxes">
-                {{ form.category }}
+            <div class="category-buttons">
+                {% for checkbox in form.category %}
+                <label class="category-button">
+                    {{ checkbox.tag }}
+                    <span class="category-text">{{ checkbox.choice_label }}</span>
+                </label>
+                {% endfor %}
             </div>
         </div>
         <button type="submit" class="submit-btn">Save Product</button>
     </form>
 </div>
-
 <script>
 document.addEventListener('DOMContentLoaded', function () {
-    // Image Preview
+    // Main Image Preview (unchanged)
     const imageInput = document.querySelector('#{{ form.image.id_for_label }}');
     const imagePreview = document.querySelector('#imagePreview');
     imageInput.addEventListener('change', function () {
@@ -64,6 +103,30 @@ document.addEventListener('DOMContentLoaded', function () {
             };
             reader.readAsDataURL(file);
         }
+    });
+
+    // New Extra Images Preview (unchanged)
+    document.querySelectorAll('.new-extra-images input[type="file"]').forEach(input => {
+        input.addEventListener('change', function () {
+            const file = this.files[0];
+            if (!file) return;
+            const reader = new FileReader();
+            reader.onload = function (e) {
+                const img = document.createElement('img');
+                img.src = e.target.result;
+                img.classList.add('preview');
+                input.parentNode.appendChild(img);
+            };
+            reader.readAsDataURL(file);
+        });
+    });
+
+    // Delete Checkbox Highlight
+    document.querySelectorAll('.image-block input[type="checkbox"]').forEach(checkbox => {
+        checkbox.addEventListener('change', function () {
+            const imageBlock = this.closest('.image-block');
+            imageBlock.classList.toggle('delete-active', this.checked);
+        });
     });
 });
 </script>

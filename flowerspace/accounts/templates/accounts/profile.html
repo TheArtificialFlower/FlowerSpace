@@ -42,13 +42,16 @@
                 <h1 class="username">{{user.username}}</h1>
                 <!-- Dynamic button based on profile ownership -->
                 {% if request.user != user and request.user.is_authenticated %}
-                <a href="{% url 'accounts:follow' user.username %}">
-                    {% if not is_following %}
-                    <button class="follow-btn" id="followBtn" onclick="toggleFollow()">Follow</button>
-                    {% else %}
-                    <button class="follow-btn" id="followBtn" onclick="toggleFollow()">Unfollow</button>
+                <form method="get" action="{% url 'accounts:follow' user.username %}">
+                      {% if not is_blocking %}
+                    <button class="follow-btn" name="action" value="follow" onclick="toggleFollow()">
+                        {% if not is_following %} Follow {% else %} Unfollow</button> {% endif %}
                     {% endif %}
-                </a>
+
+                        <button class="block-btn" name="action" value="block">
+                            {% if not is_blocking %} Block {% else %} Unblock</button> {% endif %}
+
+                </form>
                 {% endif %}
             </div>
 
@@ -65,7 +68,7 @@
         </div>
     </div>
 
-    {% include 'home/includes/post_template.html' %}
+    {% if not is_blocking %}{% include 'home/includes/post_template.html' %} {% endif %}
     {% endblock %}
 </body>
 </html>

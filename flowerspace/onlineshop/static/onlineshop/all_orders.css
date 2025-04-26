@@ -12,14 +12,13 @@
     --basil-glow: rgba(118, 200, 147, 0.4);
 }
 
-.order-details a {
+a {
     text-decoration: none;
-    cursor: pointer;
-    color: wheat;
 }
 
-a {
-    text-decoration: None;
+.order-details a {
+    cursor: pointer;
+    color: wheat;
 }
 
 /* Orders Container */
@@ -60,7 +59,6 @@ a {
     margin-bottom: 20px;
     gap: 15px;
 }
-
 
 .sort-by {
     position: relative;
@@ -243,7 +241,10 @@ a {
     to { opacity: 1; transform: translateY(0); }
 }
 
-/* Responsive Design */
+/* ======================= */
+/*       MEDIA QUERIES     */
+/* ======================= */
+
 @media (max-width: 768px) {
     .orders-controls {
         flex-direction: column;

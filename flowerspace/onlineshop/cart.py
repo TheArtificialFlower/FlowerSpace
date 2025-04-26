@@ -30,11 +30,12 @@ class Cart:
     def items(self):
         for product_id, details in self.cart.items():
             product = Product.objects.get(id=product_id)
+            actual_price = product.get_discount_price() if product.discount else product.price
             yield {
                 'product': product,
                 'quantity': details['quantity'],
-                'price': float(details['price']),
-                'total_price': float(details['price']) * details['quantity'],
+                'price': int(actual_price),
+                'total_price': float(actual_price) * details['quantity'],
             }
 
     def add(self, product, quantity):
@@ -45,7 +46,7 @@ class Cart:
         self.save()
 
     def get_total_price(self):
-        return sum(int(item["price"]) * item["quantity"] for item in self.cart.values())
+        return sum(item["total_price"] for item in self.items())
 
     def get_total_quantity(self):
         return sum(item["quantity"] for item in self.cart.values())

@@ -1,139 +1,290 @@
-     /* Instagram-style post container */
-        .post-container {
-            background: var(--dark-bg);
-            border-radius: 12px;
-            margin: 20px 0;
-            padding: 15px;
-        }
+/* Instagram-style post container */
+.post-container {
+    background: var(--dark-bg);
+    border-radius: 12px;
+    margin: 20px 0;
+    padding: 15px;
+}
 
-        .post-header {
-            display: flex;
-            align-items: center;
-            margin-bottom: 15px;
-        }
+.post-header {
+    display: flex;
+    align-items: center;
+    margin-bottom: 15px;
+}
 
-        a {
-            color: white;
-            text-decoration: none;
-        }
+a {
+    color: white;
+    text-decoration: none;
+}
 
-        .post-user {
-            font-weight: bold;
-            margin-left: 10px;
-        }
+.post-user {
+    font-weight: bold;
+    margin-left: 10px;
+}
 
-        .post-image {
-            width: 100%;
-            border-radius: 8px;
-            margin-bottom: 15px;
-        }
+.post-image {
+    width: 100%;
+    border-radius: 8px;
+    margin-bottom: 15px;
+}
 
-        .post-actions {
-            display: flex;
-            gap: 15px;
-            margin-bottom: 10px;
-        }
+.post-actions {
+    display: flex;
+    gap: 15px;
+    margin-bottom: 10px;
+}
 
-        .post-action {
-            cursor: pointer;
-            transition: color 0.2s ease;
-        }
+.post-action {
+    cursor: pointer;
+    transition: color 0.2s ease;
+}
 
-        .post-action:hover {
-            color: var(--petal-pink);
-        }
+.post-action:hover {
+    color: var(--petal-pink);
+}
 
-        .post-likes {
-            font-weight: bold;
-            margin-bottom: 8px;
-        }
+.post-likes {
+    font-weight: bold;
+    margin-bottom: 8px;
+}
 
-        .post-caption {
-            margin-bottom: 8px;
-        }
+.post-caption {
+    margin-bottom: 8px;
+}
 
-        .post-comments {
-            color: #888;
-        }
+.post-comments {
+    color: #888;
+}
 
+/* Save button animation */
+.post-action.saved {
+    color: var(--petal-pink) !important;
+    animation: bounce 0.4s ease;
+}
 
-
-           /* Save button animation */
-    .post-action.saved {
-        color: var(--petal-pink) !important;
-        animation: bounce 0.4s ease;
+@keyframes bounce {
+    0%, 100% {
+        transform: scale(1);
     }
-
-    @keyframes bounce {
-        0%, 100% { transform: scale(1); }
-        50% { transform: scale(1.2); }
+    50% {
+        transform: scale(1.2);
     }
+}
 
+/* Comment Modal */
+.modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.7);
+    display: none;
+    justify-content: center;
+    align-items: center;
+    z-index: 9999;
+}
 
+.comment-modal {
+    background: var(--dim-green);
+    width: 500px;
+    max-width: 90%;
+    border-radius: 12px;
+    padding: 20px;
+    max-height: 80vh;
+    display: flex;
+    flex-direction: column;
+}
 
+.comments-list {
+    flex-grow: 1;
+    overflow-y: auto;
+    margin: 15px 0;
+    padding-right: 10px;
+}
 
-    /* Comment Modal */
-    .modal-overlay {
-        position: fixed;
-        top: 0;
-        left: 0;
-        right: 0;
-        bottom: 0;
-        background: rgba(0,0,0,0.7);
-        display: none;
-        justify-content: center;
-        align-items: center;
-        z-index: 9999;
+.comment-item {
+    background: var(--accent-green);
+    padding: 10px;
+    border-radius: 8px;
+    margin-bottom: 10px;
+}
+
+.comment-input {
+    background: var(--accent-green);
+    border: none;
+    padding: 12px;
+    border-radius: 20px;
+    color: var(--soft-white);
+    width: 85%;
+    margin-top: 15px;
+}
+
+.close-modal {
+    cursor: pointer;
+    padding: 5px;
+}
+
+.comment-submit {
+    background: var(--leaf-green);
+    border: none;
+    padding: 8px 20px;
+    border-radius: 20px;
+    color: var(--soft-white);
+    margin-top: 10px;
+    cursor: pointer;
+    align-self: flex-end;
+}
+
+/* Quote Box */
+.quote-box {
+    position: relative;
+    max-width: 800px;
+    width: 90%;
+    margin: 20px auto;
+    background: linear-gradient(135deg, #1a3c34, #2e593f);
+    border-radius: 20px;
+    padding: 20px 30px;
+    box-shadow: 0 6px 20px rgba(26, 60, 52, 0.5);
+    overflow: hidden;
+    text-align: center;
+    color: var(--text-light);
+    font-family: 'Playfair Display', serif;
+    border: 1px solid rgba(118, 200, 147, 0.3);
+    animation: fadeIn 1.2s ease-in-out;
+    z-index: 1;
+}
+
+.quote-content {
+    position: relative;
+    z-index: 1;
+}
+
+.quote-icon {
+    font-size: 28px;
+    color: var(--flower-accent);
+    opacity: 0.9;
+    margin-bottom: 8px;
+    filter: drop-shadow(0 2px 4px rgba(46, 59, 47, 0.3));
+}
+
+.quote-text {
+    font-size: 22px;
+    font-style: italic;
+    line-height: 1.3;
+    margin: 0 0 8px;
+    text-shadow: 0 1px 4px rgba(26, 60, 52, 0.4);
+    letter-spacing: 0.5px;
+}
+
+.quote-author {
+    font-size: 15px;
+    font-weight: 500;
+    opacity: 0.85;
+    margin: 0;
+    letter-spacing: 1px;
+}
+
+.quote-label {
+    position: absolute;
+    bottom: 10px;
+    right: 20px;
+    background: linear-gradient(135deg, var(--flower-accent), #e63946);
+    color: var(--text-light);
+    font-size: 11px;
+    text-transform: uppercase;
+    padding: 5px 14px;
+    border-radius: 14px;
+    letter-spacing: 1.2px;
+    box-shadow: 0 2px 8px rgba(26, 60, 52, 0.4);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.quote-label:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(230, 57, 70, 0.5);
+}
+
+.quote-box::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: url('data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" width="30" height="30" viewBox="0 0 30 30"%3E%3Cpath fill="%2311824F" fill-opacity="0.15" d="M15 3c-6.6 0-12 5.4-12 12s5.4 12 12 12 12-5.4 12-12-5.4-12-12-12zm0 20c-4.4 0-8-3.6-8-8s3.6-8 8-8 8 3.6 8 8-3.6 8-8 8z"/%3E%3C/svg%3E');
+    opacity: 0.4;
+    z-index: 0;
+}
+
+.quote-box:hover {
+    box-shadow: 0 8px 24px rgba(26, 60, 52, 0.6);
+    border-color: rgba(118, 200, 147, 0.5);
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(15px);
     }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
 
-    .comment-modal {
-        background: var(--dim-green);
-        width: 500px;
+/* Responsive Adjustments */
+@media (max-width: 768px) {
+    .quote-box {
         max-width: 90%;
-        border-radius: 12px;
-        padding: 20px;
-        max-height: 80vh;
-        display: flex;
-        flex-direction: column;
+        padding: 15px 20px;
+        margin: 15px auto;
     }
 
-    .comments-list {
-        flex-grow: 1;
-        overflow-y: auto;
-        margin: 15px 0;
-        padding-right: 10px;
+    .quote-text {
+        font-size: 18px;
     }
 
-    .comment-item {
-        background: var(--accent-green);
-        padding: 10px;
-        border-radius: 8px;
-        margin-bottom: 10px;
+    .quote-author {
+        font-size: 13px;
     }
 
-    .comment-input {
-        background: var(--accent-green);
-        border: none;
-        padding: 12px;
-        border-radius: 20px;
-        color: var(--soft-white);
-        width: 85%;
-        margin-top: 15px;
+    .quote-label {
+        font-size: 10px;
+        padding: 4px 12px;
     }
 
+    .quote-icon {
+        font-size: 24px;
+    }
+}
 
-    .close-modal {
-        cursor: pointer;
-        padding: 5px;
+
+@media (max-width: 600px) {
+
+    .quote-label {
+        display: none;
+    }
+}
+
+@media (max-width: 480px) {
+    .quote-box {
+        padding: 12px 15px;
     }
 
-    .comment-submit {
-        background: var(--leaf-green);
-        border: none;
-        padding: 8px 20px;
-        border-radius: 20px;
-        color: var(--soft-white);
-        margin-top: 10px;
-        cursor: pointer;
-        align-self: flex-end;
+    .quote-label {
+        display: none;
     }
+
+    .quote-text {
+        font-size: 16px;
+    }
+
+    .quote-author {
+        font-size: 12px;
+    }
+
+    .quote-icon {
+        font-size: 20px;
+    }
+}

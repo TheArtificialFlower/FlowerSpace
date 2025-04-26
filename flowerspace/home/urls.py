@@ -11,5 +11,6 @@ urlpatterns = [
     path("post/bookmark/<int:id>/", views.ToggleBookmarkView.as_view(), name="post_bookmark"),
     path("articles/", views.ArticleView.as_view(), name="articles"),
     path("articles/<int:article_id>/", views.ArticleDetailsView.as_view(), name="article_details"),
+    path("news/", views.EarthNewsView.as_view(), name="earth_news"),
     path('contact/', views.ContactUsView.as_view(), name='contact')
 ]

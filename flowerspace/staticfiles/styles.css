@@ -211,6 +211,12 @@ body {
     color: var(--flower-accent); /* Optional hover effect */
 }
 
+
+.user {
+    font-weight: bolder;
+    margin-bottom: 5px;
+}
+
 /* Main Content Area */
 .main-content {
     flex-grow: 1;

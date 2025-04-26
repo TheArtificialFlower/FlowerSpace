@@ -29,6 +29,7 @@ class Product(models.Model):
     image = models.ImageField(upload_to="shop/")
     description = models.TextField()
     price = models.IntegerField()
+    discount = models.PositiveSmallIntegerField(null=True, blank=True, default=None, validators=[MaxValueValidator(99),])
     available = models.BooleanField(default=True)
     created = models.DateTimeField(auto_now_add=True)
     updated = models.DateTimeField(auto_now=True)
@@ -43,7 +44,53 @@ class Product(models.Model):
         category = self.category.filter(is_sub=False).first()
         return reverse("shop:product_details", args=[category.slug, self.slug])
 
+    def get_discount_price(self):
+        if self.discount:
+            self.price = self.price - ((self.discount / 100) * self.price)
+        return int(self.price)
 
+    def get_like_percentage(self):
+        ratings = self.ratings.all()
+        total_ratings = ratings.count()
+        if total_ratings == 0:
+            return "No ratings yet"
+        positive_ratings = ratings.filter(is_negative=False).count()
+        percentage = (positive_ratings / total_ratings) * 100
+        return round(percentage, 1)
+
+
+
+class ProductRating(models.Model):
+    product = models.ForeignKey(Product, on_delete=models.CASCADE, related_name="ratings")
+    user = models.ForeignKey(get_user_model(), on_delete=models.CASCADE, related_name="user_ratings")
+    is_negative = models.BooleanField(default=False)
+
+    def __str__(self):
+        return f"{self.user.username} rated {self.product.title}"
+
+
+
+class ProductComment(models.Model):
+    product = models.ForeignKey(Product, on_delete=models.CASCADE, related_name="comments")
+    user = models.ForeignKey(get_user_model(), on_delete=models.CASCADE)
+    text = models.CharField(max_length=200)
+    recently_bought_product = models.BooleanField(default=False)
+    created = models.DateTimeField(auto_now=True)
+
+    class Meta:
+        ordering = ("-created",)
+
+    def __str__(self):
+        return f"{self.user.username} left a comment on {self.product.title}"
+
+
+class ProductImage(models.Model):
+    product = models.ForeignKey(Product, on_delete=models.CASCADE, related_name='extra_images')
+    image = models.ImageField(upload_to='product_images/')
+    uploaded = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return f"Extra image for {self.product.title}"
 
 
 

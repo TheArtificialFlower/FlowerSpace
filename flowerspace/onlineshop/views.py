@@ -4,36 +4,43 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.shortcuts import render, redirect, get_object_or_404
 from django.urls import reverse_lazy
 from django.views.generic import ListView, DetailView, TemplateView, View, FormView
-from .models import Product, Coupons, Category, Order, OrderItems
+from .models import Product, Coupons, Category, Order, OrderItems, ProductComment, ProductRating, ProductImage
 from .cart import Cart
 from django.contrib import messages
-from .forms import ProductForm, UserOrderInfoForm, CouponForm
+from .forms import ProductForm, UserOrderInfoForm, CouponForm, ProductCommentForm
 from django.db import transaction
 from django.utils.decorators import method_decorator
 from django.contrib.auth.decorators import login_required
+from utils import exclude_blocked_relations
+from django.http import JsonResponse
+
+
 
 
 class ProductsListView(ListView):
-    queryset = Product.objects.all()
     template_name = "onlineshop/products.html"
     context_object_name = "products"
 
+    def setup(self, request, *args, **kwargs):
+        self. categories = Category.objects.select_related('sub_category').all()
+        return super().setup(request, *args, **kwargs)
+
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context["categories"] = Category.objects.all()
+        context["categories"] = self.categories
         return context
 
     # Checks if user asked for a category OR search keyword
     def get_queryset(self):
-        queryset = super().get_queryset()
+        queryset = Product.objects.prefetch_related('category').all()
         category_slug = self.kwargs.get('category_slug', None)
         search_keyword = self.request.GET.get("search")
         sort_keyword = self.request.GET.get("sort_by")
-        sort_possibilities = ["created", "-created", "-price", "price"]
+        sort_possibilities = ["created", "-created", "-price", "price", "discount"]
 
         if category_slug:
-            category = get_object_or_404(Category, slug=category_slug)
-            queryset = Product.objects.filter(category=category)
+            category = get_object_or_404(self.categories, slug=category_slug)
+            queryset = queryset.filter(category=category)
 
         if search_keyword:
             queryset = queryset.filter(title__contains=search_keyword)
@@ -64,20 +71,89 @@ class ProductDetailsView(DetailView):
         context = super().get_context_data(**kwargs)
         product_id = self.get_object().id
         cart_data = self.cart.get_data()
+        product_comments =  ProductComment.objects.select_related("product").filter(product=self.get_object())
+        context['comment_form'] = ProductCommentForm()
+        context['suggested_products'] = self.queryset.filter(
+            category=self.get_object().category.first().id).exclude(id=product_id)
         context["cart_count"] = next(
             (item['quantity'] for item in cart_data['items'] if item['product']['id'] == product_id), 0)
+        if self.request.user.is_authenticated:
+            context['comments'] = exclude_blocked_relations(self.request.user, product_comments)
+            context['user_rating'] = ProductRating.objects.filter(
+                user=self.request.user, product=self.object
+            ).first()
+        else:
+            context['comments'] = product_comments
+
         return context
 
+    # Cart management via javascript (i wanna kms)
     def post(self, request, *args, **kwargs):
         product = self.get_object()
         cart = Cart(request)
-        if 'add' in request.POST:
+
+        if request.POST.get('add'):
             cart.add(product=product, quantity=1)
-            messages.success(request, "Product added successfully to your cart.")
-        elif 'remove' in request.POST:
+            cart_count = cart.get_data()['total_quantity']
+            return JsonResponse({
+                "message": "Product added successfully.",
+                "cart_count": cart_count
+            })
+
+        elif request.POST.get('remove'):
             cart.delete(product.id)
-            messages.error(request, "Product deleted from your cart.")
-        return redirect(product.get_absolute_url())
+            cart_count = cart.get_data()['total_quantity']
+            return JsonResponse({
+                "message": "Product removed from cart.",
+                "cart_count": cart_count
+            })
+
+        return JsonResponse({"error": "Invalid action"}, status=400)
+
+
+class ProductCommentView(View):
+    template_name = "onlineshop/partials/product_comments.html"
+
+    @method_decorator(login_required)
+    def post(self, request, product_id):
+        form = ProductCommentForm(request.POST)
+        product = get_object_or_404(Product, pk=product_id)
+        if form.is_valid():
+            comment = form.save(commit=False)
+            comment.user = request.user
+            comment.product = product
+            user_orders = request.user.orders.all()
+            for order in user_orders:
+                if product_id in order.items.values_list('id', flat=True):
+                    comment.recently_bought_product = True
+                    break
+            comment.save()
+            return render(request, self.template_name, {'comments':[comment], 'comment_form': ProductCommentForm()})
+
+class ToggleProductRatingView(LoginRequiredMixin, View):
+    def post(self, request, id):
+        product = get_object_or_404(Product, id=id)
+        rating_type = request.POST.get('type')
+        is_negative = rating_type == 'down'
+        rating = ProductRating.objects.filter(user=request.user, product=product).first()
+
+        if rating:
+            if rating.is_negative == is_negative:
+                rating.delete()
+                rating = None
+            else:
+                rating.is_negative = is_negative
+                rating.save()
+        else:
+            rating = ProductRating.objects.create(
+                user=request.user,
+                product=product,
+                is_negative=is_negative
+            )
+        return render(request, 'onlineshop/partials/product_rating.html', {
+            'product': product,
+            'user_rating': rating
+        })
 
 
 class ProductDeleteView(View):
@@ -113,8 +189,18 @@ class UpdateProductView(View):
         form = self.form_class(request.POST, request.FILES, instance=self.instance)
         if form.is_valid():
             form.save()
+            for img in self.instance.extra_images.all():
+                if f'delete_image_{img.id}' in request.POST:
+                    img.delete()
+
+            for i in range(1, 4):
+                image = request.FILES.get(f'extra_image_{i}')
+                if image:
+                    ProductImage.objects.create(product=self.instance, image=image)
+
             messages.success(request, "Product has been updated successfully!!")
             return redirect('shop:product_list')
+
         return render(request, self.template_class, {"form": form, "product": self.instance})
 
 

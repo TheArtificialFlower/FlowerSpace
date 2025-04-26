@@ -1,4 +1,5 @@
 from .models import Posts, Notifications, Comment, Likes
+from onlineshop.models import Coupons
 from django.db.models.signals import post_save
 from django.dispatch import receiver
 from accounts.models import Relations
@@ -23,6 +24,25 @@ def create_like_notification(sender, instance, created, **kwargs):
                 from_user=instance.user,
                 desc=content
             )
+
+
+
+
+@receiver(post_save, sender=Coupons)
+def create_like_notification(sender, instance, created, **kwargs):
+    if created:
+        code = instance.code
+        content = f"New coupon!!! use {code} for {instance.discount}% discount!!"
+
+        for user in User.objects.all():
+            check_notif_limit(user)
+
+            Notifications.objects.create(
+                user=user,
+                from_user=user,
+                desc=content
+            )
+
 
 
 

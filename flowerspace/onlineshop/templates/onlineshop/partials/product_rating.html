@@ -1,0 +1,24 @@
+<div id="rating-{{ product.id }}">
+    <form hx-post="{% url 'shop:toggle_product_rating' product.id %}"
+          hx-target="#rating-{{ product.id }}"
+          hx-swap="outerHTML"
+          method="post">
+        {% csrf_token %}
+        <div class="rating-buttons">
+            <button type="submit" name="type" value="up"
+                    class="rating-btn thumbs-up {% if user_rating and not user_rating.is_negative %}active{% endif %}">
+                <i class="fas fa-thumbs-up"></i>
+            </button>
+            <button type="submit" name="type" value="down"
+                    class="rating-btn thumbs-down {% if user_rating and user_rating.is_negative %}active{% endif %}">
+                <i class="fas fa-thumbs-down"></i>
+            </button>
+        </div>
+        <div class="rating-stats">
+            <span class="rating-percentage">
+
+                {{ product.get_like_percentage }}{% if not product.get_like_percentage == 'No ratings yet' %}% of users liked this product{%endif%}
+            </span>
+        </div>
+    </form>
+</div>

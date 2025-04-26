@@ -79,6 +79,7 @@ DATABASES = {
         'ENGINE': 'django.db.backends.postgresql',
         'NAME': 'flowerspace',
         'USER': 'admin',
+        'PASSWORD': 'pouyan99',
         'HOST': 'localhost',
         'PORT': '5432',
     }

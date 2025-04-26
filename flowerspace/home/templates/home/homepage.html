@@ -14,9 +14,17 @@
 <body>
     {% block content %}
     {% csrf_token %}
-
+    <div class="quote-box">
+        <div class="quote-content">
+            <i class="fas fa-quote-left quote-icon"></i>
+            <p class="quote-text">{{ daily_quote.desc }}</p>
+            <p class="quote-author">— {{ daily_quote.author }}</p>
+        </div>
+        <div class="quote-label">Quote of the Day</div>
+    </div>
     <h2><i class="fas fa-feather-alt"></i> Recent Posts</h2>
     {% include 'searchbar.html' %}
+
     {% include 'home/includes/post_template.html' %}
     {% endblock %}
 

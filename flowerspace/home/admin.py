@@ -52,3 +52,6 @@ class ArticleAdmin(admin.ModelAdmin):
     search_fields = ("title", "author")
     ordering = ("-created",)
     readonly_fields = ("created", "updated")
+
+
+

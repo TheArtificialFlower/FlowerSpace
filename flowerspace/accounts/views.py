@@ -19,18 +19,24 @@ class UserProfile(View):
     template_class = "accounts/profile.html"
 
     def setup(self, request, *args, **kwargs):
+        queryset = Relations.objects.all()
         self.user = User.objects.get(username=kwargs['username'])
-        self.user_posts = self.user.posts.all()
+        self.user_posts = self.user.posts.prefetch_related('hashtags').all()
         self.is_following = False
+        self.is_blocking = False
         if request.user.is_authenticated:
-            self.is_following = Relations.objects.filter(from_user=request.user, to_user=self.user).exists()
+            relation = queryset.filter(from_user=request.user, to_user=self.user).first()
+            if relation and not relation.is_blocking:
+                self.is_following = True
+            elif relation and relation.is_blocking:
+                self.is_blocking = True
         self.followers_count = self.user.followings.count()
         self.followings_count = self.user.followers.count()
         return super().setup(request, *args, **kwargs)
 
 
     def get(self, request, *args, **kwargs):
-        context = {"user":self.user, "is_following":self.is_following,
+        context = {"user":self.user, "is_following":self.is_following, "is_blocking": self.is_blocking,
         "followers":self.followers_count, "followings": self.followings_count, "posts":self.user_posts}
         return render(request, self.template_class, context)
 
@@ -163,13 +169,11 @@ class UserLogout(View):
 
 
 
-
 class UserRelation(View):
 
     def setup(self, request, *args, **kwargs):
         self.user = get_object_or_404(User, username=kwargs['username'])
         return super().setup(request, *args, **kwargs)
-
 
     def dispatch(self, request, *args, **kwargs):
         if not request.user.is_authenticated:
@@ -180,14 +184,49 @@ class UserRelation(View):
             return redirect("accounts:profile", kwargs['username'])
         return super().dispatch(request, *args, **kwargs)
 
-
     def get(self, request, username):
-        if Relations.objects.filter(from_user=request.user, to_user=self.user).exists():
-            Relations.objects.filter(from_user=request.user, to_user=self.user).delete()
-            messages.success(request, "You unfollowed this user.")
-        else:
-            Relations.objects.create(from_user=request.user, to_user=self.user)
-            messages.success(request, "You followed this user.")
+        action = request.GET.get('action')
+
+        if action == "follow":
+            Relations.objects.filter(
+                from_user=request.user,
+                to_user=self.user,
+                is_blocking=True
+            ).delete()
+
+            relation, created = Relations.objects.get_or_create(
+                from_user=request.user,
+                to_user=self.user,
+                defaults={"is_blocking": False},
+            )
+
+            if not created:
+                relation.delete()
+                messages.success(request, "You unfollowed this user.")
+            else:
+                messages.success(request, "You followed this user!!")
+
+        elif action == "block":
+            Relations.objects.filter(
+                from_user=request.user,
+                to_user=self.user,
+                is_blocking=False
+            ).delete()
+
+            relation, created = Relations.objects.get_or_create(
+                from_user=request.user,
+                to_user=self.user,
+                defaults={"is_blocking": True},
+            )
+
+            if not created and relation.is_blocking:
+                relation.delete()
+                messages.warning(request, "You unblocked this user.")
+            else:
+                relation.is_blocking = True
+                relation.save()
+                messages.warning(request, "You blocked this user. Check rules for more info.")
+
         return redirect("accounts:profile", username)
 
 

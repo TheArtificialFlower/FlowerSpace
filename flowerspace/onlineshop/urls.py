@@ -19,5 +19,7 @@ urlpatterns = [
     path('cart/delete/<int:product_id>/', views.CartItemDeleteView.as_view(), name='cart_delete'),
     path('order/', views.ClientOrderManagementView.as_view(), name='order'),
     path('details/<slug:category_slug>/<slug:product_slug>/', views.ProductDetailsView.as_view(), name='product_details'),
+    path('rate/<int:id>/', views.ToggleProductRatingView.as_view(), name='toggle_product_rating'),
+    path('comment/<int:product_id>/', views.ProductCommentView.as_view(), name='toggle_product_comment'),
     path('<slug:category_slug>/', views.ProductsListView.as_view(), name='category_filter')
 ]

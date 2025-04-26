@@ -1,34 +1,37 @@
 /* Cart Styles */
 .cart-container {
+    position: relative;
     padding: 25px;
     background: var(--card-bg);
     border-radius: 15px;
     box-shadow: 0 6px 25px var(--shadow);
     animation: fadeIn 0.5s ease-in-out;
-    position: relative;
 }
 
+/* Title */
 .cart-title {
+    margin-bottom: 20px;
     color: var(--accent-green);
     font-size: 1.8em;
     font-weight: 600;
-    margin-bottom: 20px;
     text-transform: uppercase;
     letter-spacing: 1px;
     text-shadow: 0 2px 6px rgba(118, 200, 147, 0.3);
 }
 
+/* Items Container */
 .cart-items {
     display: flex;
     flex-direction: column;
     gap: 15px;
 }
 
+/* Item Card */
 .cart-item {
     display: flex;
     align-items: center;
-    background: var(--dark-bg);
     padding: 15px;
+    background: var(--dark-bg);
     border-radius: 10px;
     box-shadow: 0 3px 10px var(--shadow);
     transition: all 0.3s ease;
@@ -39,6 +42,7 @@
     box-shadow: 0 5px 15px rgba(118, 200, 147, 0.4);
 }
 
+/* Item Image */
 .cart-item-image {
     width: 100px;
     height: 100px;
@@ -47,16 +51,17 @@
     border: 2px solid var(--accent-green);
 }
 
+/* Item Info */
 .cart-item-info {
     flex-grow: 1;
     padding: 0 15px;
 }
 
 .cart-item-name {
+    margin-bottom: 5px;
     color: var(--accent-green);
     font-size: 1.1em;
     font-weight: 600;
-    margin-bottom: 5px;
 }
 
 .cart-item-price {
@@ -65,12 +70,13 @@
     font-weight: 500;
 }
 
+/* Remove Button */
 .remove-item-btn {
-    background: var(--flower-accent);
-    border: none;
-    color: var(--text-dark);
     padding: 8px;
+    border: none;
     border-radius: 50%;
+    background: var(--flower-accent);
+    color: var(--text-dark);
     cursor: pointer;
     transition: all 0.3s ease;
     box-shadow: 0 2px 8px var(--shadow);
@@ -82,6 +88,7 @@
     transform: scale(1.1);
 }
 
+/* Cart Total */
 .cart-total {
     margin: 20px 0;
     text-align: right;
@@ -98,24 +105,27 @@
     font-weight: 600;
 }
 
+/* Cart Actions */
 .cart-actions {
     display: flex;
-    gap: 15px;
     justify-content: flex-end;
+    gap: 15px;
 }
 
+/* Buttons */
 .cart-btn {
     padding: 12px 25px;
     border: none;
     border-radius: 30px;
-    font-family: 'Poppins', sans-serif;
     font-size: 14px;
+    font-family: 'Poppins', sans-serif;
     font-weight: 500;
     cursor: pointer;
     transition: all 0.3s ease;
     box-shadow: 0 2px 8px var(--shadow);
 }
 
+/* Clear Cart Button */
 .clear-btn {
     background: var(--flower-accent);
     color: var(--text-dark);
@@ -127,6 +137,7 @@
     transform: translateY(-2px);
 }
 
+/* Order Button */
 .order-btn {
     background: var(--gradient-accent);
     color: var(--text-dark);

@@ -4,8 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&family=Playfair+Display:wght@400;500&display=swap"
-          rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&family=Playfair+Display:wght@400;500&display=swap" rel="stylesheet">
     {% block headers %}
     <link rel="stylesheet" href="{% static 'onlineshop/products.css' %}">
     {% endblock %}
@@ -19,34 +18,247 @@
         <h1 class="item-title">{{ product.title }}</h1>
         <div class="cart-quantity">
             <i class="fas fa-shopping-cart"></i>
-            <span>In Cart: {{ cart_count }}</span>
+            In Cart: <span id="cart-count">{{ cart_count }}</span>
         </div>
     </div>
+
+    <!-- Rating System -->
+    <div class="rating-system" data-product-id="{{ product.id }}">
+        {% include "onlineshop/partials/product_rating.html" with product=product user_rating=user_rating %}
+    </div>
+
+    <!-- Side Panel Toggle Buttons -->
+    <div class="panel-toggle">
+        <button class="panel-btn active" data-panel="info" onclick="switchPanel('info')">Info</button>
+        <button class="panel-btn" data-panel="details" onclick="switchPanel('details')">Details</button>
+    </div>
+
     <div class="item-content">
-        <div class="item-image-wrapper">
-            <img src="{{ product.image.url }}" alt="{{ product.title }}" class="item-image">
-        </div>
-        <div class="item-info">
-            <p class="item-price">${{ product.price }}</p>
-            <p class="item-quantity">Categories: {% for category in product.category.all %} {{ category.name }} {% endfor %}</p>
-            <p class="item-description">
-                {{ product.description }}
-            </p>
-            {% if product.available %}
-            <div class="item-actions">
-                {% if cart_count > 0 %}
-                <form method="POST" action="" class="item-action-form">
-                    {% csrf_token %}
-                    <button type="submit" name="remove" class="remove-from-cart-btn">Remove from Cart</button>
-                </form>
-                {% endif %}
-                <form method="POST" action="" class="item-action-form">
-                    {% csrf_token %}
-                    <button type="submit" name="add" class="add-to-cart-btn">Add to Cart</button>
-                </form>
+        <div class="item-image-wrapper" id="imageWrapper">
+    <div class="image-slider">
+            <img src="{{ product.image.url }}" alt="{{ product.title }}" class="item-image" id="mainImage">
+            <div class="image-nav-container">
+                <button class="image-nav prev" onclick="changeImage(-1)"><i class="fas fa-chevron-left"></i></button>
+                <div class="image-counter">
+                    <div>
+                        <span id="currentImageIndex">1</span> /
+                        <span id="totalImages">{{ product.extra_images.count|add:1 }}</span>
+                    </div>
+                </div>
+                <button class="image-nav next" onclick="changeImage(1)"><i class="fas fa-chevron-right"></i></button>
             </div>
-            {% endif %}
+    </div>
+
+
+    </div>
+
+        <!-- Side Panel -->
+        <div class="side-panel">
+            <!-- Info Panel (Default) -->
+            <div class="panel-content info active">
+                {% if product.discount %}
+                        <span class="original-price">${{ product.price }}</span>
+                        <span class="discounted-price">${{ product.get_discount_price }}</span>
+                    {% else %}
+                        <span class="product-price">${{ product.price }}</span>
+                {% endif %}
+
+                <p class="item-quantity">Categories: {% for category in product.category.all %} {{ category.name }} {% endfor %}</p>
+                <p class="item-description">{{ product.description }}</p>
+               {% if product.available %}
+                <div class="item-actions">
+                    {% if cart_count > 0 %}
+                    <button class="cart-action-btn remove-from-cart-btn" data-action="remove" data-product-id="{{ product.id }}">
+                        Remove from Cart
+                    </button>
+                    {% endif %}
+                    <button class="cart-action-btn add-to-cart-btn" data-action="add" data-product-id="{{ product.id }}">
+                        Add to Cart
+                    </button>
+                </div>
+
+                <!-- Move csrf token somewhere globally, like in the head or hidden input -->
+                <input type="hidden" id="csrf-token" value="{{ csrf_token }}">
+
+                {% endif %}
+
+
+
+            </div>
+
+            <!-- Details Panel -->
+            <div class="panel-content details">
+                <!-- Comment Section -->
+                <div class="comment-section">
+                    <h3>Comments</h3>
+                    <div id="comments-list-{{ product.id }}">
+                        {% include 'onlineshop/partials/product_comments.html' with comments=comments %}
+                    </div>
+                    <form
+                        hx-post="{% url 'shop:toggle_product_comment' product.id %}"
+                        hx-target="#comments-list-{{ product.id }}"
+                        hx-swap="beforeend"
+                        hx-on="htmx:afterRequest: this.reset()"
+                        method="POST"
+                        class="comment-form">
+                        {% csrf_token %}
+                        {{ comment_form.text }}
+                        <button type="submit">Post</button>
+                    </form>
+                </div>
+
+                <!-- Suggested Products -->
+                <div class="suggested-products">
+                    <h3>Suggested Products</h3>
+                    <div class="suggested-grid">
+                        {% for suggested in suggested_products|slice:":3" %}
+                        <div class="suggested-card">
+                            <img src="{{ suggested.image.url }}" alt="{{ suggested.title }}" class="suggested-image">
+                            <p class="suggested-title"><a href="{{ suggested.get_absolute_url }}">{{ suggested.title }}</a></p>
+                            <p class="suggested-price">${{ suggested.price }}</p>
+                        </div>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 </div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+    const images = [
+        "{{ product.image.url }}",
+        {% for extra_image in product.extra_images.all %}
+            "{{ extra_image.image.url }}",
+        {% endfor %}
+    ];
+    let currentIndex = 0;
+    const mainImage = document.getElementById('mainImage');
+    const currentImageIndex = document.getElementById('currentImageIndex');
+    const totalImages = document.getElementById('totalImages');
+
+    window.changeImage = function (direction) {
+        currentIndex += direction;
+        if (currentIndex < 0) currentIndex = images.length - 1;
+        if (currentIndex >= images.length) currentIndex = 0;
+        mainImage.src = images[currentIndex];
+        currentImageIndex.textContent = currentIndex + 1;
+    };
+
+    // Hide arrows if only one image
+    if (images.length <= 1) {
+        document.querySelectorAll('.image-nav').forEach(btn => btn.style.display = 'none');
+        document.querySelector('.image-counter').style.display = 'none';
+    }
+});
+
+  const csrfToken = document.getElementById("csrf-token").value;
+
+document.querySelectorAll(".cart-action-btn").forEach(button => {
+    button.addEventListener("click", function (event) {
+        event.preventDefault();
+        const action = button.dataset.action;
+        const productId = button.dataset.productId;
+
+        fetch(window.location.pathname, {
+            method: "POST",
+            headers: {
+                "X-CSRFToken": csrfToken,
+                "Content-Type": "application/x-www-form-urlencoded",
+            },
+            body: new URLSearchParams({ [action]: "1" })
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.cart_count !== undefined) {
+                document.getElementById("cart-count").textContent = data.cart_count;
+
+                const itemActions = document.querySelector('.item-actions');
+
+                if (itemActions) {
+                    itemActions.innerHTML = '';
+
+                    if (data.cart_count > 0) {
+                        // If there are items, show "Remove from Cart"
+                        const removeBtn = document.createElement('button');
+                        removeBtn.className = "cart-action-btn remove-from-cart-btn";
+                        removeBtn.dataset.action = "remove";
+                        removeBtn.dataset.productId = productId;
+                        removeBtn.textContent = "Remove from Cart";
+                        itemActions.appendChild(removeBtn);
+
+                        removeBtn.addEventListener("click", handleCartButtonClick);
+                    }
+
+                    // Always show "Add to Cart"
+                    const addBtn = document.createElement('button');
+                    addBtn.className = "cart-action-btn add-to-cart-btn";
+                    addBtn.dataset.action = "add";
+                    addBtn.dataset.productId = productId;
+                    addBtn.textContent = "Add to Cart";
+                    itemActions.appendChild(addBtn);
+
+                    addBtn.addEventListener("click", handleCartButtonClick);
+                }
+            }
+            if (data.message) {
+                console.log(data.message);
+            }
+        })
+        .catch(error => console.error("Error:", error));
+    });
+});
+
+function handleCartButtonClick(event) {
+    event.preventDefault();
+    const button = event.target;
+    const action = button.dataset.action;
+    const productId = button.dataset.productId;
+
+    fetch(window.location.pathname, {
+        method: "POST",
+        headers: {
+            "X-CSRFToken": csrfToken,
+            "Content-Type": "application/x-www-form-urlencoded",
+        },
+        body: new URLSearchParams({ [action]: "1" })
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.cart_count !== undefined) {
+            document.getElementById("cart-count").textContent = data.cart_count;
+
+            const itemActions = document.querySelector('.item-actions');
+            if (itemActions) {
+                itemActions.innerHTML = '';
+
+                if (data.cart_count > 0) {
+                    const removeBtn = document.createElement('button');
+                    removeBtn.className = "cart-action-btn remove-from-cart-btn";
+                    removeBtn.dataset.action = "remove";
+                    removeBtn.dataset.productId = productId;
+                    removeBtn.textContent = "Remove from Cart";
+                    itemActions.appendChild(removeBtn);
+
+                    removeBtn.addEventListener("click", handleCartButtonClick);
+                }
+
+                const addBtn = document.createElement('button');
+                addBtn.className = "cart-action-btn add-to-cart-btn";
+                addBtn.dataset.action = "add";
+                addBtn.dataset.productId = productId;
+                addBtn.textContent = "Add to Cart";
+                itemActions.appendChild(addBtn);
+
+                addBtn.addEventListener("click", handleCartButtonClick);
+            }
+        }
+        if (data.message) {
+            console.log(data.message);
+        }
+    })
+    .catch(error => console.error("Error:", error));
+}
+</script>
 {% endblock %}

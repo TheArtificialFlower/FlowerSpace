@@ -22,6 +22,7 @@
     <div class="shop-sort" id="sortByContainer">
         <button class="sort-btn">Sort by</button>
         <div class="shop-sort-dropdown">
+            <a href="?sort_by=discount">On Sale</a>
             <a href="?sort_by=price">Price: Low to High</a>
             <a href="?sort_by=-price">Price: High to Low</a>
             <a href="?sort_by=created">Oldest</a>
@@ -62,11 +63,21 @@
         {% for product in products %}
         {% if product.available %}
         <!-- Product Card (Enabled) -->
-        <div class="product-card">
+       <div class="product-card">
             <img src="{{ product.image.url }}" class="product-image" alt="{{ product.title }}">
+            {% if product.discount %}
+                <div class="sale-tag">SALE!!</div>
+            {% endif %}
             <div class="product-info">
                 <h3 class="product-name">{{ product.title }}</h3>
-                <div class="product-price">${{ product.price }}</div>
+                <div class="product-price-box">
+                    {% if product.discount %}
+                        <span class="original-price">${{ product.price }}</span>
+                        <span class="discounted-price">${{ product.get_discount_price }}</span>
+                    {% else %}
+                        <span class="product-price">${{ product.price }}</span>
+                    {% endif %}
+                </div>
                 <div class="product-actions">
                     <a href="{{ product.get_absolute_url }}" class="btn-view">View</a>
                     <a href="#" class="btn-try">Try AR</a>
@@ -110,43 +121,93 @@ if (sortContainer) {
         this.classList.toggle('active');
     });
 }
+document.addEventListener('DOMContentLoaded', function () {
+    const categoryContainer = document.getElementById('categoryContainer');
+    if (!categoryContainer) return;
 
-// Categories Dropdown with Subcategories
-const categoryContainer = document.getElementById('categoryContainer');
-if (categoryContainer) {
-    categoryContainer.addEventListener('click', function (e) {
-        e.stopPropagation();
-        this.classList.toggle('active');
-    });
+    // Detect if mobile (based on touch support and screen size)
+    const isMobile = ('ontouchstart' in window) || (window.innerWidth <= 768);
 
-    // Handle subcategory dropdowns
-    const categoryItems = document.querySelectorAll('.category-item');
-    categoryItems.forEach(item => {
-        item.addEventListener('click', function (e) {
-            e.stopPropagation(); // Prevent closing parent dropdown
-            const subcategory = this.querySelector('.subcategory-dropdown');
-            if (subcategory) {
-                subcategory.classList.toggle('active');
+    // Desktop: Click for main dropdown, hover for subcategories
+    if (!isMobile) {
+        // Main dropdown on click
+        categoryContainer.addEventListener('click', function (e) {
+            e.stopPropagation();
+            this.classList.toggle('active');
+        });
+
+        // Subcategory dropdown on hover
+        const categoryItems = document.querySelectorAll('.category-item');
+        categoryItems.forEach(item => {
+            item.addEventListener('mouseenter', function () {
+                const subcategory = this.querySelector('.subcategory-dropdown');
+                if (subcategory) {
+                    subcategory.classList.add('active');
+                }
+            });
+            item.addEventListener('mouseleave', function () {
+                const subcategory = this.querySelector('.subcategory-dropdown');
+                if (subcategory) {
+                    subcategory.classList.remove('active');
+                }
+            });
+        });
+    }
+
+    // Mobile: Double-click for main dropdown, single-click for subcategories
+    if (isMobile) {
+        let lastClickTime = 0;
+        const doubleClickThreshold = 300; // ms
+
+        categoryContainer.addEventListener('click', function (e) {
+            e.stopPropagation();
+            const currentTime = new Date().getTime();
+            const isDoubleClick = currentTime - lastClickTime < doubleClickThreshold;
+
+            if (isDoubleClick) {
+                this.classList.toggle('active');
+            }
+
+            lastClickTime = currentTime;
+        });
+
+        // Subcategory toggle on single click
+        const categoryItems = document.querySelectorAll('.category-item');
+        categoryItems.forEach(item => {
+            const link = item.querySelector('.category-link');
+            if (link) {
+                link.addEventListener('click', function (e) {
+                    e.preventDefault(); // Prevent navigation on first click
+                    e.stopPropagation();
+                    const subcategory = item.querySelector('.subcategory-dropdown');
+                    if (subcategory) {
+                        subcategory.classList.toggle('active');
+                    }
+                });
+
+                // Allow navigation on double-click of category link
+                let linkClickTime = 0;
+                link.addEventListener('click', function (e) {
+                    const currentTime = new Date().getTime();
+                    if (currentTime - linkClickTime < doubleClickThreshold) {
+                        window.location.href = this.href; // Navigate on double-click
+                    }
+                    linkClickTime = currentTime;
+                });
             }
         });
+    }
+
+    // Close all dropdowns on outside click
+    document.addEventListener('click', function (e) {
+        if (categoryContainer && !categoryContainer.contains(e.target)) {
+            categoryContainer.classList.remove('active');
+            document.querySelectorAll('.subcategory-dropdown').forEach(sub => {
+                sub.classList.remove('active');
+            });
+        }
     });
-}
-
-// Close All Dropdowns on Outside Click
-document.addEventListener('click', function (e) {
-    // Sort By
-    if (sortContainer && !sortContainer.contains(e.target)) {
-        sortContainer.classList.remove('active');
-    }
-    // Categories and Subcategories
-    if (categoryContainer && !categoryContainer.contains(e.target)) {
-        categoryContainer.classList.remove('active');
-        document.querySelectorAll('.subcategory-dropdown').forEach(sub => {
-            sub.classList.remove('active');
-        });
-    }
 });
-
 // Shop Search Submission
 const shopSearchForm = document.getElementById('shopSearchForm');
 const searchInput = document.getElementById('shopSearch');

@@ -1,0 +1,22 @@
+<!-- product_comments.html -->
+<div class="comments-list" id="comments-list-{{ product.id }}">
+    {% for comment in comments %}
+    <div class="comment">
+        <img src="{{ comment.user.profile.image.url }}" alt="User Avatar" class="comment-avatar">
+        <div class="comment-body">
+            <div class="comment-header">
+                <span class="comment-user">
+                    <a href="{{ comment.user.profile.get_absolute_url }}">{{ comment.user.username }}</a>
+                    {% if comment.recently_bought_product %}
+
+                            <i class="fas fa-leaf"></i> Verified Buyer
+
+                    {% endif %}
+                </span>
+                <span class="comment-date">{{ comment.created|date:'M/y/d' }}</span>
+            </div>
+            <p>{{ comment.text }}</p>
+        </div>
+    </div>
+    {% endfor %}
+</div>

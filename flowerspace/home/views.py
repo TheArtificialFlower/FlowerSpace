@@ -11,9 +11,11 @@ from .forms import CreatePostForm, CommentForm, ContactForm
 from .models import Hashtag, Posts, Comment, Likes, BookMarks, Article
 from accounts.models import Relations
 from django.http import HttpResponseForbidden
-from utils import send_contact_mail
+from utils import send_contact_mail, exclude_blocked_relations, get_random_quote, get_or_refresh_news
 from django_ratelimit.decorators import ratelimit
 from django.utils.decorators import method_decorator
+from datetime import date
+from django.core.cache import cache
 
 
 
@@ -23,15 +25,32 @@ class HomepageView(ListView):
     template_name = "home/homepage.html"
     context_object_name = "posts"
 
+    def get_context_data(self, *, object_list=None, **kwargs):
+        context = super().get_context_data(**kwargs)
+        today = str(date.today())
+        session = self.request.session
+        if session.get("quote_date") != today:
+            quote = get_random_quote()
+            session["quote"] = quote
+            session["quote_date"] = today
+        else:
+            quote = session.get("quote")
+        context["daily_quote"] = quote
+        return context
+
+
     def get_queryset(self):
         posts = Posts.objects.all().order_by("?")
         search_keyword = self.request.GET.get("search")
 
         if self.request.user.is_authenticated:
-            followed_users = Relations.objects.filter(from_user=self.request.user).values_list("to_user", flat=True)
+
+            followed_users = Relations.objects.filter(from_user=self.request.user, is_blocking=False).values_list("to_user", flat=True)
             newest_following_posts = Posts.objects.filter(user__id__in=followed_users).order_by("-created")[:3]
             randomized_posts = Posts.objects.exclude(id__in=newest_following_posts.values_list("id", flat=True)).order_by("?")
+            randomized_posts = exclude_blocked_relations(self.request.user, randomized_posts)
             posts = list(newest_following_posts) + list(randomized_posts)
+
 
         if search_keyword:
             posts = Posts.objects.filter(
@@ -92,6 +111,11 @@ class PostDetailsView(DetailView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context["form"] = CommentForm()
+        comments = Comment.objects.filter(post=self.get_object()).select_related("user")
+        if self.request.user.is_authenticated:
+            context["comments"] = exclude_blocked_relations(self.request.user, comments)
+        else:
+            context["comments"] = comments
         return context
 
     @method_decorator(login_required)
@@ -179,3 +203,19 @@ class ContactUsView(LoginRequiredMixin, FormView):
 
 
 
+
+class EarthNewsView(TemplateView):
+    template_name = 'home/earth_news.html'
+
+    def get_context_data(self, *, object_list=None, **kwargs):
+        context = super().get_context_data(**kwargs)
+        today = str(date.today())
+        cached_news = cache.get(f"plant_news_{today}")
+        if not cached_news:
+            news = get_or_refresh_news()
+            cache.set(f"plant_news_{today}", news, timeout=86400)
+        else:
+            news = cached_news
+
+        context["plant_news"] = news
+        return context

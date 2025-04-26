@@ -1,6 +1,7 @@
 from django.db import models
 from django.contrib.auth.models import User
 from django.shortcuts import reverse
+from onlineshop.models import  Product
 
 
 class Profile(models.Model):
@@ -11,12 +12,14 @@ class Profile(models.Model):
     def get_absolute_url(self):
          return reverse("accounts:profile", args=[self.user.username])
 
+
 class Relations(models.Model):
     from_user = models.ForeignKey(User, on_delete=models.CASCADE, related_name="followers")
     to_user = models.ForeignKey(User, on_delete=models.CASCADE, related_name="followings")
-
+    is_blocking = models.BooleanField(default=False)
 
     def __str__(self):
-        return f"{self.from_user} is following {self.to_user}"
-
+        if not self.is_blocking:
+            return f"{self.from_user} is following {self.to_user}"
+        return f"{self.from_user} is blocking {self.to_user}"
 

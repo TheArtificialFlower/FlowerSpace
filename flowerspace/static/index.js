@@ -163,4 +163,29 @@ function toggleNotifications() {
     }
 }
 
+// Switch between Info and Details panels
+function switchPanel(panel) {
+    const panels = document.querySelectorAll('.panel-content');
+    const buttons = document.querySelectorAll('.panel-btn');
+
+    panels.forEach(p => {
+        p.classList.remove('active');
+        p.style.opacity = '0'; // Fade out
+        setTimeout(() => {
+            if (p.classList.contains(panel)) {
+                p.classList.add('active');
+                p.style.opacity = '1'; // Fade in
+            }
+        }, 150); // Short delay for smooth transition
+    });
+
+    buttons.forEach(btn => {
+        btn.classList.remove('active');
+        if (btn.getAttribute('data-panel') === panel) {
+            btn.classList.add('active');
+        }
+    });
+}
+
+
 

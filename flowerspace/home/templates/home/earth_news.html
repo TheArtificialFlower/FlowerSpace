@@ -1,0 +1,49 @@
+{% extends 'base.html' %}
+{% load static %}
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Home</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    {% block headers %}
+        <link rel="stylesheet" href="{% static 'home/earth_news.css' %}">
+    {% endblock %}
+</head>
+
+{% block content %}
+<div class="earth-news-container">
+    <div class="header-quote">
+        <div class="quote-content">
+            <i class="fas fa-quote-left quote-icon"></i>
+            <p class="quote-text">In the void, there is peace—nature speaks where man is silent.</p>
+            <p class="quote-author">— Inspired by Miyamoto Musashi</p>
+        </div>
+        <div class="quote-label">Earth’s Whisper</div>
+    </div>
+
+    <h2 class="news-title"><i class="fas fa-leaf"></i> Earth News</h2>
+    <div class="news-section">
+        <div class="leaves-container">
+            <i class="fas fa-leaf leaf-fall leaf-1"></i>
+            <i class="fas fa-leaf leaf-fall leaf-2"></i>
+            <i class="fas fa-leaf leaf-fall leaf-3"></i>
+            <i class="fas fa-leaf leaf-fall leaf-4"></i>
+            <i class="fas fa-leaf leaf-fall leaf-5"></i>
+        </div>
+        {% for news in plant_news %}
+        <div class="news-card">
+            <img src="{{ news.image }}" alt="{{ news.title }}" class="news-image">
+            <div class="news-content">
+                <p class="news-time">{{ news.created }}</p>
+                <h3 class="news-heading"><a href="{{ news.link }}">{{ news.title }}</a></h3>
+                <p class="news-desc">{{ news.desc }}</p>
+            </div>
+        </div>
+        {% empty %}
+        <p class="no-news">No news available. Check back later!</p>
+        {% endfor %}
+    </div>
+</div>
+
+{% endblock %}

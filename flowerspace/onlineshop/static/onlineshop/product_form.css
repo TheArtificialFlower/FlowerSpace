@@ -1,266 +1,441 @@
-/* Theme Colors (From Your Existing Setup) */
+/* Theme Colors */
 :root {
-    --primary-green: #2e7d32;
-    --accent-green: #76c893;
-    --dark-bg: #1a2a1e;
-    --card-bg: #2e3b2f;
-    --text-dark: #e0e6d9;
-    --text-light: #ffffff;
-    --shadow: rgba(0, 0, 0, 0.3);
-    --gradient-accent: linear-gradient(45deg, #76c893, #4a704e);
-    --flower-accent: #d4a5a5;
-    --ar-bright: #a5d6a7;
-    --button-text: #2f2f2f;
+  --primary-green: #2e7d32;
+  --accent-green: #76c893;
+  --dark-bg: #1a2a1e;
+  --card-bg: #2e3b2f;
+  --text-dark: #e0e6d9;
+  --text-light: #ffffff;
+  --shadow: rgba(0, 0, 0, 0.3);
+  --gradient-accent: linear-gradient(45deg, #76c893, #4a704e);
+  --flower-accent: #d4a5a5;
+  --ar-bright: #a5d6a7;
+  --button-text: #2f2f2f;
 }
 
-/* Form Container */
+/* Container */
 .form-container {
-    padding: 30px;
-    background: linear-gradient(135deg, var(--card-bg), #35453b);
-    border-radius: 15px;
-    box-shadow: 0 6px 25px var(--shadow);
-    max-width: 600px;
-    margin: 30px auto;
-    animation: fadeIn 0.5s ease-in-out;
+  padding: 30px;
+  background: linear-gradient(135deg, var(--card-bg), #35453b);
+  border-radius: 15px;
+  box-shadow: 0 6px 25px var(--shadow);
+  max-width: 600px;
+  margin: 30px auto;
+  animation: fadeIn 0.5s ease-in-out;
 }
 
-/* Form Title */
+/* Title */
 .form-title {
-    color: var(--accent-green);
-    font-family: 'Playfair Display', serif;
-    font-size: 2em;
-    text-align: center;
-    margin-bottom: 30px;
-    text-shadow: 0 2px 6px rgba(118, 200, 147, 0.3);
+  color: var(--accent-green);
+  font-family: 'Playfair Display', serif;
+  font-size: 2em;
+  text-align: center;
+  margin-bottom: 30px;
+  text-shadow: 0 2px 6px rgba(118, 200, 147, 0.3);
 }
 
-/* Product Form */
+/* Form Structure */
 .product-form {
-    display: flex;
-    flex-direction: column;
-    gap: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
 }
 
-/* Form Fields */
 .form-field {
-    position: relative;
-    margin-bottom: 20px;
+  position: relative;
+  margin-bottom: 20px;
 }
 
 .form-label {
-    color: var(--text-dark);
-    font-family: 'Poppins', sans-serif;
-    font-size: 1.1em;
-    margin-bottom: 8px;
-    display: block;
-    transition: color 0.3s ease;
+  color: var(--text-dark);
+  font-family: 'Poppins', sans-serif;
+  font-size: 1.1em;
+  margin-bottom: 8px;
+  display: block;
+  transition: color 0.3s ease;
 }
 
 .form-input,
 .form-textarea {
-    width: 100%;
-    padding: 12px 15px;
-    border-radius: 10px;
-    border: 1px solid var(--accent-green);
-    background: var(--dark-bg);
-    color: var(--text-dark);
-    font-family: 'Poppins', sans-serif;
-    font-size: 1em;
-    box-shadow: 0 2px 8px var(--shadow);
-    transition: all 0.3s ease;
+  width: 100%;
+  padding: 12px 15px;
+  border-radius: 10px;
+  border: 1px solid var(--accent-green);
+  background: var(--dark-bg);
+  color: var(--text-dark);
+  font-family: 'Poppins', sans-serif;
+  font-size: 1em;
+  box-shadow: 0 2px 8px var(--shadow);
+  transition: all 0.3s ease;
 }
 
 .form-input:focus,
 .form-textarea:focus {
-    outline: none;
-    border-color: var(--flower-accent);
-    box-shadow: 0 5px 15px rgba(118, 200, 147, 0.5);
+  outline: none;
+  border-color: var(--flower-accent);
+  box-shadow: 0 5px 15px rgba(118, 200, 147, 0.5);
 }
 
 .form-textarea {
-    min-height: 100px;
-    resize: vertical;
+  min-height: 100px;
+  resize: vertical;
 }
 
-/* Form Effect (Underline Animation) */
 .form-effect {
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    width: 0;
-    height: 2px;
-    background: var(--flower-accent);
-    transition: width 0.4s ease;
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 0;
+  height: 2px;
+  background: var(--flower-accent);
+  transition: width 0.4s ease;
 }
 
 .form-input:focus ~ .form-effect,
 .form-textarea:focus ~ .form-effect {
-    width: 100%;
-}
-
-/* Image Upload */
-.image-upload .form-file {
-    width: 100%;
-    padding: 10px;
-    border: 1px dashed var(--accent-green);
-    background: var(--dark-bg);
-    color: var(--text-dark);
-    border-radius: 10px;
-    cursor: pointer;
-    transition: border-color 0.3s ease;
-}
-
-.image-upload .form-file:hover {
-    border-color: var(--flower-accent);
-}
-
-.image-preview {
-    display: block;
-    margin-top: 10px;
-}
-
-.preview-img {
-    max-width: 100%;
-    height: auto;
-    border-radius: 10px;
-    box-shadow: 0 5px 15px var(--shadow);
-    transition: transform 0.3s ease;
-}
-
-.preview-img:hover {
-    transform: scale(1.05);
-}
-
-/* Checkbox Field */
-.checkbox-field {
-    display: flex;
-    align-items: center;
-}
-
-.form-checkbox {
-    appearance: none; /* Remove default checkbox look */
-    width: 20px;
-    height: 20px;
-    border: 2px solid var(--accent-green);
-    border-radius: 5px;
-    background: var(--dark-bg);
-    cursor: pointer;
-    position: relative;
-    transition: all 0.3s ease;
-}
-
-.form-checkbox:checked {
-    background: var(--flower-accent);
-    border-color: var(--flower-accent);
-}
-
-.form-checkbox:checked:after {
-    content: '\f00c'; /* Checkmark icon */
-    font-family: 'Font Awesome 6 Free';
-    font-weight: 900;
-    position: absolute;
-    left: 50%;
-    top: 50%;
-    transform: translate(-50%, -50%);
-    color: var(--text-light);
-    font-size: 12px;
-}
-
-.checkbox-label {
-    color: var(--text-dark);
-    font-family: 'Poppins', sans-serif;
-    font-size: 1.1em;
-    margin-left: 10px;
-    cursor: pointer;
-}
-
-/* Category Checkboxes */
-.category-checkboxes ul {
-    list-style: none;
-    padding: 0;
-    margin: 0;
-}
-
-.category-checkboxes li {
-    margin: 10px 0;
-}
-
-.category-checkboxes input[type="checkbox"] {
-    appearance: none;
-    width: 20px;
-    height: 20px;
-    border: 2px solid var(--accent-green);
-    border-radius: 5px;
-    background: var(--dark-bg);
-    cursor: pointer;
-    position: relative;
-    transition: all 0.3s ease;
-    vertical-align: middle;
-}
-
-.category-checkboxes input[type="checkbox"]:checked {
-    background: var(--flower-accent);
-    border-color: var(--flower-accent);
-}
-
-.category-checkboxes input[type="checkbox"]:checked:after {
-    content: '\f00c';
-    font-family: 'Font Awesome 6 Free';
-    font-weight: 900;
-    position: absolute;
-    left: 50%;
-    top: 50%;
-    transform: translate(-50%, -50%);
-    color: var(--text-light);
-    font-size: 12px;
-}
-
-.category-checkboxes label {
-    color: var(--text-dark);
-    font-family: 'Poppins', sans-serif;
-    font-size: 1em;
-    margin-left: 10px;
-    cursor: pointer;
-    vertical-align: middle;
-}
-
-
-.category-checkboxes input[type="checkbox"]:checked + label:before {
-    background: var(--flower-accent);
-    border-color: var(--flower-accent);
-}
-
-.category-checkboxes input[type="checkbox"]:checked + label:after {
-    content: '\f00c';
-    font-family: 'Font Awesome 6 Free';
-    font-weight: 900;
-    position: absolute;
-    left: 5px;
-    top: 50%;
-    transform: translateY(-50%);
-    color: var(--text-light);
-    font-size: 12px;
+  width: 100%;
 }
 
 /* Submit Button */
 .submit-btn {
-    background: var(--gradient-accent);
-    color: var(--button-text);
-    padding: 15px 30px;
-    border: none;
-    border-radius: 30px;
-    font-family: 'Playfair Display', serif;
-    font-size: 1.2em;
-    font-weight: 500;
-    cursor: pointer;
-    transition: all 0.3s ease;
-    box-shadow: 0 5px 15px var(--shadow);
-    align-self: center;
+  background: var(--gradient-accent);
+  color: var(--button-text);
+  padding: 15px 30px;
+  border: none;
+  border-radius: 30px;
+  font-family: 'Playfair Display', serif;
+  font-size: 1.2em;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 5px 15px var(--shadow);
+  align-self: center;
 }
 
 .submit-btn:hover {
-    background: var(--primary-green);
-    color: var(--text-light);
-    transform: translateY(-5px);
-    box-shadow: 0 8px 20px rgba(118, 200, 147, 0.7);
+  background: var(--primary-green);
+  color: var(--text-light);
+  transform: translateY(-5px);
+  box-shadow: 0 8px 20px rgba(118, 200, 147, 0.7);
+}
+
+/* Checkbox Field */
+.checkbox-field,
+.category-checkboxes li {
+  display: flex;
+  align-items: center;
+}
+
+.form-checkbox,
+.category-checkboxes input[type="checkbox"] {
+  appearance: none;
+  width: 20px;
+  height: 20px;
+  border: 2px solid var(--accent-green);
+  border-radius: 5px;
+  background: var(--dark-bg);
+  cursor: pointer;
+  position: relative;
+  transition: all 0.3s ease;
+  vertical-align: middle;
+}
+
+.form-checkbox:checked,
+.category-checkboxes input[type="checkbox"]:checked {
+  background: var(--flower-accent);
+  border-color: var(--flower-accent);
+}
+
+.form-checkbox:checked:after,
+.category-checkboxes input[type="checkbox"]:checked:after {
+  content: '\f00c';
+  font-family: 'Font Awesome 6 Free';
+  font-weight: 900;
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  color: var(--text-light);
+  font-size: 12px;
+}
+
+.checkbox-label,
+.category-checkboxes label {
+  color: var(--text-dark);
+  font-family: 'Poppins', sans-serif;
+  font-size: 1.1em;
+  margin-left: 10px;
+  cursor: pointer;
+}
+
+.category-checkboxes ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+/* Category Buttons */
+.category-buttons {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 10px;
+}
+
+.category-button {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  padding: 8px 16px;
+  background: var(--dark-bg);
+  border: 1px solid var(--accent-green);
+  border-radius: 20px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.category-button input[type="checkbox"] {
+  position: absolute;
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+.category-text {
+  font-family: 'Playfair Display', serif;
+  font-size: 14px;
+  color: var(--text-dark);
+  transition: color 0.3s ease;
+}
+
+.category-button input[type="checkbox"]:checked + .category-text {
+  background: linear-gradient(135deg, var(--accent-green), var(--primary-green));
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+.category-button:hover {
+  background: var(--gradient-accent);
+  box-shadow: 0 2px 8px rgba(118, 200, 147, 0.3);
+}
+
+/* Image Upload */
+.image-upload {
+  position: relative;
+}
+
+.form-file {
+  width: 100%;
+  padding: 10px;
+  border: 1px dashed var(--accent-green);
+  background: var(--dark-bg);
+  color: var(--text-dark);
+  border-radius: 10px;
+  cursor: pointer;
+  transition: border-color 0.3s ease;
+}
+
+.form-file:hover {
+  border-color: var(--flower-accent);
+}
+
+.image-preview {
+  display: block;
+  margin-top: 10px;
+  min-height: 100px;
+}
+
+.preview-img {
+  max-width: 100%;
+  max-height: 150px;
+  border-radius: 10px;
+  border: 2px solid var(--accent-green);
+  object-fit: cover;
+  transition: transform 0.3s ease;
+}
+
+.preview-img:hover {
+  transform: scale(1.05);
+}
+
+/* Extra Images */
+.extra-images {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 10px;
+}
+
+.extra-image-box {
+  position: relative;
+  width: 80px;
+  height: 80px;
+  background: var(--dark-bg);
+  border: 2px dashed var(--accent-green);
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  transition: all 0.3s ease;
+}
+
+.extra-image-box input[type="file"] {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  opacity: 0;
+  cursor: pointer;
+}
+
+.add-image {
+  font-size: 24px;
+  color: var(--accent-green);
+  font-weight: bold;
+  transition: transform 0.3s ease;
+}
+
+.extra-image-box:hover .add-image {
+  transform: scale(1.2);
+}
+
+.extra-preview {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 8px;
+}
+
+.delete-btn {
+  position: absolute;
+  top: 2px;
+  right: 2px;
+  width: 20px;
+  height: 20px;
+  background: var(--flower-accent);
+  color: var(--text-light);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 14px;
+  cursor: pointer;
+  transition: background 0.3s ease;
+}
+
+.delete-btn:hover {
+  background: var(--primary-green);
+}
+
+.add-more-btn {
+  margin-top: 10px;
+  padding: 6px 12px;
+  background: linear-gradient(135deg, var(--accent-green), var(--primary-green));
+  border: none;
+  border-radius: 20px;
+  color: var(--text-light);
+  font-family: 'Playfair Display', serif;
+  font-size: 14px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.add-more-btn:hover {
+  box-shadow: 0 2px 8px rgba(118, 200, 147, 0.3);
+  transform: translateY(-2px);
+}
+
+/* Extra Image Block Groups */
+.current-extra-images,
+.new-extra-images {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin: 10px 0;
+  padding: 10px;
+  background: linear-gradient(135deg, var(--dark-bg), rgba(118, 200, 147, 0.1));
+  border-radius: 12px;
+  border: 1px solid rgba(118, 200, 147, 0.2);
+}
+
+.current-extra-images h3,
+.new-extra-images h3 {
+  font-family: 'Playfair Display', serif;
+  font-size: 18px;
+  color: var(--accent-green);
+  margin-bottom: 8px;
+  text-shadow: 0 1px 3px rgba(118, 200, 147, 0.3);
+}
+
+.image-block {
+  position: relative;
+  width: 80px;
+  height: 80px;
+  background: var(--card-bg);
+  border: 2px solid var(--accent-green);
+  border-radius: 10px;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.3s ease;
+}
+
+.image-block .preview {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 8px;
+}
+
+.image-block label {
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+  background: rgba(46, 59, 47, 0.8);
+  color: var(--text-light);
+  font-size: 10px;
+  text-align: center;
+  padding: 2px 0;
+  cursor: pointer;
+  transition: background 0.3s ease;
+}
+
+.image-block input[type="checkbox"] {
+  display: none;
+}
+
+.image-block input[type="checkbox"]:checked + label {
+  background: var(--flower-accent);
+}
+
+/* Responsive Adjustments */
+@media (max-width: 768px) {
+  .category-buttons {
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  .category-button {
+    width: 100%;
+    justify-content: center;
+  }
+
+  .extra-image-box {
+    width: 60px;
+    height: 60px;
+  }
+
+  .add-image {
+    font-size: 20px;
+  }
+
+  .delete-btn {
+    width: 16px;
+    height: 16px;
+    font-size: 12px;
+  }
 }
