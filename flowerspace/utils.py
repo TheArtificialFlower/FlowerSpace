@@ -40,10 +40,12 @@ message:
 
 
 def exclude_blocked_relations(user, queryset):
-    blocked_ids = Relations.objects.filter(from_user=user, is_blocking=True).values_list('to_user_id', flat=True)
-    blocked_by_ids = Relations.objects.filter(to_user=user, is_blocking=True).values_list('from_user_id', flat=True)
-    excluded_ids = list(blocked_ids) + list(blocked_by_ids)
-    return queryset.exclude(user__id__in=excluded_ids).select_related('user')
+    if user.is_authenticated:
+        blocked_ids = Relations.objects.filter(from_user=user, is_blocking=True).values_list('to_user_id', flat=True)
+        blocked_by_ids = Relations.objects.filter(to_user=user, is_blocking=True).values_list('from_user_id', flat=True)
+        excluded_ids = list(blocked_ids) + list(blocked_by_ids)
+        return queryset.exclude(user__id__in=excluded_ids).select_related('user')
+    return None
 
 
 def get_random_quote():

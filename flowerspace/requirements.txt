@@ -24,6 +24,7 @@ cron-descriptor==1.4.5
 cycler==0.12.1
 decorator==5.1.1
 defusedxml==0.7.1
+dj-database-url==2.3.0
 Django==5.1.6
 django-celery-beat==2.7.0
 django-ckeditor-5==0.2.16
@@ -44,6 +45,7 @@ fabio==2024.9.0
 fastjsonschema==2.21.1
 fonttools==4.56.0
 greenlet==3.1.1
+gunicorn==23.0.0
 h5py==3.12.1
 hdf5plugin==5.0.0
 hiredis==3.0.0

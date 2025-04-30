@@ -38,19 +38,22 @@ class HomepageView(ListView):
         context["daily_quote"] = quote
         return context
 
-
     def get_queryset(self):
         posts = Posts.objects.all().order_by("?")
         search_keyword = self.request.GET.get("search")
 
         if self.request.user.is_authenticated:
-
-            followed_users = Relations.objects.filter(from_user=self.request.user, is_blocking=False).values_list("to_user", flat=True)
-            newest_following_posts = Posts.objects.filter(user__id__in=followed_users).order_by("-created")[:3]
-            randomized_posts = Posts.objects.exclude(id__in=newest_following_posts.values_list("id", flat=True)).order_by("?")
+            followed_users = Relations.objects.filter(
+                from_user=self.request.user, is_blocking=False
+            ).values_list("to_user", flat=True)
+            newest_following_posts = Posts.objects.filter(
+                user__id__in=followed_users
+            ).order_by("-created")[:3]
+            newest_ids = [post.id for post in newest_following_posts]
+            randomized_posts = Posts.objects.exclude(id__in=newest_ids).order_by("?")
             randomized_posts = exclude_blocked_relations(self.request.user, randomized_posts)
-            posts = list(newest_following_posts) + list(randomized_posts)
 
+            posts = list(newest_following_posts) + list(randomized_posts)
 
         if search_keyword:
             posts = Posts.objects.filter(
@@ -59,7 +62,6 @@ class HomepageView(ListView):
             ).distinct()
 
         return posts
-
 
 
 class CreatePostView(LoginRequiredMixin, View):

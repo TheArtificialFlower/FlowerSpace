@@ -1,6 +1,7 @@
 import os
 from pathlib import Path
-
+import dj_database_url
+from decouple import config
 from django.conf.global_settings import DATA_UPLOAD_MAX_NUMBER_FIELDS, DATA_UPLOAD_MAX_MEMORY_SIZE
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
