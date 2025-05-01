@@ -1,7 +1,5 @@
 import os
 from pathlib import Path
-import dj_database_url
-from decouple import config
 from django.conf.global_settings import DATA_UPLOAD_MAX_NUMBER_FIELDS, DATA_UPLOAD_MAX_MEMORY_SIZE
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -16,7 +14,7 @@ SECRET_KEY = os.getenv('DJANGO_SECRET_KEY', 'fallback-secret')
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['.vercel.app']
 
 # Application definition
 DATA_UPLOAD_MAX_MEMORY_SIZE = 10485760
@@ -77,12 +75,8 @@ WSGI_APPLICATION = 'flowerspace.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'flowerspace',
-        'USER': 'admin',
-        'PASSWORD': 'pouyan99',
-        'HOST': 'localhost',
-        'PORT': '5432',
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': BASE_DIR / 'db.sqlite3',
     }
 }
 
