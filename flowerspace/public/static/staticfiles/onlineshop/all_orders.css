@@ -1,0 +1,274 @@
+/* Theme Colors (Basil Twist) */
+:root {
+    --primary-green: #2e7d32; /* Basil’s deep green */
+    --accent-green: #76c893; /* Fresh basil leaf */
+    --dark-bg: #1a2a1e;
+    --card-bg: #2e3b2f;
+    --text-dark: #e0e6d9;
+    --text-light: #ffffff;
+    --shadow: rgba(0, 0, 0, 0.3);
+    --gradient-accent: linear-gradient(45deg, #76c893, #4a704e);
+    --flower-accent: #d4a5a5; /* Soft pink for contrast */
+    --basil-glow: rgba(118, 200, 147, 0.4);
+}
+
+a {
+    text-decoration: none;
+}
+
+.order-details a {
+    cursor: pointer;
+    color: wheat;
+}
+
+/* Orders Container */
+.orders-container {
+    padding: 25px;
+    background: var(--card-bg);
+    border-radius: 15px;
+    box-shadow: 0 6px 25px var(--shadow);
+    animation: fadeIn 0.5s ease-in-out;
+    position: relative;
+}
+
+/* Orders Title */
+.orders-title {
+    color: var(--accent-green);
+    font-size: 1.8em;
+    font-weight: 600;
+    margin-bottom: 20px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    text-shadow: 0 2px 6px var(--basil-glow);
+    font-family: 'Playfair Display', serif;
+}
+
+.basil-note {
+    font-size: 0.8em;
+    color: var(--flower-accent);
+    font-style: italic;
+    text-transform: none;
+    letter-spacing: normal;
+}
+
+/* Orders Controls */
+.orders-controls {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+    gap: 15px;
+}
+
+.sort-by {
+    position: relative;
+}
+
+.sort-btn {
+    background: var(--gradient-accent);
+    color: var(--text-dark);
+    padding: 10px 20px;
+    border: none;
+    border-radius: 10px;
+    font-family: 'Playfair Display', serif;
+    font-size: 14px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 2px 8px var(--shadow);
+}
+
+.sort-btn:hover {
+    background: var(--primary-green);
+    color: var(--text-light);
+    transform: translateY(-2px);
+}
+
+.sort-dropdown {
+    display: none;
+    position: absolute;
+    top: calc(100% + 5px);
+    right: 0;
+    background: var(--card-bg);
+    border-radius: 10px;
+    box-shadow: 0 5px 15px var(--shadow);
+    z-index: 1000;
+}
+
+.sort-by.active .sort-dropdown {
+    display: block;
+}
+
+.sort-dropdown button {
+    display: block;
+    padding: 10px 15px;
+    background: none;
+    border: none;
+    color: var(--text-dark);
+    font-family: 'Poppins', sans-serif;
+    font-size: 14px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    width: 100%;
+    text-align: left;
+}
+
+.sort-dropdown button:hover {
+    background: var(--accent-green);
+    color: var(--text-light);
+}
+
+/* Orders List */
+.orders-list {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.order-card {
+    background: var(--dark-bg);
+    padding: 15px;
+    border-radius: 10px;
+    box-shadow: 0 3px 10px var(--shadow);
+    border: 1px solid rgba(118, 200, 147, 0.3);
+    transition: all 0.3s ease;
+}
+
+.order-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 5px 15px var(--basil-glow);
+    border-color: var(--accent-green);
+}
+
+.order-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 10px;
+}
+
+.order-total {
+    color: var(--accent-green);
+    font-size: 1.2em;
+    font-weight: 600;
+    font-family: 'Poppins', sans-serif;
+}
+
+/* Status Form Styling */
+.order-status-form {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.current-status {
+    padding: 5px 10px;
+    border-radius: 5px;
+    font-size: 0.9em;
+    font-weight: 500;
+    color: var(--text-light);
+    font-family: 'Poppins', sans-serif;
+}
+
+.current-status.pending {
+    background: #ffa726; /* Orange */
+}
+
+.current-status.shipping {
+    background: var(--primary-green);
+}
+
+.current-status.denied {
+    background: var(--flower-accent);
+}
+
+.status-form {
+    display: flex;
+    gap: 5px;
+}
+
+.status-btn {
+    padding: 5px 10px;
+    border: none;
+    border-radius: 5px;
+    font-size: 0.8em;
+    font-weight: 500;
+    color: var(--text-light);
+    font-family: 'Poppins', sans-serif;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    background: none;
+    border: 1px solid var(--accent-green);
+}
+
+.status-btn.pending {
+    background: #ffa726;
+}
+
+.status-btn.shipping {
+    background: var(--primary-green);
+}
+
+.status-btn.denied {
+    background: var(--flower-accent);
+}
+
+.status-btn:hover:not(.active):not(:disabled) {
+    transform: scale(1.05);
+    box-shadow: 0 2px 8px var(--basil-glow);
+}
+
+.status-btn.active {
+    opacity: 0.7;
+    cursor: default;
+}
+
+.status-btn:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+.order-details p {
+    color: var(--text-dark);
+    font-size: 1em;
+    margin: 5px 0;
+    font-family: 'Poppins', sans-serif;
+}
+
+/* Animation */
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+/* ======================= */
+/*       MEDIA QUERIES     */
+/* ======================= */
+
+@media (max-width: 768px) {
+    .orders-controls {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .search-bar {
+        max-width: none;
+    }
+
+    .order-header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 10px;
+    }
+
+    .status-form {
+        flex-wrap: wrap;
+    }
+}
+
+@media (max-width: 480px) {
+    .order-status-form {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+}
