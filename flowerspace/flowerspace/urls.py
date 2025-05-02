@@ -9,4 +9,7 @@ urlpatterns = [
     path('accounts/', include('accounts.urls', namespace='accounts')),
     path('shop/', include('onlineshop.urls', namespace='shop')),
     path('', include('home.urls', namespace='home')),
-] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+] 
+
+if settings.DEBUG:
+    urlpatterns + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
