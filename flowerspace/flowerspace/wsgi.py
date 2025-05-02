@@ -1,7 +1,7 @@
 import os
 from django.core.wsgi import get_wsgi_application
 from whitenoise import WhiteNoise
-from settings import BASE_DIR
+from flowerspace.settings import BASE_DIR
 
 os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'flowerspace.settings')
 
