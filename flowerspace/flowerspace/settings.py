@@ -157,6 +157,7 @@ CKEDITOR_5_CONFIGS = {
 }
 CKEDITOR_5_CUSTOM_CSS = 'admin_dark_mode_fix.css'
 
+AWS_QUERYSTRING_AUTH = False
 
 
 # ARVAN CLOUD SETTINGS!!!
