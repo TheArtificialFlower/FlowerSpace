@@ -35,7 +35,8 @@ INSTALLED_APPS = [
     'onlineshop',
 
     # third party apps
-    'django_ckeditor_5'
+    'django_ckeditor_5',
+    'storages'
 ]
 
 MIDDLEWARE = [
@@ -155,6 +156,25 @@ CKEDITOR_5_CONFIGS = {
 }
 }
 CKEDITOR_5_CUSTOM_CSS = 'admin_dark_mode_fix.css'
+
+
+
+# ARVAN CLOUD SETTINGS!!!
+STORAGES = {
+    "default": {
+        "BACKEND": "storages.backends.s3boto3.S3Boto3Storage",
+        "OPTIONS": {
+            "access_key": "3d24db83-f583-41f6-afa7-2dc90f7812c5",
+            "secret_key": "7e1c3088c2cef7707d74a6bbba36d9d2d77967d11e795e411e75deee037867f5",
+            "endpoint_url": "https://s3.ir-thr-at1.arvanstorage.com",
+            "bucket_name": "flowerspace",
+            "file_overwrite": False,
+        },
+    },
+    "staticfiles": {
+        "BACKEND": "django.contrib.staticfiles.storage.StaticFilesStorage",
+    },
+}
 
 
 EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
