@@ -30,8 +30,8 @@ class UserProfile(View):
                 self.is_following = True
             elif relation and relation.is_blocking:
                 self.is_blocking = True
-        self.followers_count = self.user.followings.count()
-        self.followings_count = self.user.followers.count()
+        self.followers_count = self.user.followings.filter(is_blocking=False).count()
+        self.followings_count = self.user.followers.filter(is_blocking=False).count()
         return super().setup(request, *args, **kwargs)
 
 
