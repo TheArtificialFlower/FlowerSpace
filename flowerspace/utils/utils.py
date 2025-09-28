@@ -1,13 +1,15 @@
-import random
 from django.core.mail import send_mail
 from accounts.models import Relations
+from home.models import Posts
 import json
 import random
 import os
 from django.conf import settings
 import requests
 from bs4 import BeautifulSoup
-
+from datetime import date
+from django.db.models import Q
+from django.core.cache import cache
 
 
 RECEIVER_EMAIL = 'projectspacedevs@gmail.com'
@@ -48,11 +50,17 @@ def exclude_blocked_relations(user, queryset):
     return None
 
 
-def get_random_quote():
+def get_daily_quote():
     quotes_path = os.path.join(settings.BASE_DIR, 'quotes.json')
+    today_key = f"quote:{date.today()}"
+    quote = cache.get(today_key)
     with open(quotes_path, 'r', encoding='utf-8') as f:
         quotes = json.load(f)
-    return random.choice(quotes)
+    if not quote:
+        quote = random.choice(quotes)
+        cache.set(today_key, quote, 60 * 60 * 24)  # 1 day
+    return quote
+
 
 
 def get_or_refresh_news():
@@ -79,3 +87,52 @@ def get_or_refresh_news():
 
 
 
+
+class PostsCacheManager:
+    CACHE_KEY_ALL = "posts:all"
+
+    @classmethod
+    def update_posts(cls):
+        posts = list(Posts.objects.all().order_by("?"))
+        cache.set(cls.CACHE_KEY_ALL, posts)
+
+    @classmethod
+    def get_posts(cls, user=None, search_keyword=None):
+        """
+        Return cached posts with optional user-specific adjustments.
+        Falls back to DB and repopulates cache if empty.
+        """
+        posts = cache.get(cls.CACHE_KEY_ALL)
+
+        if posts is None:
+            # Pull all posts randomly and cache them
+            cls.update_posts()
+
+        # User-specific filtering
+        if user and user.is_authenticated:
+            followed_users = Relations.objects.filter(
+                from_user=user, is_blocking=False
+            ).values_list("to_user", flat=True)
+
+            newest_following_posts = Posts.objects.filter(
+                user__id__in=followed_users
+            ).order_by("-created")[:3]
+
+            newest_ids = [post.id for post in newest_following_posts]
+            randomized_posts = Posts.objects.exclude(id__in=newest_ids).order_by("?")
+            randomized_posts = exclude_blocked_relations(user, randomized_posts)
+            posts = list(newest_following_posts) + list(randomized_posts)
+
+        # Search-specific filtering
+        if search_keyword:
+            posts = Posts.objects.filter(
+                Q(hashtags__name__icontains=search_keyword) |
+                Q(desc__icontains=search_keyword)
+            ).distinct()
+
+        return posts
+
+    @classmethod
+    def invalidate_cache(cls):
+        """Clear the cached posts (use in signals)."""
+        cache.delete(cls.CACHE_KEY_ALL)

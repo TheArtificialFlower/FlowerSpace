@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Hashtag, Posts, Likes, BookMarks, Notifications, Comment, Article
+from .models import Hashtag, Posts, Comment, Article
 
 @admin.register(Hashtag)
 class HashtagAdmin(admin.ModelAdmin):
@@ -16,24 +16,6 @@ class PostsAdmin(admin.ModelAdmin):
     ordering = ('-created',)
     filter_horizontal = ('hashtags',)  # Allows easy selection of hashtags
 
-
-@admin.register(Likes)
-class LikesAdmin(admin.ModelAdmin):
-    list_display = ('user', 'post')
-    search_fields = ('user__username', 'post__desc')
-
-
-@admin.register(BookMarks)
-class BookMarksAdmin(admin.ModelAdmin):
-    list_display = ('user', 'post')
-    search_fields = ('user__username', 'post__desc')
-
-
-@admin.register(Notifications)
-class NotificationsAdmin(admin.ModelAdmin):
-    list_display = ('user', 'from_user', 'desc', 'created')
-    search_fields = ('user__username', 'from_user__username', 'desc')
-    ordering = ('-created',)
 
 
 @admin.register(Comment)

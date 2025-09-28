@@ -26,8 +26,13 @@
           <h3><i class="fas fa-bell"></i> Notifications</h3>
           {% for notif in notifs %}
           <div class="message-thread">
-              <div class="user"><a href="{% url 'accounts:profile' notif.from_user.username %}">{{ notif.from_user.username }} </a> ({{ notif.created|timesince|date:"" }} ago)</div>
-            <div class="preview">{{ notif.desc }}</div>
+              <div class="user"><a href="{% url 'accounts:profile' notif.from_user %}">{{ notif.from_user }} </a>({{ notif.created|timesince }} ago)</div>
+            <div class="preview">
+                {{ notif.message }}
+                {% if notif.target_type in post_actions %}
+                <br><a href="{% url 'home:post_details' notif.target_id %}">See post</a>
+                {% endif %}
+            </div>
           </div>
           {% endfor %}
         </div>

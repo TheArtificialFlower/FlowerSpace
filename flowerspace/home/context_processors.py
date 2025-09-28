@@ -1,25 +1,19 @@
-from .models import Likes, BookMarks, Notifications
+from utils.redis_manager import LikesRepository, BookmarkRepository, NotificationRepository
+
 
 def liked_and_bookmarked_posts(request):
+    like_class = LikesRepository()
+    bookmark_class = BookmarkRepository()
+    liked_posts = []
+    bookmarked_posts = []
     if request.user.is_authenticated:
-        liked_posts = Likes.objects.filter(user=request.user).values_list('post_id', flat=True)
-        bookmarked_posts = BookMarks.objects.filter(user=request.user).values_list('post_id', flat=True)
-    else:
-        liked_posts = []
-        bookmarked_posts = []
-
-    return {
-        'liked_posts': liked_posts,
-        'bookmarked_posts': bookmarked_posts,
-    }
+        liked_posts = like_class.get_likes_for_user(request.user.id)
+        bookmarked_posts = bookmark_class.get_bookmarks_for_user(request.user.id)
+    return {'liked_posts': liked_posts, 'bookmarked_posts': bookmarked_posts}
 
 
 def notifications(request):
-    if request.user.is_authenticated:
-        notifs = Notifications.objects.filter(user=request.user).order_by("-created")
-    else:
-        notifs = []
-
-    return {
-        'notifs':notifs
-    }
+    notif_class = NotificationRepository()
+    notifs = notif_class.get_notifications(user_id=request.user.id)
+    post_actions = ["like", "comment", "new_post"]
+    return {'notifs':notifs, 'post_actions':post_actions}

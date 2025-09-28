@@ -1,18 +1,17 @@
 from django.contrib.auth.mixins import LoginRequiredMixin
-from django.shortcuts import render, redirect, reverse, get_object_or_404
-from django.urls import reverse_lazy
-from django.contrib import messages
+from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth import login, logout, authenticate
 from .forms import RegistrationForm, LoginForm, OTPForm, ProfileEditForm
 from django.contrib.auth.models import User
 from django.views.generic import FormView, ListView
 from django.views import View
-from django.contrib.auth.views import LogoutView
-from utils import send_otp, verify_otp
+from utils.utils import send_otp, verify_otp
+from utils.redis_manager import BookmarkRepository
+from utils.cart_manager import merge_session_into_cache
 from .models import Profile, Relations
 from django.contrib import messages
-from home.models import Posts, BookMarks
-
+from home.models import Posts
+from django.db.models import Q
 
 
 class UserProfile(View):
@@ -116,6 +115,7 @@ class UserLogin(FormView):
         if user is not None:
             login(self.request, user)
             messages.success(self.request, f"Successfully logged in. welcome back {user.username}!")
+            merge_session_into_cache(self.request) # cart merger
 
             if self.request.GET.get("next"):
                 return redirect(self.request.GET.get("next"))
@@ -231,12 +231,30 @@ class UserRelation(View):
 
 
 
-class BookmarksView(LoginRequiredMixin, ListView):
+class BookmarksView(LoginRequiredMixin, View):
     template_name = "accounts/bookmarks.html"
-    context_object_name = "bookmarks"
-    model = Posts
+    redis_class = BookmarkRepository()
 
-    def get_queryset(self):
-        queryset = super().get_queryset()
-        queryset = self.request.user.u_bookmark.all()
-        return queryset
+    def get(self, request):
+        bookmarks_list = self.redis_class.get_bookmarks_for_user(request.user.id)
+        bookmarked_posts = Posts.objects.filter(id__in=bookmarks_list)
+        return render(request, self.template_name, {"bookmarked_posts":bookmarked_posts})
+
+
+
+class RelationsManagerView(LoginRequiredMixin, View):
+    template_name = "accounts/relations_manager.html"
+
+    def get(self, request):
+        relations = Relations.objects.filter(Q(to_user=request.user) | Q(from_user=request.user))
+        follower_ids = relations.filter(to_user=request.user, is_blocking=False).values_list("from_user", flat=True)
+        followers = User.objects.filter(id__in=follower_ids)
+        following_ids = relations.filter(from_user=request.user, is_blocking=False).values_list("to_user", flat=True)
+        followings = User.objects.filter(id__in=following_ids)
+        blocked_ids = relations.filter(from_user=request.user, is_blocking=True).values_list("to_user", flat=True)
+        blocked = User.objects.filter(id__in=blocked_ids)
+        return render(request, self.template_name, {
+            "followers": followers,
+            "followings": followings,
+            "blocked": blocked,
+        })

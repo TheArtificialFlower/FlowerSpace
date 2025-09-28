@@ -1,0 +1,214 @@
+{% extends 'base.html' %}
+{% load static %}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Relations - {{ request.user.username }}</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    {% block headers %}
+        <link rel="stylesheet" href="{% static 'home/homepage.css' %}">
+        <link rel="stylesheet" href="{% static 'accounts/profile.css' %}">
+    {% endblock %}
+</head>
+
+<body>
+{% block content %}
+{% csrf_token %}
+
+<!-- Tabbed Sections -->
+<div class="tab-container">
+    <div class="tab-buttons">
+        <button class="tab-btn active" data-tab="followers">Followers</button>
+        <button class="tab-btn" data-tab="followings">Following</button>
+        <button class="tab-btn" data-tab="blocked">Blocked</button>
+    </div>
+
+    <div class="tab-content">
+        <!-- Followers -->
+        <div class="user-list followers active">
+            {% for user in followers %}
+            <div class="user-card">
+                <img src="{% if user.profile.image %}{{ user.profile.image.url }}{% else %}https://via.placeholder.com/40{% endif %}" alt="{{ user.username }} PFP" class="user-pfp">
+                <span class="username">{{ user.username }}</span>
+                <a href="{% url 'accounts:profile' user.username %}" class="view-btn">View Profile</a>
+            </div>
+            {% empty %}
+            <p class="no-users">No followers yet.</p>
+            {% endfor %}
+        </div>
+
+        <!-- Following -->
+        <div class="user-list followings">
+            {% for user in followings %}
+            <div class="user-card">
+                <img src="{% if user.profile.image %}{{ user.profile.image.url }}{% else %}https://via.placeholder.com/40{% endif %}" alt="{{ user.username }} PFP" class="user-pfp">
+                <span class="username">{{ user.username }}</span>
+                <a href="{% url 'accounts:profile' user.username %}" class="view-btn">View Profile</a>
+            </div>
+            {% empty %}
+            <p class="no-users">Not following anyone yet.</p>
+            {% endfor %}
+        </div>
+
+        <!-- Blocked -->
+        <div class="user-list blocked">
+            {% for user in blocked %}
+            <div class="user-card">
+                <img src="{% if user.profile.image %}{{ user.profile.image.url }}{% else %}https://via.placeholder.com/40{% endif %}" alt="{{ user.username }} PFP" class="user-pfp">
+                <span class="username">{{ user.username }}</span>
+                <a href="{% url 'accounts:profile' user.username %}" class="view-btn">View Profile</a>
+            </div>
+            {% empty %}
+            <p class="no-users">No users blocked.</p>
+            {% endfor %}
+        </div>
+    </div>
+</div>
+
+<!-- keep your CSS -->
+<style>
+    .tab-container {
+        margin: 20px auto;
+        max-width: 900px;
+        width: 100%;
+    }
+    .tab-buttons {
+        display: flex;
+        justify-content: center;
+        gap: 15px;
+        margin-bottom: 20px;
+        padding: 10px;
+        background: linear-gradient(90deg, #1a2a1e, #2e3b2f);
+        border-radius: 10px;
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+    }
+    .tab-btn {
+        padding: 10px 20px;
+        background: rgba(46, 59, 47, 0.7);
+        border: 1px solid #76c893;
+        color: #e0e6d9;
+        border-radius: 5px;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        font-family: 'Playfair Display', serif;
+    }
+    .tab-btn.active {
+        background: #76c893;
+        color: #1a2a1e;
+        font-weight: 600;
+    }
+    .tab-btn:hover {
+        background: #5a7d5e;
+        transform: translateY(-2px);
+    }
+    .tab-content {
+        padding: 20px;
+        background: #2e3b2f;
+        border-radius: 10px;
+        box-shadow: 0 6px 20px rgba(0, 0, 0, 0.4);
+    }
+    .user-list {
+        display: none;
+        flex-direction: column;
+        gap: 15px;
+    }
+    .user-list.active {
+        display: flex;
+    }
+    .user-card {
+        display: flex;
+        align-items: center;
+        padding: 12px 15px;
+        background: linear-gradient(135deg, #1a2a1e, #2e3b2f);
+        border-radius: 8px;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+        transition: transform 0.3s ease;
+    }
+    .user-card:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 4px 12px rgba(118, 200, 147, 0.3);
+    }
+    .user-pfp {
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+        margin-right: 15px;
+        border: 2px solid #76c893;
+    }
+    .username {
+        flex-grow: 1;
+        font-size: 16px;
+        color: #e0e6d9;
+        font-family: 'Poppins', sans-serif;
+    }
+    .view-btn {
+        padding: 6px 12px;
+        background: #76c893;
+        color: #1a2a1e;
+        border: none;
+        border-radius: 5px;
+        text-decoration: none;
+        font-size: 14px;
+        transition: all 0.3s ease;
+    }
+    .view-btn:hover {
+        background: #5a7d5e;
+        color: #fff;
+    }
+    .no-users {
+        text-align: center;
+        color: #b0d1b8;
+        font-style: italic;
+    }
+    @media (max-width: 768px) {
+        .tab-buttons {
+            flex-direction: column;
+            align-items: center;
+            padding: 10px 0;
+        }
+        .tab-btn {
+            width: 80%;
+            margin-bottom: 10px;
+        }
+        .user-card {
+            flex-direction: column;
+            text-align: center;
+            padding: 10px;
+        }
+        .user-pfp {
+            margin-right: 0;
+            margin-bottom: 10px;
+        }
+        .username {
+            margin-bottom: 10px;
+        }
+        .view-btn {
+            width: 100%;
+        }
+    }
+</style>
+
+<!-- JS -->
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+        const tabButtons = document.querySelectorAll('.tab-btn');
+        const userLists = document.querySelectorAll('.user-list');
+
+        tabButtons.forEach(button => {
+            button.addEventListener('click', () => {
+                // update buttons
+                tabButtons.forEach(btn => btn.classList.remove('active'));
+                button.classList.add('active');
+
+                // update lists
+                const tab = button.getAttribute('data-tab');
+                userLists.forEach(list => list.classList.remove('active'));
+                document.querySelector(`.user-list.${tab}`).classList.add('active');
+            });
+        });
+    });
+</script>
+{% endblock %}
+</body>
+</html>

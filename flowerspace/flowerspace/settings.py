@@ -89,6 +89,19 @@ DATABASES = {
     }
 }
 
+REDIS_URL = os.getenv("REDIS_URL")
+
+CACHES = {
+    "default": {
+        "BACKEND": "django_redis.cache.RedisCache",
+        "LOCATION": REDIS_URL,
+        "OPTIONS": {
+            "CLIENT_CLASS": "django_redis.client.DefaultClient",
+        },
+    }
+}
+
+
 
 # Password validation
 # https://docs.djangoproject.com/en/5.0/ref/settings/#auth-password-validators
@@ -165,8 +178,8 @@ STORAGES = {
     "default": {
         "BACKEND": "storages.backends.s3boto3.S3Boto3Storage",
         "OPTIONS": {
-            "access_key": "3d24db83-f583-41f6-afa7-2dc90f7812c5",
-            "secret_key": "7e1c3088c2cef7707d74a6bbba36d9d2d77967d11e795e411e75deee037867f5",
+            "access_key": os.getenv("BUCKET_ACCESS_KEY"),
+            "secret_key": os.getenv("BUCKET_SECRET_KEY"),
             "endpoint_url": "https://s3.ir-thr-at1.arvanstorage.com",
             "bucket_name": "flowerspace",
             "file_overwrite": False,
@@ -178,10 +191,11 @@ STORAGES = {
 }
 
 
+# GMAIL CONFIG!!!!
 EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
 EMAIL_HOST = "smtp.gmail.com"
 EMAIL_PORT = 587
 EMAIL_USE_TLS = True
 EMAIL_HOST_USER = "projectspacedevs@gmail.com"
-EMAIL_HOST_PASSWORD = "slib uveu ktis plvg"
+EMAIL_HOST_PASSWORD = os.getenv("EMAIL_PASSWORD")
 DEFAULT_FROM_EMAIL = EMAIL_HOST_USER

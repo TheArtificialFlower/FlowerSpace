@@ -15,15 +15,15 @@
 {% block content %}
 <div class="bookmarks-header">
     <h2><i class="fas fa-bookmark"></i> Saved Blooms</h2>
-    <p class="bookmarks-count">{{ bookmarks.count }} saved posts</p>
+    <p class="bookmarks-count">{{ bookmarked_posts.count }} saved posts</p>
 </div>
 
 <div class="bookmarks-grid">
-   {% for bookmark in bookmarks %}
+   {% for bookmark in bookmarked_posts %}
     <div class="bookmark-item">
-        <a href="{% url 'home:post_details' bookmark.post.id %}"><img src="{{ bookmark.post.image.url }}" alt="Saved Post" class="bookmark-image"></a>
+        <a href="{% url 'home:post_details' bookmark.id %}"><img src="{{ bookmark.image.url }}" alt="Saved Post" class="bookmark-image"></a>
         <div class="bookmark-overlay">
-            <span class="bookmark-title">{{bookmark.post.desc|truncatewords:5}}</span>
+            <span class="bookmark-title">{{bookmark.desc|truncatewords:5}}</span>
         </div>
     </div>
     {% endfor %}

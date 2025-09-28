@@ -1,22 +1,19 @@
 from django.shortcuts import render, redirect, get_object_or_404
-from django.views.generic import ListView, DetailView, CreateView, View, DeleteView, TemplateView, FormView
+from django.views.generic import ListView, DetailView, View, TemplateView, FormView
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib import messages
-from django.db.models import Q
 from django.http import JsonResponse
 from django.urls import reverse_lazy
-from django.utils.decorators import method_decorator
+from .signals import create_like_notification
 from django.contrib.auth.decorators import login_required
+from utils.redis_manager import LikesRepository, BookmarkRepository
 from .forms import CreatePostForm, CommentForm, ContactForm
-from .models import Hashtag, Posts, Comment, Likes, BookMarks, Article
-from accounts.models import Relations
-from django.http import HttpResponseForbidden
-from utils import send_contact_mail, exclude_blocked_relations, get_random_quote, get_or_refresh_news
+from .models import Hashtag, Posts, Comment, Article
+from utils.utils import send_contact_mail, exclude_blocked_relations, get_daily_quote, get_or_refresh_news, PostsCacheManager
 from django_ratelimit.decorators import ratelimit
 from django.utils.decorators import method_decorator
 from datetime import date
 from django.core.cache import cache
-
 
 
 
@@ -27,41 +24,15 @@ class HomepageView(ListView):
 
     def get_context_data(self, *, object_list=None, **kwargs):
         context = super().get_context_data(**kwargs)
-        today = str(date.today())
-        session = self.request.session
-        if session.get("quote_date") != today:
-            quote = get_random_quote()
-            session["quote"] = quote
-            session["quote_date"] = today
-        else:
-            quote = session.get("quote")
-        context["daily_quote"] = quote
+        context["daily_quote"] = get_daily_quote()
         return context
 
     def get_queryset(self):
-        posts = Posts.objects.all().order_by("?")
-        search_keyword = self.request.GET.get("search")
+        return PostsCacheManager.get_posts(
+            user=self.request.user,
+            search_keyword=self.request.GET.get("search")
+        )
 
-        if self.request.user.is_authenticated:
-            followed_users = Relations.objects.filter(
-                from_user=self.request.user, is_blocking=False
-            ).values_list("to_user", flat=True)
-            newest_following_posts = Posts.objects.filter(
-                user__id__in=followed_users
-            ).order_by("-created")[:3]
-            newest_ids = [post.id for post in newest_following_posts]
-            randomized_posts = Posts.objects.exclude(id__in=newest_ids).order_by("?")
-            randomized_posts = exclude_blocked_relations(self.request.user, randomized_posts)
-
-            posts = list(newest_following_posts) + list(randomized_posts)
-
-        if search_keyword:
-            posts = Posts.objects.filter(
-                Q(hashtags__name__icontains=search_keyword) |
-                Q(desc__icontains=search_keyword)
-            ).distinct()
-
-        return posts
 
 
 class CreatePostView(LoginRequiredMixin, View):
@@ -135,30 +106,28 @@ class PostDetailsView(DetailView):
 
 
 class ToggleLikeView(LoginRequiredMixin, View):
+    redis_class = LikesRepository()
+
     def post(self, request, id):
         post = get_object_or_404(Posts, id=id)
-        like, created = Likes.objects.get_or_create(user=request.user, post=post)
-
-        if not created:  # If already liked, unlike it
-            like.delete()
-            liked = False
-        else:
-            liked = True
-
-        like_count = post.p_likes.count()
+        action = self.redis_class.toggle_like(user_id=request.user.id, post_id=id)
+        if action == "added":
+            create_like_notification(request.user.id, post.user.id, post.pk, request.user.username)
+        liked = action == "added"
+        like_count = len(self.redis_class.get_likes_for_post(post_id=id))
         return JsonResponse({"liked": liked, "like_count": like_count})
 
 
+
 class ToggleBookmarkView(LoginRequiredMixin, View):
+    redis_class = BookmarkRepository()
+
     def post(self, request, id):
         post = get_object_or_404(Posts, id=id)
-        bookmark, created = BookMarks.objects.get_or_create(user=request.user, post=post)
+        action = self.redis_class.toggle_bookmark(user_id=request.user.id, post_id=id)
+        bookmarked = action == "added"
+        return JsonResponse({"bookmarked": bookmarked})
 
-        if not created:  # If already bookmarked, remove it
-            bookmark.delete()
-            return JsonResponse({"bookmarked": False})
-
-        return JsonResponse({"bookmarked": True})
 
 
 class ArticleView(ListView):
@@ -179,8 +148,6 @@ class ArticleDetailsView(DetailView):
     template_name = "home/articles_details.html"
     context_object_name = "article"
     pk_url_kwarg = "article_id"
-
-
 
 
 class ContactUsView(LoginRequiredMixin, FormView):

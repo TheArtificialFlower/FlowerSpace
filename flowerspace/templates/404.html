@@ -1,1 +1,152 @@
-<h1>PAGE NOT FOUND. . .</h1>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>404 - Page Not Found</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body style="
+    margin: 0;
+    padding: 0;
+    min-height: 100vh;
+    background: linear-gradient(135deg, #1a3c34, #2e593f);
+    overflow: hidden;
+    font-family: 'Playfair Display', serif;
+    color: #ffffff;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+">
+
+    <div class="content" style="
+        text-align: center;
+        z-index: 10;
+        position: relative;
+        max-width: 800px;
+        width: 90%;
+        padding: 20px;
+    ">
+        <h1 style="
+            font-size: 48px;
+            margin: 0 0 20px;
+            text-shadow: 0 2px 6px rgba(46, 59, 47, 0.7);
+        ">404 - Not Found</h1>
+        <p style="
+            font-size: 24px;
+            margin: 0 0 30px;
+            color: #b0d1b8;
+            text-shadow: 0 1px 3px rgba(26, 60, 52, 0.4);
+        ">The page you sought has wilted away like a forgotten bloom.</p>
+        <div class="quote" style="
+            max-width: 600px;
+            width: 100%;
+            background: rgba(46, 59, 47, 0.8);
+            padding: 20px;
+            border-radius: 15px;
+            box-shadow: 0 4px 12px rgba(26, 60, 52, 0.5);
+            font-style: italic;
+            font-size: 18px;
+            line-height: 1.5;
+            text-shadow: 0 1px 3px rgba(46, 59, 47, 0.4);
+            margin: 0 auto;
+        ">
+            "Even the tiniest flower can break through the hardest earth—patience is its strength."
+            <span style="display: block; font-size: 14px; opacity: 0.8; margin-top: 10px;">— Nature’s Whisper</span>
+        </div>
+    </div>
+
+    <script>
+        function createFlower() {
+            const flower = document.createElement('div');
+            flower.className = 'flower';
+            flower.style.left = Math.random() * 100 + 'vw';
+            flower.style.backgroundColor = `hsl(${Math.random() * 60 + 120}, 70%, 50%)`; // Green to pink hues
+            flower.style.width = Math.random() * 10 + 10 + 'px';
+            flower.style.height = flower.style.width;
+            flower.style.borderRadius = '50%';
+            flower.style.position = 'absolute';
+            flower.style.zIndex = 1;
+            document.body.appendChild(flower);
+
+            const animationDuration = Math.random() * 5 + 5; // 5-10 seconds
+            flower.style.animation = `fall ${animationDuration}s linear infinite`;
+
+            // Remove flower after animation
+            flower.addEventListener('animationiteration', () => {
+                flower.style.left = Math.random() * 100 + 'vw';
+                flower.style.backgroundColor = `hsl(${Math.random() * 60 + 120}, 70%, 50%)`;
+            });
+        }
+
+        // Create multiple flowers
+        for (let i = 0; i < 20; i++) {
+            createFlower();
+        }
+
+        // CSS Animation
+        const style = document.createElement('style');
+        style.textContent = `
+            @keyframes fall {
+                0% {
+                    transform: translateY(-100px) rotate(0deg);
+                    opacity: 0.8;
+                }
+                50% {
+                    transform: translateY(50vh) rotate(180deg);
+                    opacity: 0.5;
+                }
+                100% {
+                    transform: translateY(100vh) rotate(360deg);
+                    opacity: 0;
+                }
+            }
+            .flower {
+                position: absolute;
+                top: -50px;
+                box-shadow: 0 0 5px rgba(118, 200, 147, 0.3);
+                animation-iteration-count: infinite;
+            }
+        `;
+        document.head.appendChild(style);
+    </script>
+
+    <!-- Responsive Adjustments -->
+    <style>
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 36px;
+            }
+            p {
+                font-size: 18px;
+            }
+            .quote {
+                font-size: 16px;
+                padding: 15px;
+            }
+            .content {
+                padding: 15px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            h1 {
+                font-size: 28px;
+            }
+            p {
+                font-size: 14px;
+                margin-bottom: 20px;
+            }
+            .quote {
+                font-size: 14px;
+                padding: 10px;
+                max-width: 90%;
+            }
+            .content {
+                padding: 10px;
+                width: 95%;
+            }
+        }
+    </style>
+</body>
+</html>

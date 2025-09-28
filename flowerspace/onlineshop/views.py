@@ -5,13 +5,13 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.urls import reverse_lazy
 from django.views.generic import ListView, DetailView, TemplateView, View, FormView
 from .models import Product, Coupons, Category, Order, OrderItems, ProductComment, ProductRating, ProductImage
-from .cart import Cart
+from utils.cart_manager import HybridCartManager
 from django.contrib import messages
 from .forms import ProductForm, UserOrderInfoForm, CouponForm, ProductCommentForm
 from django.db import transaction
 from django.utils.decorators import method_decorator
 from django.contrib.auth.decorators import login_required
-from utils import exclude_blocked_relations
+from utils.utils import exclude_blocked_relations
 from django.http import JsonResponse
 
 
@@ -57,7 +57,8 @@ class ProductDetailsView(DetailView):
     context_object_name = "product"
 
     def setup(self, request, *args, **kwargs):
-        self.cart = Cart(request)
+        self.cart_manager = HybridCartManager(request)
+        self.cart = self.cart_manager.load_cart()
         return super().setup(request, *args, **kwargs)
 
     def get_object(self, queryset=None):
@@ -90,11 +91,13 @@ class ProductDetailsView(DetailView):
     # Cart management via javascript (i wanna kms)
     def post(self, request, *args, **kwargs):
         product = self.get_object()
-        cart = Cart(request)
+        cart = self.cart_manager.load_cart()
+        cart_data = cart.get_data()
+
 
         if request.POST.get('add'):
             cart.add(product=product, quantity=1)
-            cart_count = cart.get_data()['total_quantity']
+            cart_count = next((item['quantity'] for item in cart_data['items'] if item['product']['id'] == product.id), 0)
             return JsonResponse({
                 "message": "Product added successfully.",
                 "cart_count": cart_count
@@ -102,13 +105,14 @@ class ProductDetailsView(DetailView):
 
         elif request.POST.get('remove'):
             cart.delete(product.id)
-            cart_count = cart.get_data()['total_quantity']
+            cart_count = next((item['quantity'] for item in cart_data['items'] if item['product']['id'] == product.id), 0)
             return JsonResponse({
                 "message": "Product removed from cart.",
                 "cart_count": cart_count
             })
 
         return JsonResponse({"error": "Invalid action"}, status=400)
+
 
 
 class ProductCommentView(View):
@@ -208,13 +212,14 @@ class CartManagementView(TemplateView):
     template_name = "onlineshop/cart.html"
 
     def setup(self, request, *args, **kwargs):
-        self.cart = Cart(request)
-
+        self.cart_manager = HybridCartManager(request)
+        self.cart = self.cart_manager.load_cart()
         return super().setup(request, *args, **kwargs)
 
     def dispatch(self, request, *args, **kwargs):
         if 'clear/' in request.path:
-            self.cart.clear()
+            self.cart_manager.clear()
+
             return redirect('shop:cart')
 
         return super().dispatch(request, *args, **kwargs)
@@ -222,7 +227,7 @@ class CartManagementView(TemplateView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context["cart"] = self.cart
-        print(self.cart.get_data())
+
         return context
 
     @method_decorator(login_required)
@@ -235,7 +240,7 @@ class CartManagementView(TemplateView):
                 product = item['product']
                 OrderItems.objects.create(order=order, product=item['instance'], price=product['price'],
                                           quantity=item['quantity'])
-            self.cart.clear()
+            self.cart_manager.clear()
             messages.success(request, "Your order has been added successfully!")
             return redirect('shop:order')
         messages.error(request, "To submit an order, you have to fill your cart first!")
@@ -244,7 +249,7 @@ class CartManagementView(TemplateView):
 
 class CartItemDeleteView(View):
     def get(self, request, product_id):
-        cart = Cart(request)
+        cart = HybridCartManager(request).load_cart()
         cart.delete(product_id)
         return redirect('shop:cart')
 
@@ -381,7 +386,6 @@ class AdminOrderUpdateView(View):
         return super().setup(request, *args, **kwargs)
 
     def post(self, request, *args, **kwargs):
-        print(request.POST)
         self.order.status = request.POST['status']
         messages.success(request, "Order has been successfully updated.")
         self.order.save()
