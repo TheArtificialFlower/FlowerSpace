@@ -2,98 +2,143 @@
 
 **A Social Media Platform for Plant Lovers**
 
-[See demo here](https://flower-space-xi.vercel.app/)
+[Live Demo](https://flower-space-xi.vercel.app/)
+
+---
 
 ## Table of Contents
-- [Update Log](#update-log)
-- [Note](#note)
-- [About](#about)
-- [Features](#features)
-- [Technology Stack](#technology-stack)
-- [Installation](#installation)
 
+* [Update Log](#update-log)
+* [About](#about)
+* [Features](#features)
+* [Technology Stack](#technology-stack)
+* [Installation](#installation)
+* [License](#license)
 
+---
 
 ## 📅 Update Log
 
-### Latest Updates
-- **Added Earth News Section**: Integrated a news section to articles using Yetiests and BeautifulSoup for dynamic content.
-- **Updated Relations Model**: Introduced block logic between users for improved user management.
-- **Product Enhancements**: Added comment and rating sections, support for multiple images, and discount application via updates.
-- **Notification System**: Users now receive notifications for published public coupons.
-- **Bug Fixes**: Resolved visual bugs using HTML adjustments.
-- **Performance Improvements**: Modified feature structure and performance optimizations.
-- **New Feature**: Implemented an inner plant-themed quote system that updates daily.
+### Latest Highlights
 
+* **Account System Overhaul**
 
-## NOTE:
-**REGISTER SYSTEM FINALLY WORKS, OTP CODES WILL BE SENT TO YOUR EMAIL.**
-**IF YOU DO NOT WANT TO REGISTER LOGIN WITH: testuser@gmail.com ------ FlowerSpace99**
+  * Email-based registration with OTP verification
+  * Profile editing (name, avatar, bio)
+  * Follow / Unfollow and Block logic with real-time counts
+  * Relations manager have been added to manage your relations better. (followings, blocked, followers)
+* **Bookmarks & Likes**
+
+  * Redis-backed like and bookmark repositories for speed
+  * Dedicated bookmarks page
+* **Posts & Articles**
+
+  * Cached homepage feed for faster loads
+  * Inline hashtag creation when posting
+  * Comment system with block-aware filtering
+* **Earth News**
+
+  * Daily plant/earth news fetched via BeautifulSoup and cached per day
+* **Cart Manager**
+
+  * Hybrid session/cache cart with auto-save and merge on login
+* **Performance & UX**
+
+  * Server-side caching of posts and daily quotes
+  * More helpful flash messages and error handling
+
+---
 
 ## 🌿 About
 
-Flower Space is a vibrant social media platform designed for plant enthusiasts to share their botanical journeys, connect with fellow gardeners, and grow their green communities. From sharing plant photos to discussing gardening tips, Flower Space brings nature lovers together.
+Flower Space is a vibrant social platform where plant enthusiasts share their botanical journeys, swap tips, and shop for plant-related products.
+From daily plant quotes to real-time notifications and a small marketplace, Flower Space connects green thumbs everywhere.
 
-## ✨ Features
+---
 
-### 🌱 Core Features
-- **Post Creation**: Share your plant photos with descriptions and hashtags
-- **Likes & Comments**: Engage with other users' posts
-- **Bookmarks**: Save your favorite posts for later
-- **Articles**: Read and share gardening articles (including a new earth news section using Yetiests and BeautifulSoup)
-- **User Profiles**: Showcase your plant collection and gardening expertise
+## ✨ Key Features
 
-### 🌸 Advanced Features
-- **Real-time Notifications**: Stay updated with likes, comments, and public coupon publications
-- **Hashtag System**: Discover content through tags
-- **Profile Customization**: Edit your profile picture and bio
-- **Follow System**: Connect with other plant lovers
-- **Product Management**: Add, update, and delete products with comment and rating sections
-- **Multiple Images**: Store multiple images per product
-- **Discounts**: Apply discounts to products via updates
+### 🌱 Core Social
+
+* Post creation with hashtags, multiple images, and optional comments
+* Like & bookmark system with Redis for instant feedback
+* Follow/unfollow users and manage relationships with block support
+* Daily inspirational plant quotes
+
+### 📰 Articles & News
+
+* Community gardening articles
+* “Earth News” section auto-scraped and refreshed daily
+
+### 🛒 Shop
+
+* Product listings with comments, ratings, discounts, and multiple images
+* Hybrid cart (session + cache) that merges automatically after login
+
+### 👤 Accounts
+
+* Email/OTP registration and secure login
+* Profile editing (name, avatar, bio)
+* Relations manager page to view followers, followings, and blocked users
+
+### 🔔 Notifications
+
+* Real-time notifications for likes, comments, and coupon publications
+
+---
 
 ## 🛠️ Technology Stack
 
-### Backend
-- **Django**: Python web framework
-- **postgresSQL**: Relational database
-- **ArvanCloud**: Outer storage
-- **Requests and BS4**: Web scrapping earth news
-- **Vercel**: Hosting server
-  
+**Backend**
 
-### Frontend
-- **HTML5 & CSS3**: Responsive design with custom animations
-- **JavaScript**: Interactive UI components
-- **Font Awesome**: Beautiful icons
+* Django & Django ORM
+* PostgreSQL
+* Redis (likes, bookmarks, caching)
+* BeautifulSoup & Requests (web scraping)
+* ArvanCloud (media storage)
+* Vercel (deployment)
+
+**Frontend**
+
+* HTML5, CSS3, JavaScript
+* Font Awesome icons
+
+---
 
 ## 📂 Installation
 
-1. Clone the repository:
-   ```bash
-   git clone https://github.com/yourusername/flower-space.git
-   cd flower-space
-   ```
+```bash
+# 1. Clone
+git clone https://github.com/yourusername/flower-space.git
+cd flower-space
 
-2. Set up virtual environment:
-   ```bash
-   python -m venv venv
-   source venv/bin/activate
-   ```
+# 2. Virtual env
+python -m venv venv
+source venv/bin/activate
 
-3. Install dependencies:
-   ```bash
-   pip install -r requirements.txt
-   ```
+# 3. Install dependencies
+pip install -r requirements.txt
 
-4. Set up database:
-   ```bash
-   python manage.py migrate
-   ```
+# 4. Migrate database
+python manage.py migrate
 
-5. Run development server:
-   ```bash
-   python manage.py runserver
-   ```
+# 5. Run server
+python manage.py runserver
+```
+
+Environment variables you’ll need:
+
+* `SECRET_KEY`
+* `DATABASE_URL` (or individual DB settings)
+* `REDIS_URL`
+* Email credentials for OTP sending
+
+---
+
+## 📜 License
+
+MIT License – feel free to fork and build your own garden!
+
+---
 
 
